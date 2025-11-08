@@ -13,6 +13,22 @@
       --bg:#fafafa; --card:#ffffff; --accent:#0b5cff; --muted:#6b7280; --maxw:1100px;
       --radius:10px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,sans-serif;
     }
+    /* Dark theme variables (toggle by adding .dark on <html>) */
+    :root.dark {
+      --bg: #0b0f14;
+      --card: #2e3338;
+      --accent: #4f8cff;
+      --muted: #9aa6b2;
+      --maxw:1100px;
+      --text: #12b88f;
+      --muted-contrast: #41581b;
+    }
+    html, body { transition: background-color 220ms ease, color 220ms ease; }
+    body { color: var(--text, #474242); background: var(--bg); }
+    .card { background: var(--card); color: var(--text); border-color: rgba(180, 61, 61, 0.04); }
+    .tag, .link-btn, .year-btn.active { background: rgba(79,140,255,0.08); color: var(--accent); }
+    .muted { color: var(--muted-contrast, var(--muted)); }
+
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#111;display:flex;justify-content:center;padding:28px}
     .wrap{width:100%;max-width:var(--maxw)}
@@ -96,8 +112,31 @@
 
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
     .card{background:var(--card);border-radius:var(--radius);padding:12px;border:1px solid #c4bdbd;display:flex;flex-direction:column;gap:8px}
-    .thumb{width:100%;height:160px;object-fit:cover;border-radius:8px;background:#f3f4f6}
-    .meta{display:flex;justify-content:space-between;align-items:center}
+    .thumb-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* center by default */
+  align-items: center;
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+
+.thumb-wrapper[data-align="left"] {
+  justify-content: flex-start;
+}
+
+.thumb-wrapper[data-align="right"] {
+  justify-content: flex-end;
+}
+
+.thumb {
+  width: auto; /* allow natural width */
+  height: 160px; /* default height */
+  object-fit: contain; /* maintain aspect ratio */
+  border-radius: 8px;
+}
+.meta{display:flex;justify-content:space-between;align-items:center}
     .title{font-weight:700}
     .origin{font-size:12px;color:var(--muted)}
     .tags{display:flex;flex-wrap:wrap;gap:6px}
@@ -108,7 +147,7 @@
 
     /* Modal */
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:20px}
-    .modal.open{display:flex;background:rgba(0,0,0,0.45)}
+    .modal.open{display:flex;background:rgba(0, 0, 0, 0.45)}
     .modal-card{width:100%;max-width:1100px;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 10px 30px rgba(2,6,23,0.12)}
     /* Modal layout: left = caption + preview, right = player */
   .modal-grid{display:grid;grid-template-columns:320px 1fr;gap:18px;align-items:start}
@@ -116,6 +155,8 @@
   .left-col{display:flex;flex-direction:column;gap:12px}
   .right-col{display:flex;align-items:flex-start;justify-content:center}
   #mPlayer{width:100%;} 
+  /* hide modal preview image so open modal does NOT include preview photo */
+  #mImg, .modal-thumb { display: none !important; }
   /* make embed area match preview height and take remaining width */
   .embed-container{position:relative;width:100%;min-height:360px;overflow:hidden;border-radius:8px;background:#000}
   .embed-container::before{content:"";display:block;padding-top:56.25%} /* preserves 16:9 ratio */
@@ -166,6 +207,31 @@
 .right-col .embed-container {
   min-height: var(--modal-player-height, 540px);
 }
+
+/* Close player button styles */
+.close-player-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.close-player-btn:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* Ensure embed container can position the button */
+.embed-container {
+  position: relative;
+}
   </style>
 </head>
 <body>
@@ -201,8 +267,9 @@
         <input id="q" type="search" placeholder="Search meme title, tag, or origin" />
     
       </div>
-      <div>
+      <div style="display:flex;gap:8px;align-items:center">
         <button id="clear" class="year-btn">Show all</button>
+        <button id="darkToggle" class="year-btn" aria-pressed="false" title="Toggle dark mode">Dark</button>
       </div>
     </div>
 <div class="filter-controls">
@@ -223,28 +290,27 @@
     </footer>
   </div>
 
-  <!-- modal -->
+  <!-- modal: single-column layout (Title → Year/Origin → Description → Player → Link buttons) -->
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-card" role="document">
       <button class="close" id="modalClose" aria-label="Close">✕</button>
 
-      <div class="modal-grid">
-        <!-- LEFT: caption / tags / description on top, then preview photo -->
-        <div class="left-col">
-          <div class="caption">
-            <h2 id="mTitle"></h2>
-            <p class="muted" id="mOrigin"></p>
-            <div id="mMetaTop" style="margin-top:8px"></div>
-            <p id="mDesc" style="margin-top:8px"></p>
-          </div>
-
-          <img id="mImg" class="modal-thumb" alt="meme image" />
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:12px">
+        <div class="modal-header">
+          <h2 id="mTitle" style="margin:0"></h2>
+          <p class="muted" id="mOrigin" style="margin:4px 0 0 0"></p>
+          <div id="mMetaTop" style="margin-top:8px"></div>
         </div>
 
-        <!-- RIGHT: player area (embeds appear here) -->
-        <div class="right-col">
-          <div id="mPlayer"></div>
+        <div class="modal-desc">
+          <p id="mDesc" style="margin:0"></p>
         </div>
+
+        <!-- centered player -->
+        <div id="mPlayer" style="display:flex;justify-content:center;align-items:center;margin:12px 0"></div>
+
+        <!-- link buttons area -->
+        <div id="mLinks" class="modal-links" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap"></div>
       </div>
     </div>
   </div>
@@ -266,7 +332,27 @@
     origin: 'Onel de Guzman',
     profile: '',
     description: 'I think it is best to start with Onel De Guzman because he was a major figure for Filipino Internet presence',
-    tags: ['news', 'criminal', 'Legend']
+    tags: ['news', 'criminal', 'Legend'],styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px',
+    objectFit: 'fit',
+    objectPosition: 'center' // can be 'left', 'right', 'center'
+  },
+  player: {
+    width: '700px',          // fills container
+    maxWidth: '960px',      // max reasonable size
+    height: '500px',        // 16:9 ratio
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        // accommodates max player width
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '600px'   // matches player height
+  }
+}
   },
   {
     title: 'Kween Yasmin Peace Sign',
@@ -276,7 +362,22 @@
     link: 'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25',
     profile: 'https://www.facebook.com/www.facebookyasminasistido.090',
     origin: 'Yasmin Marie M. Asistido',
-    description: 'Kween Yasmin nag Pepeace Sign'
+    description: 'Kween Yasmin nag Pepeace Sign',
+    styles: { 
+  },
+  player: {
+    width: '700px',          // fills container
+    maxWidth: '960px',      // max reasonable size
+    height: '500px',        // 16:9 ratio
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        // accommodates max player width
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '600px'   // matches player height
+  }
   },
   {
     title: 'Komikero',
@@ -287,8 +388,23 @@
     profile: 'https://en.wikipedia.org/wiki/Gerry_Alanguilan',
     origin: 'Doroteo Gerardo N. Alanguilan Jr.',
     description: 'Hey Baby, meron akong museum sa San Pablo, Laguna. Punta ka!',
-    tags: ['ancient']
+    tags: ['ancient'],
+    styles: {
   },
+  player: {
+    width: '500px',          // fills container
+    maxWidth: '960px',      // max reasonable size
+    height: '500px',        // 16:9 ratio
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '500px',        // accommodates max player width
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '60px'   // matches player height
+  }
+},
   {
     title: 'Kapeng matapang',
     year: 2019,
@@ -296,28 +412,29 @@
     link: 'https://www.facebook.com/reel/1383634471776415',
     profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
     origin: 'Renie Bhoy Jovellano',
-    description: 'Aeouaueoueu',
+    description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
     styles: {
-      thumbnail: {
-        height: '180px',
-        objectFit: 'cover'
-      },
-      player: {
-        width: '360px',        // fixed player width for vertical reel
-        maxWidth: '360px',
-        height: '500px',       // fixed height to match 9:16 vertical
-        aspectRatio: '9/16',
-        margin: '0 auto',
-        display: 'block'
-      },
-      modal: {
-        width: '720px',        // wider modal for vertical video
-        maxHeight: '90vh',
-        columnRatio: '0/1',    // collapse left column, video takes full modal width
-        playerHeight: '640px'  // informs layout and left-column scroll height
-      }
-    }
+  thumbnail: {
+    width: 'autopx',
+    height: '200px',
+    objectFit: 'center',
+  objectPosition: 'center' 
+   },
+  player: {
+    width: '300px',         // reduced from 360px
+    maxWidth: '300px',      // reduced from 360px
+    height: '534px',        // 16:9 inverse ratio (reduced from 640px)
+    margin: '0 auto',       // centers the player
+    display: 'block'
   },
+  modal: {
+    width: '400px',         // reduced from 720px
+    maxHeight: '85vh',      // slightly smaller than before
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '400px'   // matches player height
+  }
+}
+},
   {
     title: 'Friendzone Logo',
     year: 2016,
@@ -327,7 +444,29 @@
     profile: 'httpsyoutu.be/0cT78evUJbQ?si=Ggc-jDfqK081yJFS',
     origin: 'Heart and Like',
     description: 'Friendzone logo meme — origin and context',
-    tags: ['origin']
+    tags: ['origin'],
+    
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Caloocan Boy',
@@ -349,17 +488,59 @@
     link: 'https://youtu.be/ganSYJCOVrM?si=x1TpaXdW_W_J-upZ&t=12',
     origin: 'Boracay',
     description: 'Harry Roque served as a spokesperson of Rodrigo Dutwink Boy',
-    tags: ['politics']
+    tags: ['politics'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Zoom Call Vico Sotto',
     year: 2020,
     news: 'https://inquirersuper.com.ph/trending/someones-thirst-trap-zoom-background-interrupted-a-forum-with-mayor-vico-sotto-and-it-was-hilarious/',
-    video: 'https://x.com/MisterFantasty/status/1252927489082441731',
+    video: '<iframe width="560" height="315" src="https://www.youtube.com/embed/RBqFPn6Hi1A?si=skOkAVKnKpNdLqLa&amp;start=3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>',
     image: './image/vicosotto.jpg',
     origin: 'Vico Sotto',
     description: 'Zoom call interrupted by a humorous background during Mayor Vico Sotto’s forum',
-    tags: ['politics']
+    tags: ['politics'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Astig Cap and Super Lola',
@@ -380,7 +561,28 @@
     image: './image/Coviddance.png',
     origin: '',
     description: 'Corona Lumayo ka! Di ka namin lalapitan! Medjo lalayo sa kapwa!',
-    tags: ['politics', 'dance']
+    tags: ['politics', 'dance'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Milktea Burger tsaka Fries',
@@ -392,24 +594,25 @@
     origin: '@queenlinaloudaot',
     description: 'Sana all Sinusuyo',
     tags: ['tiktok', 'urban legend'],styles: {
-      thumbnail: {
-        height: '180px',
-        objectFit: 'cover'
+      tthumbnail: {
+    width: 'autopx',
+    height: '200px',
+    objectFit: 'center',
+  objectPosition: 'center' 
       },
-      player: {
-        width: '360px',        // fixed player width for vertical reel
-        maxWidth: '360px',
-        height: '500px',       // fixed height to match 9:16 vertical
-        aspectRatio: '9/16',
-        margin: '0 auto',
-        display: 'block'
-      },
-      modal: {
-        width: '720px',        // wider modal for vertical video
-        maxHeight: '90vh',
-        columnRatio: '0/1',    // collapse left column, video takes full modal width
-        playerHeight: '640px'  // informs layout and left-column scroll height
-      }
+  player: {
+    width: '300px',         // reduced from 360px
+    maxWidth: '300px',      // reduced from 360px
+    height: '534px',        // 16:9 inverse ratio (reduced from 640px)
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '400px',         // reduced from 720px
+    maxHeight: '85vh',      // slightly smaller than before
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '400px'   // matches player height
+  }
     }
   },
   {
@@ -420,7 +623,28 @@
     link: 'https://www.pep.ph/news/12/jejomar-binay-reacts-to-ash-wednesday-memes-part-of-the-job-e',
     origin: 'Jejomar Binay',
     description: 'Jejomar "Jojo" Cabauatan Binay Sr. is a Filipino lawyer and politician who served as the 13th Vice President of the Philippines from 2010 to 2016.',
-    tags: ['politics']
+    tags: ['politics'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'N-word Binay',
@@ -430,7 +654,28 @@
     link: 'https://newsinfo.inquirer.net/1213399/n-word-abby-binay-receives-offensive-messages-for-not-suspending-classes',
     origin: '',
     description: 'Maria Lourdes Nancy Sombillo Binay Angeles is a Filipino politician who is serving as the 22nd mayor of Makati since June 30, 2025. She previously served as a senator of the Philippines from 2013 to 2025. Binay is the daughter of former Vice President Jejomar Binay.',
-    tags: ['politics']
+    tags: ['politics'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Jovit the Basketball',
@@ -440,7 +685,28 @@
     link: 'https://pop.inquirer.net/99825/jovit-baldivino-unhappy-with-the-memes-of-him-playing-basketball',
     origin: '2011 throwback photo',
     description: 'However, it seems that Jovit is unhappy with the memes when he replied to a fan through Messenger saying “di kayo nakakatuwa” with a smiley emoji.',
-    tags: ['celebrity', 'sports']
+    tags: ['celebrity', 'sports'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Immortal Enrile',
@@ -450,7 +716,28 @@
     news: 'https://www.spin.ph/life/people/immortal-enrile-surfaces-on-social-media-but-not-as-a-meme-a1374-20200329',
     video: 'https://x.com/krisponcenrile/status/1243755017770655744',
     origin: 'Enrile meme circulated in 2020 as a joking COVID-era relic; character traces to older folklore.',
-    tags: ['politics']
+    tags: ['politics'],
+    styles: {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+}
   },
   {
     title: 'Pipoy Como',
@@ -462,24 +749,27 @@
     origin: '',
     description: 'ewan ko ba parang tarantado lang',
     tags: ['urban legend', 'tiktok'],styles: {
-      
-      thumbnail: {
-        height: '180px',
-        objectFit: 'cover'
-      },
-      player: {
-        width: '100%',
-        height: 'auto',
-        aspectRatio: '8/12'
-      },
-      modal: {
-        width: '600px',
-        maxHeight: '600px',
-        columnRatio: '40/60',
-        aspectRatio: '8/12'
-    }
-  }
+  thumbnail: {
+    width: 'autopx',
+    height: '200px',
+    objectFit: 'center',
+  objectPosition: 'center' // can be 'left', 'right', 'center'
   },
+  player: {
+    width: '360px',         // fixed width for vertical videos
+    maxWidth: '360px',      // ensures consistent size
+    height: '600px',        // 16:9 inverse ratio (perfect for mobile video)
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '400px',         // wider modal to accommodate player + padding
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '600px'   // matches player height
+  },
+}
+  }, 
   {
     title: 'Darwin Lim',
     year: 2020,
@@ -488,25 +778,29 @@
     profile: 'https://www.tiktok.com/@inggopogi25?lang=en',
     origin: 'Doombringer',
     description: 'ewan ko rin parang tarantadao din (1)',
-    tags: ['urban legend', 'tiktok'],
-   styles: {
+    tags: ['urban legend', 'tiktok'], 
       
-      thumbnail: {
-        height: '180px',
-        objectFit: 'cover'
-      },
-      player: {
-        width: '100%',
-        height: 'auto',
-        aspectRatio: '8/12'
-      },
-      modal: {
-        width: '600px',
-        maxHeight: '600px',
-        columnRatio: '40/60',
-        aspectRatio: '8/12'
-    }
-  }
+      styles: {
+ thumbnail: {
+    width: 'autopx',
+    height: '200px',
+    objectFit: 'center',
+  objectPosition: 'center' 
+  },
+  player: {
+    width: '360px',         // fixed width for vertical videos
+    maxWidth: '360px',      // ensures consistent size
+    height: '600px',        // 16:9 inverse ratio (perfect for mobile video)
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '400px',         // wider modal to accommodate player + padding
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '600px'   // matches player height
+  },
+      }
   },
   {
     title: 'Ako lang ba guys?',
@@ -516,7 +810,29 @@
     profile: 'https://www.tiktok.com/@rakimsantos_?lang=en',
     origin: 'Rakim Santos',
     description: '',
-    tags: ['urban legend', 'tiktok']
+    tags: ['urban legend', 'tiktok'],   
+    styles: {
+ thumbnail: {
+    width: 'autopx',
+    height: '200px',
+    objectFit: 'center',
+  objectPosition: 'center' 
+  },
+   player: {
+    width: '100%',          // fills container
+    maxWidth: '960px',      // max reasonable size
+    height: '540px',        // 16:9 ratio
+    margin: '0 auto',       // centers the player
+    display: 'block'
+  },
+  modal: {
+    width: '1000px',        // accommodates max player width
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '540px'   // matches player height
+  }
+  },
+      
   },
   {
     title: 'Langgaw sa toes ko',
@@ -525,35 +841,42 @@
     link: 'https://www.tiktok.com/@valerie1999.50/video/7028533750313094426',
     profile: 'https://www.tiktok.com/@valerie1999.50',
     origin: 'Valerie Mae Cruz',
-    description: 'Hi guys, so kanina kasi nagphotoshoot kami ng pamangkin ko grabe sobrang laughtrip ng result and super laughtrip kasi may dumikit na langaw sa toes ko... tingnan nyo. Ito po yung result diba sobrang ganda diba pero when you look closely sa pinakababa ng paa ko, sa toes ko may dumikit na langaw. Wait lang zoom in ko. Ayan po guys nakita nyo ba guys dyan sa pinakalower left side guys kita nyo ba yung langaw laughtrip sya guys oh kita nyo ba ayan oh di ko maturo pano ba to gamiting greenscreen na to ayan ayan laughtrip. Like bakit may langaw???!!! Sarap na sarap kang langaw ka ah',
+    description: 'Hi guys, so kanina kasi nagphotoshoot kami ng pamangkin ko grabe sobrang laughtrip ng result and super laughtrip kasi may dumikit na langaw sa toes ko...',
     tags: ['tiktok'],
     styles: {
-      
-      thumbnail: {
-        height: '180px',
-        objectFit: 'cover'
-      },
-      player: {
-        width: '100%',
-        height: 'auto',
-        aspectRatio: '8/12'
-      },
-      modal: {
-        width: '1000px',
-        maxHeight: '600px',
-        columnRatio: '40/60',
-        aspectRatio: '6/12'
-    }
-  }
+  thumbnail: {
+    width: 'autopx',
+    height: '150px',
+    objectFit: 'center',
+  objectPosition: 'center' 
+   },
+  player: {
+    width: '360px',         // fixed width for vertical videos
+    maxWidth: '360px',      // ensures consistent size
+    height: '600px',        // 16:9 inverse ratio (perfect for mobile video)
+    margin: '0 auto',       // centers the player
+    display: 'block'
   },
+  modal: {
+    width: '400px',         // wider modal to accommodate player + padding
+    maxHeight: '90vh',      // prevents overflow
+    columnRatio: '0/1',     // full width for player
+    playerHeight: '600px'   // matches player height
+  },
+  
+}
+    },
  
   {
     title: 'Jhepoy Dizon',
     year: 2013,
-    image: './image/jepoy.WEBP',
+    image: './image/jhepoydizon.jpg',
     link: 'https://youtube.fandom.com/wiki/KapKek',
     video: 'https://youtu.be/SzOWy1o2dTA?si=k2Qdgd6mJilJfZ8g',
     profile: 'https://www.youtube.com/@ShupetGaming',
+    more1: 'https://www.facebook.com/shupetgaming',
+    more2: 'google.com',
+    more3:'youtube.com',
     origin: 'John Alfred Richards Tejero',
     description: 'TANGINA MO, JHEPOY DIZON! ANG PANGIT NG PAGMUMUKHA MO, KITA MO NA BANG MUKHA MO SA SALAMIN? TANGINA MO! ANG PANGIT MO, HA? Tangina mo! At anong ang sinasabi mong pulubi at taga-hugas ako ng pinggan ha? TANGINA MO!',
     tags: ['games']
@@ -568,25 +891,46 @@
     description: '',
     tags: ['celebrity'],
     styles: {
-      
       thumbnail: {
         height: '180px',
         objectFit: 'cover'
       },
-     player: {
+      player: {
         width: '100%',
-        height: 'auto',
-    modal: {
-    width: '900px',          
-    maxHeight: '90vh',       
-    columnRatio: '45/55',    
-    aspectRatio: '16/9'      
-  }
-  }
-  }
-  }
+        height: 'auto'
+      },
+      modal: {
+        width: '900px',
+        maxHeight: '90vh',
+        columnRatio: '45/55',
+        aspectRatio: '16/9'
+      }
+    }
+  },
 ];
 
+// First define the landscape style constant
+const landscapeStyle = {
+  thumbnail: {
+    width: 'auto',
+    height: '200px', 
+    objectFit: 'center',
+    objectPosition: 'center'
+  },
+  player: {
+    width: '700px',          
+    maxWidth: '960px',      
+    height: '500px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '800px',        
+    maxHeight: '90vh',      
+    columnRatio: '0/1',     
+    playerHeight: '600px'   
+  }
+};
 
     function createYouTubePlayer(videoId, container) {
   if (!window.YT) {
@@ -624,7 +968,8 @@
       mDesc:document.getElementById('mDesc'),
       mImg:document.getElementById('mImg'),
       mMetaTop:document.getElementById('mMetaTop'), // changed
-      mPlayer:document.getElementById('mPlayer')    // added
+      mPlayer:document.getElementById('mPlayer'),
+      mLinks: null // will be wired after modal DOM replacement
     };
 
     let activeYear = null;
@@ -669,9 +1014,12 @@
       img.src = m.image;
       img.alt = m.title;
       
-      // Apply custom thumbnail styles
+      // Apply custom thumbnail styles including alignment
       if (m.styles?.thumbnail) {
         Object.assign(img.style, m.styles.thumbnail);
+        if (m.styles.thumbnail.objectPosition) {
+          img.setAttribute('data-align', m.styles.thumbnail.objectPosition);
+        }
       }
 
       const t = document.createElement('div');
@@ -753,29 +1101,43 @@ function renderFacebookEmbed(container, fbUrl, playerStyle = {}) {
   if (/^\d+$/.test(String(height).trim())) height = height + 'px';
   wrapper.style.minHeight = height;
 
-  // create iframe pointing to Facebook plugins video (fills wrapper)
+  // Added mute=0 to enable sound by default
   const encoded = encodeURIComponent(fbUrl);
   const iframe = document.createElement('iframe');
-  iframe.src = `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&autoplay=true`;
+  iframe.src = `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&autoplay=true&mute=0`;
   iframe.style.width = '100%';
   iframe.style.height = '100%';
   iframe.style.border = '0';
-  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture; microphone; camera';
   iframe.allowFullscreen = true;
 
+  // Modified close button to close modal
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'close-player-btn';
+  closeBtn.textContent = '✕ Close';
+  closeBtn.addEventListener('click', () => {
+    const modal = document.getElementById('modal');
+    if (modal) {
+      closeModal(); // Close entire modal
+    }
+  });
+
   wrapper.appendChild(iframe);
+  wrapper.appendChild(closeBtn);
   container.appendChild(wrapper);
 }
 
-// Replace your openModal with this version that shows the modal BEFORE rendering FB embeds
+// Updated openModal to follow vertical layout, and to populate links into #mLinks
 function openModal(m) {
   el.mTitle.textContent = m.title || '';
   el.mOrigin.textContent = (m.year || '') + (m.origin ? ' · ' + m.origin : '');
   el.mDesc.textContent = m.description || '';
-  el.mImg.src = m.image || '';
+  if (el.mImg) el.mImg.src = m.image || '';
 
   el.mMetaTop.innerHTML = '';
   el.mPlayer.innerHTML = '';
+  el.mLinks = document.getElementById('mLinks');
+  if (el.mLinks) el.mLinks.innerHTML = '';
 
   if (m.tags && m.tags.length) {
     el.mMetaTop.innerHTML = '<div class="tags">' +
@@ -786,28 +1148,38 @@ function openModal(m) {
   // Apply modal sizing
   const modalCard = el.modal.querySelector('.modal-card');
   const modalGrid = el.modal.querySelector('.modal-grid');
-  modalCard.style.removeProperty('--modal-max-height');
-  modalCard.style.removeProperty('--modal-player-height');
-  modalCard.style.removeProperty('--modal-cols');
-  modalCard.style.width = '';
-  if (m.styles?.modal) {
+  if (modalCard) {
+    modalCard.style.removeProperty('--modal-max-height');
+    modalCard.style.removeProperty('--modal-player-height');
+    modalCard.style.removeProperty('--modal-cols');
+    modalCard.style.width = '';
+  }
+
+  if (m.styles && m.styles.modal && modalCard) {
     const md = m.styles.modal;
     if (md.maxHeight) modalCard.style.setProperty('--modal-max-height', md.maxHeight);
     if (md.playerHeight) modalCard.style.setProperty('--modal-player-height', md.playerHeight);
     if (md.width) modalCard.style.width = md.width;
+
     if (md.columnRatio) {
-      if (md.columnRatio.includes('/')) {
-        const [l, r] = md.columnRatio.split('/');
-        modalCard.style.setProperty('--modal-cols', `${l}fr ${r}fr`);
-        modalGrid.style.gridTemplateColumns = `${l}fr ${r}fr`;
+      // accept "35/65" or "320px 1fr" or "0/1" etc.
+      if (String(md.columnRatio).includes('/')) {
+        const parts = String(md.columnRatio).split('/');
+        // ensure numeric fallback
+        const l = Number(parts[0]) || 0;
+        const r = Number(parts[1]) || 1;
+        const cols = `${l}fr ${r}fr`;
+        modalCard.style.setProperty('--modal-cols', cols);
+        if (modalGrid) modalGrid.style.gridTemplateColumns = cols;
       } else {
+        // use given CSS value (e.g. "320px 1fr")
         modalCard.style.setProperty('--modal-cols', md.columnRatio);
-        modalGrid.style.gridTemplateColumns = md.columnRatio;
+        if (modalGrid) modalGrid.style.gridTemplateColumns = md.columnRatio;
       }
     }
   }
 
-  // Make modal visible BEFORE inserting FB node or parsing SDK
+  // show modal first so embeds can measure correctly
   el.modal.classList.add('open');
   el.modal.setAttribute('aria-hidden', 'false');
 
@@ -815,19 +1187,18 @@ function openModal(m) {
   const info = getEmbedInfo(source);
 
   if (info && info.type === 'facebook') {
-    // ensure we call renderFacebookEmbed after modal visible
-    renderFacebookEmbed(el.mPlayer, info.embedUrl, m.styles?.player);
+    renderFacebookEmbed(el.mPlayer, info.embedUrl, m.styles?.player || {});
   } else if (info && info.type === 'video' && info.embedUrl) {
-    const player = document.createElement('div');
-    player.className = 'embed-container';
-    const p = m.styles?.player || {};
-    if (p.maxWidth) player.style.maxWidth = p.maxWidth;
-    if (p.width) player.style.width = p.width;
+    const playerWrap = document.createElement('div');
+    playerWrap.className = 'embed-container';
+    const p = Object.assign({}, m.styles?.player || {});
+    if (p.maxWidth) playerWrap.style.maxWidth = p.maxWidth;
+    if (p.width) playerWrap.style.width = p.width;
+    if (p.margin) playerWrap.style.margin = p.margin;
     if (p.height) {
-      player.style.minHeight = (String(p.height).match(/px|vh|%/) ? p.height : (p.height + 'px'));
-      modalCard.style.setProperty('--modal-player-height', player.style.minHeight);
+      playerWrap.style.minHeight = (/^\d+$/.test(String(p.height)) ? String(p.height) + 'px' : p.height);
+      if (modalCard) modalCard.style.setProperty('--modal-player-height', playerWrap.style.minHeight);
     }
-    if (p.margin) player.style.margin = p.margin;
 
     const iframe = document.createElement('iframe');
     iframe.src = info.embedUrl;
@@ -837,15 +1208,17 @@ function openModal(m) {
     iframe.style.width = '100%';
     iframe.style.height = '100%';
 
+    // Modified close button to close the modal
     const closeBtn = document.createElement('button');
-    closeBtn.className = 'close-embed';
-    closeBtn.textContent = 'Close Player';
-    closeBtn.style.marginTop = '10px';
-    closeBtn.addEventListener('click', () => player.remove());
+    closeBtn.className = 'close-player-btn';
+    closeBtn.textContent = '✕ Close';
+    closeBtn.addEventListener('click', () => {
+      closeModal(); // Close entire modal instead of just player
+    });
 
-    player.appendChild(iframe);
-    el.mPlayer.appendChild(player);
-    el.mPlayer.appendChild(closeBtn);
+    playerWrap.appendChild(iframe);
+    playerWrap.appendChild(closeBtn);
+    el.mPlayer.appendChild(playerWrap);
   } else {
     if (source) {
       const linkDiv = document.createElement('div');
@@ -857,11 +1230,12 @@ function openModal(m) {
       a.rel = 'noopener noreferrer';
       a.textContent = 'Open Source';
       linkDiv.appendChild(a);
-      el.mPlayer.appendChild(linkDiv);
+      if (el.mLinks) el.mLinks.appendChild(linkDiv);
+      else el.mPlayer.appendChild(linkDiv);
     }
   }
 
-  // links rendering...
+  // render other link buttons
   const links = [];
   if (m.link) links.push({ href: m.link, text: 'Source' });
   if (m.video) links.push({ href: m.video, text: 'Video' });
@@ -869,11 +1243,17 @@ function openModal(m) {
   if (m.profile) links.push({ href: m.profile, text: 'Profile' });
   if (m.news) links.push({ href: m.news, text: 'News' });
   if (m.song) links.push({ href: m.song, text: 'Song' });
+  // Add your new "more" links
+  if (m.more1) links.push({ href: m.more1, text: 'More 1' });
+  if (m.more2) links.push({ href: m.more2, text: 'More 2' });
+  if (m.more3) links.push({ href: m.more3, text: 'More 3' });
+  if (m.more4) links.push({ href: m.more4, text: 'More 4' });
+  if (m.more5) links.push({ href: m.more5, text: 'More 5' });
+  if (m.more6) links.push({ href: m.more6, text: 'More 6' });
+  if (m.more7) links.push({ href: m.more7, text: 'More 7' });
 
   if (links.length) {
     const seen = new Set();
-    const linksDiv = document.createElement('div');
-    linksDiv.className = 'modal-links';
     links.forEach(l => {
       try {
         if (!l.href) return;
@@ -887,16 +1267,17 @@ function openModal(m) {
         a.rel = 'noopener noreferrer';
         a.textContent = l.text;
         a.addEventListener('click', e => e.stopPropagation());
-        linksDiv.appendChild(a);
+        if (el.mLinks) el.mLinks.appendChild(a);
+        else el.mPlayer.appendChild(a);
       } catch (err) {}
     });
-    el.mPlayer.appendChild(linksDiv);
   }
 
-  if (!m.styles?.thumbnail?.height) {
-    el.mImg.style.maxHeight = '240px';
-  } else {
+  // thumbnail max-height (kept but mImg is hidden by CSS per your previous request)
+  if (m.styles?.thumbnail?.height && el.mImg) {
     el.mImg.style.maxHeight = m.styles.thumbnail.height;
+  } else if (el.mImg) {
+    el.mImg.style.maxHeight = '240px';
   }
 }
 
@@ -936,20 +1317,19 @@ function renderTags() {
     btn.addEventListener('click', () => {
       activeTag = (activeTag === tag ? null : tag);
       document.querySelectorAll('#tagNav .year-btn').forEach(b => b.classList.remove('active'));
-      
       if (activeTag) btn.classList.add('active');
       renderTimeline();
     });
     elTagNav.appendChild(btn);
   });
+}
 
-  // Clear Filters button logic
+// Clear Filters button logic (kept outside renderTags)
 document.addEventListener("DOMContentLoaded", () => {
   const clearFiltersBtn = document.getElementById("clearFilters");
-  if (!clearFiltersBtn) return; // in case button not yet added
+  if (!clearFiltersBtn) return;
 
   clearFiltersBtn.addEventListener("click", () => {
-    // Reset active filters
     activeYear = null;
     activeTag = null;
 
@@ -963,12 +1343,31 @@ document.addEventListener("DOMContentLoaded", () => {
     renderTags();
   });
 });
-
-}
     renderTags();
     
     // initial render
     renderYears(); renderTimeline();
+
+    // Dark mode toggle (persists to localStorage)
+   const darkBtn = document.getElementById('darkToggle');
+   function setDarkMode(enabled){
+     try{
+       if(enabled){
+         document.documentElement.classList.add('dark');
+         localStorage.setItem('pk-dark','1');
+         if(darkBtn){ darkBtn.textContent = 'Light'; darkBtn.setAttribute('aria-pressed','true'); }
+       } else {
+         document.documentElement.classList.remove('dark');
+         localStorage.removeItem('pk-dark');
+         if(darkBtn){ darkBtn.textContent = 'Dark'; darkBtn.setAttribute('aria-pressed','false'); }
+       }
+     }catch(e){}
+   }
+   if(darkBtn){
+     darkBtn.addEventListener('click', ()=> setDarkMode(!document.documentElement.classList.contains('dark')));
+   }
+   // initialize from storage
+   (function(){ const saved = localStorage.getItem('pk-dark'); setDarkMode(saved === '1'); })();
 
     // Expose simple helper to add new meme entries from browser console
     window._MemeAdmin = {
@@ -985,19 +1384,19 @@ function getEmbedInfo(url) {
   const s = String(url).trim();
 
   try {
-    // YouTube
+    // YouTube (unchanged)
     const yt = s.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/i);
     if (yt && yt[1]) {
       return { embedUrl: `https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0`, type: 'video' };
     }
 
-    // TikTok
+    // TikTok - added muted=0 to enable sound
     const tt = s.match(/tiktok\.com\/.*\/video\/(\d+)/i);
     if (tt && tt[1]) {
-      return { embedUrl: `https://www.tiktok.com/embed/v2/${tt[1]}`, type: 'video' };
+      return { embedUrl: `https://www.tiktok.com/embed/v2/${tt[1]}?muted=0`, type: 'video' };
     }
 
-    // Facebook - preserve the original URL and mark as facebook so we render via FB SDK
+    // Facebook (handled in renderFacebookEmbed)
     if (/facebook\.com|fb\.watch/i.test(s)) {
       return { embedUrl: s, type: 'facebook' };
     }
