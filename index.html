@@ -21,8 +21,21 @@
       --muted: #9aa6b2;
       --maxw:1100px;
       --text: #12b88f;
-      --muted-contrast: #41581b;
+      --muted-contrast: #3d5a0f;
+  .year-btn {
+    background: #1e1e1e;
+    color: #ddd;
+    border-color: #333;
     }
+     
+  .year-btn.active {
+    background: #0b5cff;
+    color: rgb(9, 6, 145);
+    border-color: #0b5cff;
+  }
+  }
+
+
     html, body { transition: background-color 220ms ease, color 220ms ease; }
     body { color: var(--text, #474242); background: var(--bg); }
     .card { background: var(--card); color: var(--text); border-color: rgba(180, 61, 61, 0.04); }
@@ -263,6 +276,7 @@
     /* small helper */
     .muted{color:var(--muted)}
 
+
     /* Add to your existing styles */
 .embed-container {
   position: relative;
@@ -320,6 +334,8 @@
 .embed-container {
   position: relative;
 }
+
+
   </style>
 </head>
 <body>
@@ -462,6 +478,7 @@
     profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
     origin: 'Renie Bhoy Jovellano',
     description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
+    tags: ['viral', 'urban legend'],
     styles: {
   thumbnail: {
     width: 'autopx',
@@ -470,17 +487,17 @@
   objectPosition: 'center' 
    },
   player: {
-    width: '360px',         // fixed width for vertical videos
-    maxWidth: '360px',      // ensures consistent size
-    height: '600px',        // 16:9 inverse ratio (perfect for mobile video)
-    margin: '0 auto',       // centers the player
+    width: '360px',        
+    maxWidth: '360px',    
+    height: '600px',        
+    margin: '0 auto',       
     display: 'block'
   },
   modal: {
-    width: '400px',         // wider modal to accommodate player + padding
-    maxHeight: '90vh',      // prevents overflow
-    columnRatio: '0/1',     // full width for player
-    playerHeight: '600px'   // matches player height
+    width: '400px',         
+    maxHeight: '90vh',      
+    columnRatio: '0/1',    
+    playerHeight: '600px'   
   },
 }
 },
@@ -683,21 +700,21 @@
     description: 'ewan ko ba parang tarantado lang',
     tags: ['urban legend', 'tiktok'],
 styles: {
-  },
-  player: {
-    width: '400px',
-    maxWidth: '400px',
-    height: '600px',
-    margin: '0 auto',
-    display: 'block'
-  },
-  modal: {
-    width: '200px',
-    maxHeight: '80vh',
-    columnRatio: '0/1',
-    playerHeight: '500px'
-  }
- },
+player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    }
+},
 
   {
     title: 'Darwin Lim',
@@ -1580,7 +1597,7 @@ Diay kadto makahilo... low low low...`,
   {
     title: 'Mikerapphone Prank Call Chronicles',
     year: 2009,
-    image: './image/',
+    image: './image/mik.jpg',
     link: 'https://youtu.be/BD0XNXDB-rk?si=oDoqjpfGcEUtu3B8',
     origin: 'Mikerapphone',
     profile: 'https://www.facebook.com/mikerapphonemain?',
@@ -1590,13 +1607,172 @@ Diay kadto makahilo... low low low...`,
   {
     title: 'Dota Suntukan',
     year: 2013,
-    image: './image/',
+    image: './image/com.png',
     link: 'https://youtu.be/o2LafpFZXek?si=XaFubN192S5U5-pn',
     origin: 'Morayta, Manila',
     profile: '',
     description: '',
     tags: ['games','public rage','ancient']
+  },
+  {
+    title: 'Dota, PTNGINA MO!!',
+    year: 2013,
+    image: './image/put.png',
+    link: 'https://youtu.be/rDHnHdA56Gw?si=Z5zlbx9SB58BAzCW',
+    origin: 'Unknown',
+    profile: '',
+    description: '',
+    tags: ['sound','mura','games'],
+    styles: {
+      player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    }
+  },
+  {
+    title: 'Gadon: Mga Bobo',
+    year: 2018,
+    image: './image/bob.jpeg',
+    link: 'https://youtu.be/EGq3yxJmBRo?si=2PLkXLVLjaj2N4AN',
+    origin: 'Larry Gadon',
+    profile: '',
+    description: 'Gadon curses, raises middle finger at Sereno supporters',
+    tags: ['mura','politics']
+  },
+  {
+    title: 'Peak Dota',
+    year: 2013,
+    image: './image/peak.jpg',
+    link: 'https://youtu.be/-8ZmP4_nUn4?si=2DtnI2vbEuXhFJpY',
+    origin: 'Unknown',
+    profile: '',
+    description: '',
+    tags: ['mura','public rage','games']
+  },
+  {
+    title: 'Ptangina Ano ba to!!',
+    year: 2008,
+    image: './image/rox.jpg',
+    link: 'https://youtu.be/VhiLKsQgVNE?si=Xextc0Bvl3s5wmn2',
+    video: 'https://youtu.be/6TldszXmG80?si=oSkeRrJo6K0sqPot',
+    origin: 'Mar Roxas',
+    profile: '',
+    description: 'Ant-Cha-Cha Rally',
+    tags: ['politics','mura']
+  },
+  {
+    title: 'Ptangina Song',
+    year: 2021,
+    image: './image/taen.png',
+    link: 'https://youtu.be/X5cOk0U_f1g?si=DDlSJP_Swm6JqNxt',
+    origin: 'Mikerapphone',
+    profile: 'https://www.facebook.com/mikerapphonemain/',
+    description: '',
+    tags: ['mura','song']
+  },
+  {
+    title: 'Wag ka nang mawala',
+    year: 2022,
+    image: './image/jop.jpg',
+    link: 'https://www.tiktok.com/@xan_mashup/video/7193902025757740315',
+    origin: 'Kosang Marlon',
+    profile: 'https://www.tiktok.com/@kosangmarlon?_r=1&_t=ZS-913TTAW0Znh',
+    news: 'https://www.youtube.com/watch?v=GP09gAbHGWo',
+    description: '',
+    tags: ['song'],
+    styles: {
+      player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    }
+  },
+  {
+    title: 'Singing Boy sa Comshop',
+    year: 2018,
+    image: './image/boy.jpg',
+    link: 'https://youtu.be/YhqQaxlPjUw?si=a7lH1t9KQPcIkcfR',
+    origin: 'Jordan',
+    profile: '',
+    description: '',
+    tags: ['song','mythology']
+  },
+  {
+    title: 'Singing Boy sa Comshop 2 / Magpakailannman',
+    year: 2019,
+    image: './image/boy 2.jpg',
+    link: 'https://www.facebook.com/watch/?v=3136688656557580',
+    origin: 'Jordan',
+    profile: '',
+    description: '',
+    tags: ['song','mythology'],
+    styles:{
+  player: {
+    width: '360px',        
+    maxWidth: '360px',    
+    height: '250px',        
+    margin: '0 auto',       
+    display: 'block'
+  },
+  modal: {
+    width: '400px',         
+    maxHeight: '90vh',      
+    columnRatio: '0/1',    
+    playerHeight: '600px'   
   }
+    }
+  },
+  {
+    title: 'Million Fans Around the World, Walang aawat ahh, Uy Bagsak',
+    year: 2018,
+    image: './image/bag.jpg',
+    link: 'https://youtu.be/FtoKADYN-4Y?si=GO9R0HTegRThdeqd',
+    origin: 'unknown',
+    profile: '',
+    description: '',
+    tags: ['sound','mythology']
+  },
+  {
+    title: 'Geh talon una ulo',
+    year: 2016,
+    image: './image/talon.png',
+    link: 'https://youtu.be/fp4A498ujZY?si=NuVTjBMqq8PfbrOr',
+    news: 'https://youtu.be/j6JKSrq4Lts?si=f4S8K1DV4rUKCIsJ',
+    origin: 'Unknown',
+    profile: '',
+    description: '',
+    tags: ['sound','dark']
+  },
+  {
+    title: 'Dalawang Beses na yan! Gago ka ba?',
+    year: 2017,
+    image: './image/badang.png',
+    link: 'https://youtu.be/1jPeMx0mJeU?si=ttJ_Ik4ONdwabsv3',
+    origin: 'Tito Badang',
+    profile: '',
+    description: '',
+    tags: ['sound','mura','criminal']
+  }
+
 ]
 
 
@@ -1621,7 +1797,8 @@ const landscapeStyle = {
     maxHeight: '90vh',
     columnRatio: '0/1',
     playerHeight: '400px'
-  }
+  },
+  
 };
 
 // And update the portraitStyle object for vertical videos
