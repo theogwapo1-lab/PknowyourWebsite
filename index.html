@@ -60,12 +60,17 @@
     const box = btn.parentElement;
     const id = box.dataset.id;
 
+    if (!id || id.trim() === '') {
+      console.error('Vote: No data-id found');
+      return;
+    }
+
     const ref = doc(db, "votes", id);
 
-    // Create doc if missing
+    // Create doc if missing (initialize with score 0)
     await setDoc(ref, { score: 0 }, { merge: true });
 
-    // Add vote
+    // Increment vote: value is +1 for upvote, -1 for downvote
     await updateDoc(ref, {
       score: increment(value)
     });
