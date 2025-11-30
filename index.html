@@ -10,37 +10,103 @@
   text-transform: capitalize;
 }
     :root{
-      --bg:#fafafa; --card:#ffffff; --accent:#0b5cff; --muted:#6b7280; --maxw:1100px;
-      --radius:10px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif,sans-serif;
+      --bg:#9acadd; --card:#dfdfdfee; --accent:#123f72; --muted:#000000; --maxw:1100px;
+      --radius:10px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
     }
     /* Dark theme variables (toggle by adding .dark on <html>) */
-    :root.dark {
-      --bg: #0b0f14;
-      --card: #292b30;
-      --accent:   #4f5f77;
-      --muted: #7b858f;
-      --maxw:1100px;
-      --text: #b6babe;
-      --muted-contrast: #3d5a0f;
-  .year-btn {
+  :root.dark {
+    --bg: #0b0f14;
+    --card: #292b30;
+    --accent:   #34588d;
+    --muted: #7b858f;
+    --maxw:1100px;
+    --text: #b6babe;
+    --muted-contrast: #3d5a0f;
+  }
+
+  :root.dark body{margin:0;background:var(--bg);color:#f5f9ff;display:flex;justify-content:center;padding:28px}
+  :root.dark .year-btn {
     background: #1e1e1e;
     color: #ddd;
     border-color: #333;
-    }
-     
-  .year-btn.active {
+  }
+   
+  :root.dark .year-btn.active {
     background: #465575;
     color: rgb(0, 0, 0);
     border-color: #0b5cff;
   }
-  }
+  </style>
+  <script type="module">
+  // Import Firebase SDKs
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment } 
+    from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
+  // Your Firebase configuration (KEEP EXACTLY AS IS)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAweWQoux3ukKP2QxuRM81ObYcnX4wVQtc",
+    authDomain: "pknowyourmemes-3b18a.firebaseapp.com",
+    projectId: "pknowyourmemes-3b18a",
+    storageBucket: "pknowyourmemes-3b18a.firebasestorage.app",
+    messagingSenderId: "249296416918",
+    appId: "1:249296416918:web:d4c0f67955450a3c0c12b7",
+    measurementId: "G-JDB0EFZ01G"
+  };
 
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+
+  // Initialize Firestore
+  const db = getFirestore(app);
+
+  // VOTE FUNCTION
+  window.vote = async function(btn, value) {
+    const box = btn.parentElement;
+    const id = box.dataset.id;
+
+    const ref = doc(db, "votes", id);
+
+    // Create document if it doesn't exist
+    await setDoc(ref, { score: 0 }, { merge: true });
+
+    // Increment vote
+    await updateDoc(ref, {
+      score: increment(value)
+    });
+  };
+
+  // Function to set up listener for a vote box
+  // Returns unsubscribe function to clean up listener
+  window.setupVoteBoxListener = function(box) {
+    if (!box || !box.dataset.id) return null;
+    const id = box.dataset.id;
+    const ref = doc(db, "votes", id);
+    return onSnapshot(ref, snap => {
+      const scoreEl = box.querySelector(".score");
+      if (scoreEl) {
+        scoreEl.textContent = snap.exists()
+          ? snap.data().score
+          : 0;
+      }
+    });
+  };
+  
+  // Store unsubscribe function for modal vote box
+  window.modalVoteBoxUnsubscribe = null;
+
+  // LIVE UPDATE LISTENERS
+  document.querySelectorAll(".vote-box").forEach(box => {
+    window.setupVoteBoxListener(box);
+  });
+  </script>
+  <style>
     html, body { transition: background-color 220ms ease, color 220ms ease; }
     body { color: var(--text, #474242); background: var(--bg); }
     .card { background: var(--card); color: var(--text); border-color: rgba(180, 61, 61, 0.04); }
-    .tag, .link-btn, .year-btn.active { background: rgba(79,140,255,0.08); color: var(--accent); }
+    .tag, .link-btn, .year-btn.active { background: rgb(223, 225, 230); color: var(--accent); }
     .muted { color: var(--muted-contrast, var(--muted)); }
+
 
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#111;display:flex;justify-content:center;padding:28px}
@@ -94,8 +160,8 @@
   word-break: break-word;
 }
 .filter-btn.clear {
-  background-color: #f44336;
-  color: white;
+  background-color: #e6362a;
+  color: rgb(255, 252, 252);
   border: none;
   padding: 8px 12px;
   border-radius: 5px;
@@ -116,28 +182,18 @@
     p.lead{margin:0;color:var(--muted);font-size:13px}
 
     nav.years{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
-    .year-btn{background:transparent;border:1px solid #e6e9ef;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
-    .year-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+    .year-btn{background:transparent;border:1px solid #3b798b;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+    .year-btn.active{background:var(--accent);color:#ffffff;border-color:var(--accent)}
 
     .controls{display:flex;gap:12px;align-items:center;margin-bottom:18px}
     .search{flex:1}
     input[type=search]{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
 
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-    .card{background:var(--card);border-radius:var(--radius);padding:12px;border:1px solid #c4bdbd;display:flex;flex-direction:column;gap:8px}
-    .thumb-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center; /* center by default */
-  align-items: center;
-  overflow: hidden;
-  background: #f3f4f6;
-  border-radius: 8px;
-}
+    .card{background:var(--card);border-radius:var(--radius);padding:12px;border:1px solid #8a8c8d;display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1);transition:transform 0.2s}
 
 .thumb-wrapper[data-align="left"] {
-  justify-content: flex-start;
-}
+  justify-content: flex-start; }
 
 .thumb-wrapper[data-align="right"] {
   justify-content: flex-end;
@@ -156,7 +212,7 @@
     .tag{font-size:11px;padding:6px 8px;border-radius:7px;background:#f2f7ff;color:var(--accent)}
     .link-btn{display:inline-block;margin-top:8px;padding:6px 8px;border-radius:7px;background:#f2f7ff;color:var(--accent);text-decoration:none;font-size:12px;border:1px solid rgba(11,92,255,0.08)}
     main{margin-top:10px}
-    footer{margin-top:px;color:var(--muted);font-size:13px}
+    footer{margin-top:20px;color:var(--muted);font-size:13px}
 
     /* Modal */
     .modal {
@@ -409,6 +465,13 @@
         <div id="mMetaTop"></div>
       </div>
 
+      <!-- Vote box -->
+      <div class="vote-box" id="modalVoteBox" data-id="">
+        <button onclick="vote(this,1)">▲</button>
+        <span class="score">0</span>
+        <button onclick="vote(this,-1)">▼</button>
+      </div>
+
       <!-- Description -->
       <div class="modal-desc">
         <p id="mDesc"></p>
@@ -512,7 +575,7 @@
     profile: 'httpsyoutu.be/0cT78evUJbQ?si=Ggc-jDfqK081yJFS',
     origin: 'Heart and Like',
     description: 'Friendzone logo meme — origin and context',
-    tags: ['origin'],
+    tags: ['image', 'term'],
     styles: {
   thumbnail: {
     width: 'auto',
@@ -986,7 +1049,7 @@ player: {
     video: 'https://www.youtube.com/watch?v=uyXv-IfXy7U',
     origin: 'si Daniel Patilya ba talaga nag pauso neto?',
     description: 'The Philippine television series Princess and I was released and first aired in 2012',
-    tags: ['origin', 'celebrity']
+    tags: ['term', 'celebrity']
   },
   {
     title: 'Sumbungan ng Hotdog',
@@ -1292,7 +1355,7 @@ description: 'Yung origin ng sound na to ay galing sa Wow Mali',
 origin:'Wow Mali', 
 profile:'', 
 description:'', 
-tags:['sound','origin','classical'], 
+tags:['sound','classical'], 
   styles: {
   thumbnail: {
     width: 'autopx',
@@ -1532,7 +1595,7 @@ tags:['sound','origin','classical'],
     profile: 'https://www.tiktok.com/@jonglaycoleta?_r=1&_t=ZS-910v8pzksFR',
     more1: '',
     description: 'shout out din sayo, kahawig mo si Joao, cute mo pa din lods',
-    tags: ['tiktok'],
+    tags: ['tiktok','look-alike'],
     styles: {
       player: {
         width: '400px',        // fixed width for vertical videos
@@ -2028,7 +2091,7 @@ Diay kadto makahilo... low low low...`,
     origin: 'Aldrin Paulo Dunoo Pangan',
     profile: 'https://www.instagram.com/dunoodunoo?igsh=MXE4amp0czlvZml1eA==',
     description: 'Normalin Normalin',
-    tags: ['games','origin']
+    tags: ['games','sound']
   },
   {
     title: 'Revive me Jett',
@@ -2721,21 +2784,6 @@ Diay kadto makahilo... low low low...`,
     profile: 'https://www.tiktok.com/@renejaybarcarse', 
     description: 'Baka Renejay to', 
     tags: ['tiktok', 'urban legend','sound'],
-    styles: {
-      player: {
-        width: '400px',        
-        maxWidth: '400px',     
-        height: '600px',       
-        margin: '0 auto',      
-        display: 'block'
-      },
-      modal: {
-        width: '600px',        
-        maxHeight: '80vh',     
-        columnRatio: '0/1',    
-        playerHeight: '50px'  
-      }
-    }
   },
   { 
     title: 'Snake Dragon', 
@@ -3499,7 +3547,22 @@ Diay kadto makahilo... low low low...`,
     origin: 'Aldene Mae Alipoyo',
     profile: 'https://www.tiktok.com/@queendalljenner',
     description: 'The OG DJ Fangirl',
-    tags: ['ancient', 'viral', 'celebrity']
+    tags: ['ancient', 'viral', 'celebrity'],
+    styles: {
+      player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    }
   },
   { 
     title: 'Caesar Video Greeting for Kagawad Cris Morales ng Sta. Ana',
@@ -3787,7 +3850,7 @@ Diay kadto makahilo... low low low...`,
 {
   title: 'Badang Irl',
   year: 2025,
-  image: './image/',
+  image: './image/badang2.png',
   link: 'https://www.youtube.com/shorts/UbKx4h6Gnww?si=ex2rYA7glqnFOcDu',
   origin: 'Unknown',
   profile: '',
@@ -3797,7 +3860,7 @@ Diay kadto makahilo... low low low...`,
 {
   title: 'Fudgee Bar Suntukan',
   year: 2020,
-  image: './image/',
+  image: './image/fudgee.jpg',
   link: 'https://youtu.be/zszTObZFfYg?si=87Hy-bZmMlhD67y9',
   origin: 'Ryan Bang',
   profile: '',
@@ -3807,9 +3870,9 @@ Diay kadto makahilo... low low low...`,
 {
   title: 'SB19 Negros',
   year: 2019,
-  image: './image/',
+  image: './image/negros.jpg',
   link: 'https://youtu.be/R37gtaf9J3I?si=oROd01h_eSB9AvLv',
-  origin: '',
+  origin: 'SB19',
   profile: '',
   description: 'Hello Negros!',
   tags: ['dark', 'celebrity']
@@ -3910,20 +3973,51 @@ Diay kadto makahilo... low low low...`,
   year: 2022,
   image: './image/',
   description: 'POV: Nagsleep-over kayo tapos naapakan mo lolo ng kaibigan mong nastroke',
-  link: 'https://vt.tiktok.com/ZSyHruc6Q/',
+  link: 'https://www.tiktok.com/@zaelooot/video/7179160234680716571?_r=1&_t=ZS-91CQdORWVwT',
   profile: 'https://www.tiktok.com/@edwingayoma?_r=1&_t=ZS-91CQhOiYAdA',
   origin: '@edwingayoma',
-  tags: ['mura', 'sound', 'tiktok']
+  tags: ['mura', 'sound', 'tiktok'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: 'Krazy Rapid Boots',
   year: 2022,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSybgJ3DT/',
+  link: 'https://www.tiktok.com/@...tsktsk/video/7111852558368525570?_r=1&_t=ZS-91IUCCVdJy8',
   origin: 'Zayn',
   profile: '',
   description: 'Di porket Gusion hindi na pwede mag rapid boot',
-  tags: ['games', 'tiktok', 'sound', 'urban legend']
+  tags: ['games', 'tiktok', 'sound', 'urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+
 },
 {
   title: 'Gusion',
@@ -3936,24 +4030,54 @@ Diay kadto makahilo... low low low...`,
   tags: ['terms', 'games']
 },
 {
-  title: 'Malandi: Lola’s reaction to Batang Ina Spoken poetry',
+  title: 'Malandi!! Lola’s reaction to Batang Ina Spoken poetry',
   year: 2025,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSybgf1xr/',
+  link: 'https://www.tiktok.com/@heiyon3/video/7544347568113798407?_r=1&_t=ZS-91IUYtecv9I',
   origin: 'Hei-yon',
   profile: 'https://www.tiktok.com/@heiyon3?_r=1&_t=ZS-91IUbuQztY4',
   description: '',
-  tags: ['sound', 'tiktok']
+  tags: ['sound', 'tiktok'],
+   styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: 'Batang ina song',
   year: 2024,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSyHreyuV/',
+  link: 'https://www.tiktok.com/@batangina1376/video/7426911753512013063?_r=1&_t=ZS-91CQMfLlNpd',
   origin: 'Batangina VLOGS',
   profile: 'https://www.tiktok.com/@batangina1376?_r=1&_t=ZS-91IUihvql7M',
   description: '',
-  tags: ['sound', 'tiktok']
+  tags: ['sound', 'tiktok'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: 'Jollitowel',
@@ -4018,29 +4142,59 @@ Diay kadto makahilo... low low low...`,
   title: 'Angel’s Burger skit',
   year: 2023,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSybGdqN2/',
+  link: 'https://www.tiktok.com/@gilda_ramos27/video/7275052780694441222?_r=1&_t=ZS-91IW4o46Ya5',
   more1: 'https://vt.tiktok.com/ZSybG7dNL/',
   origin: 'Gilda Ramos',
   profile: 'https://www.tiktok.com/@gilda_ramos27?_r=1&_t=ZS-91IW6wsyGGr',
   description: 'goodmorning goodmorning, ano po ang order nyo maam?',
-  tags: ['ads', 'tiktok', 'urban legend']
+  tags: ['ads', 'tiktok', 'urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: 'Bata nag aaway sa skinita',
   year: 2023,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSybtLW8A/',
+  link: 'https://www.tiktok.com/@kapamilyaonlineworld2/video/7247115048810843397?_r=1&_t=ZS-91IWMYr5UPc',
   origin: 'April Mhae Lim Ramirez',
   profile: '',
   description: '',
-  tags: ['public rage']
-},
+  tags: ['public rage'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+  },
 {
   title: 'Sir Palayain nyo na po kami💀',
   year: 2021,
   image: './image/standee.png',
-  link: '',
-  news: 'https://youtu.be/Xu5ci4CiDfc?si=Fi8IOzxY1hz2X3pz',
+  news: '',
+  link: 'https://youtu.be/Xu5ci4CiDfc?si=Fi8IOzxY1hz2X3pz',
   origin: 'Jay vlog',
   profile: '',
   description: 'Nag gawa sya ng mga Standee; kala nya cute pero creepy pala',
@@ -4050,13 +4204,28 @@ Diay kadto makahilo... low low low...`,
   title: 'Bili na po kayo lumpiang shanghai pampatibay ng karelasyon',
   year: 2024,
   image: './image/',
-  link: 'https://vt.tiktok.com/ZSybtGYQC/',
+  link: 'https://www.tiktok.com/@kisimeyyy/video/7352321559509339398?_r=1&_t=ZS-91IWmZRhQZx',
   news: 'https://vt.tiktok.com/ZSybnF4FE/',
   more1: 'https://vt.tiktok.com/ZSybtxnnq/',
   origin: 'Dagupan City',
   profile: '',
   description: '',
-  tags: ['sound', 'tiktok']
+  tags: ['sound', 'tiktok'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: 'Cecilio Sasuman',
@@ -4142,7 +4311,22 @@ Diay kadto makahilo... low low low...`,
   origin: 'Unknown',
   profile: '',
   description: '',
-  tags: ['news', 'criminal']
+  tags: ['news', 'criminal'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
 title: 'DJ Bumbay',
@@ -4189,11 +4373,26 @@ title: 'Philippine Pooper',
   title: 'Sabing Di ako nagnanapkin',
   year: 2023,
   image: './image/',
-  embedUrl: 'https://vt.tiktok.com/ZSyYWbyf4/',
+  embedUrl: 'https://www.tiktok.com/@jhaymonterovids/video/7306119280960097541?_r=1&_t=ZS-9107VU7qviu',
   origin: 'Boss George',
   profile: 'https://www.tiktok.com/@nonapkinreveal?_r=1&_t=ZS-91Iu70YUwHU',
   description: '',
-  tags: ['gay humor', 'urban legend']
+  tags: ['gay humor', 'urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
 },
 {
   title: '5 litol monkey',
@@ -4410,7 +4609,7 @@ title: 'Philippine Pooper',
   year: 2024,
   image: './image/',
   embedUrl: 'https://www.tiktok.com/@jokinglymemes/video/7393958448158739730?_r=1&_t=ZS-91Iy7a2pci9',
-  origin: 'Unknown',
+  origin: 'Unknown | Trypho the Jew',
   profile: '',
   description: '',
   tags: ['sound', 'dance','animal'],
@@ -4830,7 +5029,7 @@ styles: {
   origin: 'Red Bustamante | Ashley Sarmiento',
   profile: '',
   description: 'Clips from the show resurface as memes around 2020',
-  tags: ['show', 'clips', 'celebrity']
+  tags: ['show', 'clip', 'celebrity']
 },
 
 {
@@ -5412,12 +5611,28 @@ Tengs.`,
   year: 2025,
   image: './image/',
   embedurl: 'https://youtu.be/JHLhcpq5A9Q?si=YS022voSjKHRwexU',
-  link: 'https://vt.tiktok.com/ZSf1CkRj1/',
+  link: 'https://www.tiktok.com/@genvieveee/video/7493857788226047239?_r=1&_t=ZS-91SrbgkQfaa',
   origin: 'Nobb Berdin feat. Secret Supply',
   profile: '',
   description: '',
-  tags: ['song', 'tiktok', 'dance']
-},
+  tags: ['song', 'tiktok', 'dance'],
+  styles: 
+    {
+      player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    }
+  },
 
 {
   title: 'Shoutout sa mga kabataan dyan! Ma Anong ulam?',
@@ -5447,18 +5662,517 @@ Tengs.`,
         margin: '0 auto',      
         display: 'block'
       },
+modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+  },
+  
+  {
+  title: 'My Father is a Policeman',
+  year: 2020,
+  image: '',
+  embedurl: 'https://youtu.be/lu4jNCAs3xo?si=ArtYeFN9wKZqJHIK',
+  news: 'https://youtu.be/xd7MT7zWBxs?si=z5KxN9_BOozH5pfj',
+  video: 'https://www.reddit.com/r/policebrutality/s/U7bo7Mjkis',
+  origin: 'Jonel Nuezca | Sonia Gregorio | Frank Anthony Gregorio',
+  profile: '',
+  description: '',
+  tags: ['dark', 'criminal']
+},
+
+{
+  title: 'Jonel Nuezca Death',
+  year: 2021,
+  image: '',
+  link: 'https://youtu.be/8fImpGJhD1s?si=hqk9rmwoXmFTS9y2',
+  news: 'https://youtu.be/eEZ9NhTDd1g?si=xhSl6W12R3mCByUi',
+  more1: 'https://youtu.be/KfjYjMrbu8o?si=54nEVzVxP1R6QtTF',
+  origin: 'Jonel Nuezca',
+  profile: '',
+  description: '',
+  tags: ['dark', 'criminal']
+},
+
+{
+  title: 'Criminology di marunong mag convert ng PDF',
+  year: 2024,
+  image: '',
+  link: 'https://www.tiktok.com/@hiyp_3/video/7489327117776276754?q=criminology%20pdf&t=1763875269877',
+  more1: 'https://www.tiktok.com/@cibenipayo/video/7483975033098898696?q=criminology%20pdf&t=1763875269877',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['image', 'term'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
       modal: {
         width: '600px',        
         maxHeight: '80vh',     
         columnRatio: '0/1',    
         playerHeight: '50px'  
       }
-    }
+    },
+},
+
+{
+  title: 'Aw Aw',
+  year: 2023,
+  image: '',
+  link: 'https://youtu.be/m9d5K-_Jfw0?si=CtmPQV0UfUo_T3rh',
+  video: 'https://youtu.be/qE_PgFtrgH8?si=vBFWmKrCXIzcYiD9',
+  origin: 'Rosmar',
+  profile: '',
+  description: '',
+  tags: ['song']
+},
+
+{
+  title: 'Aking Kaibigan',
+  year: 2024,
+  image: '',
+  link: 'https://youtu.be/fFaDv_3Kivs?si=HzmTOXtveg0iiNHr',
+  news: 'https://www.rappler.com/philippines/what-inside-sara-duterte-a-friend-book/',
+  more1: 'https://youtu.be/J-nddj2680Q?si=n1WZcMZo6B2bhcKF',
+  origin: 'Sara Duterds',
+  profile: '',
+  description: 'Yan lang nagawa nya sa kanyang pag ka VP',
+  tags: ['politics', 'image']
+},
+
+{
+  title: 'Ptangina SiNO pumutol ng TT ko??!!',
+  year: '2002',
+  image: '',
+  link: 'https://youtu.be/MNopGOCSPOQ?si=t3CAphT0nup6y3oK',
+  origin: 'Anak ni Baby Ama: Hari ng Selda',
+  profile: '',
+  description: '',
+  tags: ['ancient', 'mura', 'film']
+},
+
+{
+  title: 'Gusto Mo Mura',
+  year: '',
+  image: '',
+  link: 'https://youtu.be/udZ0jeAmCcg?si=9va2Vt6umN2GuUbK',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['pre-historic', 'mura']
+},
+
+{
+  title: 'Big Boy',
+  year: 2023,
+  image: '',
+  link: 'https://www.tiktok.com/@dennis_tayag/video/7212133761549405446',
+  more1: 'https://www.tiktok.com/@dennis_tayag/video/7199968075037379866?q=big%20boy%20dance&t=1763875121709',
+  origin: 'Dennis Tayag',
+  profile: '',
+  description: '',
+  tags: ['dance', 'tiktok'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Ayaw ko yung C2 na kulay green',
+  year: 2025,
+  image: '',
+  link: 'https://www.tiktok.com/@gloinpcefiltok/video/7467164520436223250?q=c2%20na%20red&t=1763872734030',
+  more1: 'https://vt.tiktok.com/ZSfeR9MEQ/',
+  news: 'https://www.spot.ph/newsfeatures/trending/111063/this-rapper-made-a-diss-track-about-c2-green-because-why-not-a5229-20250214',
+  more2: 'https://soundcloud.com/paul-mcshane-99876878/sets/c2-na-red?si=a659beb4eb514bb19b9957d86d86efbd&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing',
+  origin: 'Zaniel',
+  profile: '',
+  description: '',
+  tags: ['song', 'ads'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+
+},
+
+{
+  title: 'Hypebeast',
+  year: 2018,
+  image: '',
+  link: 'https://youtu.be/PuUNX8nrIr4?si=mmu2caY-snejptwp',
+  origin: '',
+  profile: '',
+  description: 'nag boom yung term na hypebeast noong sumikat yung kanta na hayaan mo sila ng exb',
+  tags: ['mythology', 'term']
+},
+
+{
+  title: 'Geng Geng',
+  year: 2025,
+  image: '',
+  link: 'https://youtu.be/K6Ou_V1ip18?si=ALIZe4vxuWIy3meG',
+  origin: 'Kiel the Great',
+  profile: '',
+  description: '',
+  tags: ['term', 'urban legend']
+},
+
+{
+  title: 'Jejemon',
+  year: 2010,
+  image: '',
+  link: 'https://youtu.be/N4WOdJW_3K0?si=lYCbKHWRHEi2a5oY',
+  news: 'https://www.reddit.com/r/Philippines/s/gi5lwukhNY',
+  more1: 'https://www.reddit.com/r/AskPH/s/GITS8mbcku',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['term', 'classical']
+},
+
+{
+  title: 'Jejemom',
+  year: 2020,
+  image: '',
+  link: 'https://youtu.be/RaJe0wV9_jA?si=WXEOvhJj0SixUBaI',
+  more1: 'https://youtube.com/playlist?list=PLS17kE31KzR4FFjps84--5Z1JswDy7jY5&si=WVL5wmRS5njiSzgQ',
+  origin: 'Eugene domingo',
+  profile: '',
+  description: '',
+  tags: ['show', 'parody']
+},
+
+{
+  title: 'Performative Male',
+  year: 2025,
+  image: '',
+  link: 'https://youtu.be/EPFsGMxZwHQ?si=5DDXO3WhYnXdLTIH',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['term']
+},
+
+{
+  title: 'Domo bag',
+  year: 2012,
+  image: '',
+  link: 'https://youtu.be/CwLGGmh29MI?si=e9yalzLK_7C_sEsi',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['item']
+},
+
+{
+  title: 'Swag',
+  year: 2010,
+  image: '',
+  link: '',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['term']
+},
+
+{
+  title: 'Baby Milo',
+  year: 2010,
+  image: '',
+  link: 'https://www.youtube.com/watch?v=HHkrHag8blE',
+  origin: '',
+  profile: '',
+  description: '',
+  tags: ['item']
+},
+
+{
+  title: 'luh Bhie?',
+  year: 2020,
+  image: '',
+  link: 'https://vt.tiktok.com/ZSfeN4k2q/',
+  origin: 'Marvin Fojas',
+  profile: '',
+  description: '',
+  tags: ['tiktok', 'term']
+},
+
+{
+  title: 'Bobo Kami, Tok-tok-tok, Pok-pok-pok',
+  year: 2022,
+  image: '',
+  link: 'https://www.tiktok.com/@nenedelacruz179/video/7095977295994735899?_r=1&_t=ZS-91Wh56iTAnp',
+  more1: 'https://vt.tiktok.com/ZSfLKTEtQ/',
+  more2: 'https://vt.tiktok.com/ZSfLEkJLd/',
+  origin: 'Nene Dela Cruz',
+  profile: 'https://www.tiktok.com/@nenedelacruz179?_r=1&_t=ZS-91WhHqscn7h',
+  description: '',
+  tags: ['politics'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Oiii Magbabati na yan!',
+  year: '',
+  image: '',
+  link: '',
+  origin: 'La Luna Sangre',
+  profile: '',
+  description: '',
+  tags: ['show', 'sound']
+},
+
+{
+  title: 'wait lang nak, ako muna mag lilipstick',
+  year: 2022,
+  image: '',
+  link: 'https://www.tiktok.com/@pogiko143.tite/video/7568975618545847559?_r=1&_t=ZS-91Wi9sRJUnZ',
+  origin: 'Unknown | @gcl.kia6',
+  profile: 'https://www.tiktok.com/@gcl.kia6?_r=1&_t=ZS-91WiGw0Erej',
+  more1: 'https://www.tiktok.com/@dorothyjadeeee13126?_r=1&_t=ZS-91WiM3Foz6f',
+  description: '',
+  tags: ['tiktok', 'urban legend'],
+styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Austria. AUSTRIA!',
+  year: 2021,
+  image: '',
+  link: 'https://www.tiktok.com/@minsan.ayoko.na.talaga/video/7573288146310286613?_r=1&_t=ZS-91WiXf0sWo5',
+  origin: 'Unknown',
+  profile: '',
+  description: '',
+  tags: ['public rage'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Ano ang unang aklat ng bibliya?',
+  year: 2021,
+  image: '',
+  link: 'https://www.tiktok.com/@tomboy.na.pwd/video/7573540718841498888?_r=1&_t=ZS-91WigKBcPk8',
+  origin: 'Unknown',
+  profile: '',
+  description: 'Iglesia ni Gizmo Founder',
+  tags: ['urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Iglesia ni Gizmo',
+  year: 2018,
+  image: '',
+  link: 'https://www.youtube.com/watch?v=ixR_1bm3CRA',
+  origin: '',
+  profile: '',
+  description: 'Better than Iglesia ni Cristie',
+  tags: ['image', 'term']
+},
+
+{
+  title: 'Camus Girls Budots',
+  year: 2016,
+  image: '',
+  link: 'https://youtu.be/kgGvaQ0lUcg?si=38WVOD1prGxcuNGg',
+  origin: 'DJ Love (Sherwin Tuna)',
+  profile: '',
+  description: '',
+  tags: ['classical', 'dance', 'bisaya', 'mythology']
+},
+
+{
+  title: 'Pasenya na Tropa ako’y nalate. Si Jhok Jhok aking ka date.',
+  year: 2022,
+  image: '',
+  link: 'https://www.tiktok.com/@jhokjhokngmundo/video/7052375963409075483?_r=1&_t=ZS-91WjjQJ69A1',
+  origin: 'Egay | JhokJhok Mallari Pontiano',
+  more1: 'https://vt.tiktok.com/ZSfNe6RWa/',
+  profile: 'https://www.tiktok.com/@jhokjhokngmundo?_r=1&_t=ZS-91WjpDezq4G',
+  description: '',
+  tags: ['tiktok', 'urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Nung ako ay 13 Mukha akong 30',
+  year: 2022,
+  image: '',
+  link: 'https://www.tiktok.com/@bouncey_rhyxodus/video/7063173339744931098?_r=1&_t=ZS-91WjxPlpsW1s',
+  origin: 'MC Bouncey Rhyxodus',
+  profile: 'https://www.tiktok.com/@bouncey_rhyxodus?_r=1&_t=ZS-91Wk1Wi9pth',
+  description: 'Nangangarap lang ako na tumira doon sa giliding estero sa ayala alabang...',
+  tags: ['song', 'parody'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+  
+},
+
+{
+  title: 'Mami Jupeta Mang Inasal Date',
+  year: 2022,
+  image: '',
+  link: 'https://www.tiktok.com/@prans_40/video/7453709078657912072?_r=1&_t=ZS-91WkLT9zMUj',
+  origin: 'Unknown | Mami Jupeta',
+  profile: 'https://www.tiktok.com/@jupetanewacct?_r=1&_t=ZS-91WkYILp5jF',
+  description: '',
+  tags: ['gay humor', 'urban legend'],
+  styles: {
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '50px'  
+      }
+    },
+},
+
+{
+  title: 'Wag Kang Bastos',
+  year: 2021,
+  image: '',
+  link: 'https://youtu.be/QZ5co7wrga8?si=j2iG7aJ7IFAsu0EH',
+  video: 'https://youtu.be/Y9pCCPHwca0?si=yqU2J_z0TgD8Q7i6',
+  origin: 'Derek Ramsay',
+  profile: '',
+  description: '',
+  tags: ['celebrity', 'sound']
+},
+
+{
+  title: 'Get that Thirty Bro',
+  year: 2021,
+  image: '',
+  more1: 'https://www.youtube.com/watch?v=53lQki5bg6U',
+  link: 'https://youtu.be/GKfpca47GP8?si=Mcagx2Y600JruI5C',
+  origin: 'Unknown | Mr. Rodriguez Alissandro',
+  profile: '',
+  description: '"Ive certainly had enough of this kabastusan"',
+  tags: ['public rage', 'sound']
 }
-
-
-
-
 
 ]
 
@@ -5704,6 +6418,23 @@ function openModal(m) {
   el.mPlayer.innerHTML = '';
   el.mLinks = document.getElementById('mLinks');
   if (el.mLinks) el.mLinks.innerHTML = '';
+
+  // Set unique vote box ID for this meme and set up listener
+  const voteBox = document.getElementById('modalVoteBox');
+  if (voteBox) {
+    // Clean up previous listener if exists
+    if (window.modalVoteBoxUnsubscribe) {
+      window.modalVoteBoxUnsubscribe();
+      window.modalVoteBoxUnsubscribe = null;
+    }
+    // Create a unique ID from title and year (sanitized for use as data-id)
+    const uniqueId = 'modal_' + (m.title || 'meme').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() + '_' + (m.year || 'unknown');
+    voteBox.setAttribute('data-id', uniqueId);
+    // Set up Firebase listener for this vote box
+    if (window.setupVoteBoxListener) {
+      window.modalVoteBoxUnsubscribe = window.setupVoteBoxListener(voteBox);
+    }
+  }
 
   if (m.tags && m.tags.length) {
     el.mMetaTop.innerHTML = '<div class="tags">' +
