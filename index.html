@@ -38,12 +38,10 @@
   }
   </style>
   <script type="module">
-  // Import Firebase SDKs
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
   import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment } 
     from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
-  // Your Firebase configuration (KEEP EXACTLY AS IS)
   const firebaseConfig = {
     apiKey: "AIzaSyAweWQoux3ukKP2QxuRM81ObYcnX4wVQtc",
     authDomain: "pknowyourmemes-3b18a.firebaseapp.com",
@@ -54,33 +52,44 @@
     measurementId: "G-JDB0EFZ01G"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-
-  // Initialize Firestore
   const db = getFirestore(app);
 
-  // VOTE FUNCTION
+  // ✅ MUST be attached to window so the button can call it
   window.vote = async function(btn, value) {
     const box = btn.parentElement;
     const id = box.dataset.id;
 
     const ref = doc(db, "votes", id);
 
-    // Create document if it doesn't exist
+    // Create doc if missing
     await setDoc(ref, { score: 0 }, { merge: true });
 
-    // Increment vote
+    // Add vote
     await updateDoc(ref, {
       score: increment(value)
     });
   };
 
-  // Function to set up listener for a vote box
+  // ✅ Real-time update for all vote boxes on page load
+  document.querySelectorAll(".vote-box").forEach(box => {
+    const id = box.dataset.id;
+    if (id && id.trim() !== '') {
+      const ref = doc(db, "votes", id);
+      onSnapshot(ref, snap => {
+        box.querySelector(".score").textContent =
+          snap.exists() ? snap.data().score : 0;
+      });
+    }
+  });
+
+  // Function to set up listener for modal vote box (called when modal opens)
   // Returns unsubscribe function to clean up listener
   window.setupVoteBoxListener = function(box) {
-    if (!box || !box.dataset.id) return null;
+    if (!box) return null;
     const id = box.dataset.id;
+    if (!id || id.trim() === '') return null;
+    
     const ref = doc(db, "votes", id);
     return onSnapshot(ref, snap => {
       const scoreEl = box.querySelector(".score");
@@ -94,11 +103,6 @@
   
   // Store unsubscribe function for modal vote box
   window.modalVoteBoxUnsubscribe = null;
-
-  // LIVE UPDATE LISTENERS
-  document.querySelectorAll(".vote-box").forEach(box => {
-    window.setupVoteBoxListener(box);
-  });
   </script>
   <style>
     html, body { transition: background-color 220ms ease, color 220ms ease; }
