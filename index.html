@@ -39,7 +39,7 @@
   </style>
   <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
-  import { getFirestore, doc, setDoc, onSnapshot, updateDoc, increment } 
+  import { getFirestore, doc, setDoc, updateDoc, onSnapshot, increment, getDoc }
     from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
 
   const firebaseConfig = {
@@ -52,62 +52,99 @@
     measurementId: "G-JDB0EFZ01G"
   };
 
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
+
+  // Initialize Firestore
   const db = getFirestore(app);
 
-  // ✅ MUST be attached to window so the button can call it
+  // --- MAKE VOTE() WORK ---
   window.vote = async function(btn, value) {
     const box = btn.parentElement;
+    if (!box || !box.classList.contains('vote-box')) {
+      console.error('Vote: Could not find vote-box parent');
+      return;
+    }
+    
     const id = box.dataset.id;
-
     if (!id || id.trim() === '') {
       console.error('Vote: No data-id found');
       return;
     }
-
+    
     const ref = doc(db, "votes", id);
 
-    // Create doc if missing (initialize with score 0)
-    await setDoc(ref, { score: 0 }, { merge: true });
+    // Check if document exists, if not create it with score 0
+    const docSnap = await getDoc(ref);
+    if (!docSnap.exists()) {
+      await setDoc(ref, { score: 0 });
+    }
 
-    // Increment vote: value is +1 for upvote, -1 for downvote
+    // Add or subtract (this will increment/decrement the existing score)
     await updateDoc(ref, {
       score: increment(value)
     });
   };
 
-  // ✅ Real-time update for all vote boxes on page load
-  document.querySelectorAll(".vote-box").forEach(box => {
-    const id = box.dataset.id;
-    if (id && id.trim() !== '') {
-      const ref = doc(db, "votes", id);
-      onSnapshot(ref, snap => {
-        box.querySelector(".score").textContent =
-          snap.exists() ? snap.data().score : 0;
-      });
-    }
-  });
-
-  // Function to set up listener for modal vote box (called when modal opens)
-  // Returns unsubscribe function to clean up listener
-  window.setupVoteBoxListener = function(box) {
-    if (!box) return null;
-    const id = box.dataset.id;
-    if (!id || id.trim() === '') return null;
-    
-    const ref = doc(db, "votes", id);
-    return onSnapshot(ref, snap => {
-      const scoreEl = box.querySelector(".score");
-      if (scoreEl) {
-        scoreEl.textContent = snap.exists()
-          ? snap.data().score
-          : 0;
+  // --- LIVE UPDATE ---
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".vote-box").forEach(box => {
+      const id = box.dataset.id;
+      if (id && id.trim() !== '') {
+        const ref = doc(db, "votes", id);
+        onSnapshot(ref, snap => {
+          box.querySelector(".score").textContent =
+            snap.exists() ? snap.data().score : 0;
+        });
       }
     });
+  });
+
+  // ✅ Stable pattern for modal vote box listener
+  let unsubscribeModalVote = null;
+
+  window.attachVoteListener = async function(voteBox) {
+    if (!voteBox) return;
+    const id = voteBox.dataset.id;
+    if (!id || id.trim() === '') return;
+    
+    const ref = doc(db, "votes", id);
+    const scoreEl = voteBox.querySelector(".score");
+    
+    // ✅ Kill old listener before creating a new one
+    if (unsubscribeModalVote) {
+      unsubscribeModalVote();
+      unsubscribeModalVote = null;
+    }
+    
+    // ✅ Fetch current score immediately to prevent flicker
+    try {
+      const snap = await getDoc(ref);
+      if (scoreEl) {
+        const currentScore = snap.exists() && snap.data().score !== undefined 
+          ? snap.data().score 
+          : 0;
+        scoreEl.textContent = currentScore;
+      }
+    } catch (error) {
+      console.error('Error fetching vote score:', error);
+      if (scoreEl) {
+        scoreEl.textContent = 0;
+      }
+    }
+    
+    // ✅ Then set up real-time listener to keep score in sync with database
+    unsubscribeModalVote = onSnapshot(ref, snap => {
+      if (scoreEl) {
+        const currentScore = snap.exists() && snap.data().score !== undefined 
+          ? snap.data().score 
+          : 0;
+        scoreEl.textContent = currentScore;
+      }
+    }, (error) => {
+      console.error('Error in vote listener:', error);
+    });
   };
-  
-  // Store unsubscribe function for modal vote box
-  window.modalVoteBoxUnsubscribe = null;
   </script>
   <style>
     html, body { transition: background-color 220ms ease, color 220ms ease; }
@@ -6431,17 +6468,15 @@ function openModal(m) {
   // Set unique vote box ID for this meme and set up listener
   const voteBox = document.getElementById('modalVoteBox');
   if (voteBox) {
-    // Clean up previous listener if exists
-    if (window.modalVoteBoxUnsubscribe) {
-      window.modalVoteBoxUnsubscribe();
-      window.modalVoteBoxUnsubscribe = null;
-    }
     // Create a unique ID from title and year (sanitized for use as data-id)
     const uniqueId = 'modal_' + (m.title || 'meme').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase() + '_' + (m.year || 'unknown');
     voteBox.setAttribute('data-id', uniqueId);
-    // Set up Firebase listener for this vote box
-    if (window.setupVoteBoxListener) {
-      window.modalVoteBoxUnsubscribe = window.setupVoteBoxListener(voteBox);
+    
+    // ✅ Attach fresh listener for this meme (fetches score immediately to prevent flicker)
+    if (window.attachVoteListener) {
+      window.attachVoteListener(voteBox);
+    } else {
+      console.error('attachVoteListener is not available');
     }
   }
 
