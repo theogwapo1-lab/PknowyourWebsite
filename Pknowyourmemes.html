@@ -260,34 +260,48 @@
 
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#111;display:flex;justify-content:center;padding:28px}
+    body{
+  margin:0;
+ /* background color fallback + background image (fit without stretching) */
+  background-color: var(--bg);
+  background-image: ;
+  background-size: contain;       /* fit image while preserving aspect ratio */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;   /* optional: keeps image fixed during scroll */
+  color:#111;
+  display:flex;
+  justify-content:center;
+  padding:28px;
+}
     .wrap{width:100%;max-width:var(--maxw)}
 
-    header{display:flex;align-items:center;gap:16px;margin-bottom:20px;justify-content:space-between}
-.logo{width:250x;height:160px;border-radius:12px;object-fit:cover;display:block}
-    /* small author photo placed top-right */
-    .author-photo {
-  width: 60px;           /* smaller width */
-  height: 60px;          /* smaller height */
-  border-radius: 8px;    /* rounded corners */
-  object-fit: cover;     /* keeps proportions */
-  flex-shrink: 0;        /* prevents squishing */
-  margin-top: 2px;       /* aligns better with text */
-}
+    header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
+      margin-bottom:20px;
+      text-align:center;
+    }
 
-.author-inline {
+    .logo{
+      width:500px;
+       height:250px;
+       display:block;
+    }
+
+    .brand{
+      max-width:600px;
+    }
+
+    .author-inline {
   display: flex;
   align-items: flex-start;   /* aligns photo and text at the top */
   gap: 12px;                 /* space between photo and text */
   flex-wrap: wrap;           /* allows text to wrap neatly on smaller screens */
   max-width: 450px;          /* compact width */
-}
-
-.author-photo {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;            /* prevents photo from shrinking */
 }
 
 .author-info {
@@ -370,7 +384,7 @@
 :root.dark .author-photo,
 :root.dark .logo {
   border-color: rgba(255,255,255,0.08);
-  background: rgba(0,0,0,0.18);
+  background: rgba(230, 225, 225, 0.18);
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
@@ -401,9 +415,10 @@
 
 .modal-card {
   position: relative;
+  inset: 0;
   background: var(--card);
   border-radius: 12px;
-  padding: 24px;
+  padding: 20px;
   width: 800px;
   max-width: auto;
   max-height: 800px;
@@ -413,56 +428,80 @@
 /* Actions area: placed inline under player, aligned bottom-right */
 .modal-actions {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
   justify-content: flex-end; /* push buttons to the right */
   width: 100%;
-  margin-top: 12px;          /* space above actions */
-  padding-top: 6px;
+  margin-top: 16px;          /* space above actions */
+  padding-top: 12px;
   box-sizing: border-box;
   border-top: 1px solid rgba(0,0,0,0.04); /* subtle separation */
 }
 
- 
- /* Vote box UI */
- .vote-box {
-   display: flex;
-   align-items: center;
-   gap: 6px;
- 
-   background: var(--card);
-   border: 1px solid rgba(0,0,0,0.1);
-   border-radius: 10px;
-   padding: 6px 10px;
-   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
- }
- 
- /* Buttons */
- .vote-box button {
-   cursor: pointer;
-   border: none;
-   background: transparent;
-   font-size: 18px;
- }
- 
- .vote-box .score {
-   min-width: 24px;
-   text-align: center;
-   font-weight: 700;
- }
- 
- /* Portrait variant - keep same inline placement */
- .modal-content.has-portrait-video {
-   position: relative; /* keep normal flow */
- }
- 
- .modal-content.has-portrait-video .vote-box {
-   /* same inline layout — no absolute positioning so it sits below the player */
-   margin: 10px 0 0 0;
-   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
- }
- 
- .modal-content {
+/* Vote box UI */
+.vote-box {
+   position: relative;
+  top: -8px;        /* Moves the vote-box up */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: relative;
+  top: -75px; /* move up */
+}
+
+.vote-box button {
+  margin-top: 8px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  padding: 4px 6px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.vote-box button:hover {
+  transform: scale(1.15);
+}
+
+.vote-box button.pressed {
+  box-shadow: 0 0 14px rgba(255, 215, 0, 0.9);
+}
+
+.vote-box .score {
+  min-width: 24px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Close button in modal-actions */
+.modal-actions .close {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: inherit;
+}
+
+/* Portrait variant - keep same inline placement at bottom */
+.modal-content.has-portrait-video {
+  position: relative;
+}
+
+.modal-content.has-portrait-video .modal-actions {
+  margin-top: 12px;
+  padding-top: 8px;
+  justify-content: flex-end;
+}
+
+.modal-content {
    display: flex;
    flex-direction: column;
    gap: 16px;
@@ -689,7 +728,72 @@
   background: var(--accent, #ff4444);
   color: white;
 }
+ <style>
+  /* ...existing styles... */
 
+  /* HIDE year/tag lists by default; show when .filters-open on .wrap */
+  .wrap .years,
+  .wrap .tags,
+  .wrap #tagNav {
+    display: none !important;
+  }
+
+  .wrap.filters-open .years,
+  .wrap.filters-open .tags,
+  .wrap.filters-open #tagNav {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+    align-items: center;
+  }
+
+  /* small tweak so the toggle button looks active when open */
+  #filtersToggle.active { background: var(--accent); color: #fff; }
+
+  /* ...existing styles... */
+  </style>
+  
+  <!-- ...existing code... -->
+  <script>
+  // ...existing code...
+
+  // Filters toggle wiring: show/hide year/tag lists (robust, fixes earlier typos)
+  (function(){
+    const btn = document.getElementById('filtersToggle');
+    const wrap = document.querySelector('.wrap');
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    if(!btn || !wrap) return;
+
+    function setOpen(open){
+      wrap.classList.toggle('filters-open', !!open);
+      btn.classList.toggle('active', !!open);
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'Filters ▴' : 'Filters ▾';
+    }
+
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      setOpen(!wrap.classList.contains('filters-open'));
+    });
+
+    // Close filters when clearing
+    if(clearFiltersBtn){
+      clearFiltersBtn.addEventListener('click', ()=> setOpen(false));
+    }
+
+    // Optional: close when clicking outside the filters area
+    document.addEventListener('click', (e)=>{
+      if(!wrap.classList.contains('filters-open')) return;
+      const inside = wrap.contains(e.target) && (e.target.closest('.years') || e.target.closest('#tagNav') || e.target.closest('#filtersToggle'));
+      if(!inside) setOpen(false);
+    });
+  })();
+
+  // ...existing code...
+  </script>
+
+  <style>
 /* Ensure proper layout */
 #mPlayer {
   display: flex;
@@ -701,63 +805,53 @@
 <body>
   <div class="wrap" id="app">
     <header>
-      <div style="display:flex;align-items:center;gap:16px">
-        <img src="./image/memes.svg" alt="PK Logo" class="logo">
-        <div class="brand">
-          <h1>Pknow Your Memes</h1>
-          <p class="lead">A Website Dedicated to  
-            Archiving Filipino Internet Humor, 
-                                                            Pop Culture, and Lost Media.</p>
-        </div>
-      </div>
-      <div class="author-inline" aria-labelledby="aboutTitle">
-  <img src="./image/theo.jpg" alt="Theo Jan Joseph" class="author-photo" />
-  <div class="author-info">
-    <div class="author-name" id="aboutTitle">Theo Jan Joseph</div>
-    <p class="author-bio">For Fun and Historical Records Timeline</p>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+    <img src="./image/memes.svg" alt="PK Logo" class="logo">
+    <div class="brand" style="text-align:center">
+      <h1>Pknow Your Memes</h1>
+      <p class="lead">A Website Dedicated to  
+        Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</p>
+    </div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+  </div>
+</header>
+    <div class="controls">
+  <div class="search">
     <p class="author-bio">
-      You can email me at tmdanao@up.edu.ph if you want something removed, any corrections, or to contribute.
+      Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.
     </p>
-    <p class="author-bio">
-  <a href="contributors.html" class="author-email">View Contributors →</a>
-  </p>
+    <label for="q" class="muted" style="display:none">Search</label>
+    <input id="q" type="search" placeholder="Search meme title, tag, or origin" />
   </div>
 </div>
 
-    </header>
-
-    <div class="controls">
-      <div class="search">
-        <p class="author-bio">Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.</p>
-        <label for="q" class="muted" style="display:none">Search</label>
-        <input id="q" type="search" placeholder="Search meme title, tag, or origin" />
-    
-      </div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <button id="clear" class="year-btn">Show all</button>
-
-        <!-- Filters toggle: reveals years & tags -->
-        <button id="filtersToggle" class="year-btn" aria-expanded="false" aria-controls="yearNav tagNav" title="Show filters">Filters ▾</button>
-
-        <button id="darkToggle" class="year-btn" aria-pressed="false" title="Toggle dark mode">Dark</button>
-      </div>
-    </div>
-<div class="filter-controls">
+<div class="filter-controls" style="display:flex; gap:8px; align-items:center;">
   <button id="clearFilters" class="filter-btn clear">Clear Filters</button>
-  <p class="author-bio">
-      Remember to Always Clear Filters
-</div>
 
-    <nav class="years" aria-label="Filter by year" id="yearNav"></nav>
+  <!-- Moved here -->
+  <button id="filtersToggle" class="year-btn" aria-expanded="false" aria-controls="yearNav tagNav" title="Show filters">
+    Filters ▾
+  </button>
+
+  <button id="darkToggle" class="year-btn" aria-pressed="false" title="Toggle dark mode">
+    Dark
+  </button>
+
+  </p>
+</div>
+  <p class="author-bio" style="margin-left:0px;">Remember to Always Clear Filters
+<nav class="years" aria-label="Filter by year" id="yearNav"></nav>
 <nav class="tags" aria-label="Filter by tag" id="tagNav" style="margin-top:10px;"></nav>
 
-    <main>
-      <section id="timeline" class="grid" aria-live="polite"></section>
-    </main>
+<main>
+  <section id="timeline" class="grid" aria-live="polite"></section>
+</main>
 
-    <footer>
-      Report dead links or suggest memes to add
-    </footer>
+<footer>
+  Report dead links or suggest memes to add
+</footer>
+
   </div>
 
   <!-- modal: single-column layout (Title → Year/Origin → Description → Player → Link buttons) -->
@@ -791,10 +885,13 @@
           <span class="score">0</span>
           <button onclick="vote(this,-1)">:(</button>
         </div>
-        <button class="close" id="modalClose" aria-label="Close">✕</button>
+        <button class="close" id="modalClose" aria-label="Close">Close ✕</button>
       </div>
 
-
+    </div> <!-- close .modal-content -->
+  </div> <!-- close .modal-card -->
+</div> <!-- close .modal -->
+  <!-- ...existing code... -->
   <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_PH/sdk.js#xfbml=1&version=v17.0"></script>
 
@@ -811,7 +908,7 @@
     news: 'https://www.bbc.com/news/technology-52458765',
     origin: 'Onel de Guzman',
     profile: '',
-    description: 'I think it is best to start with Onel De Guzman because he was a major figure for Filipino Internet presence',
+    description: 'he was a major figure for Filipino Internet presence',
     tags: ['news', 'criminal', 'Legend'],
 
   },
@@ -848,6 +945,7 @@
     title: 'Justin Nabunturan',
     year: 2025,
     image: './image/justin.jpeg',
+    more1: 'https://www.youtube.com/watch?v=OmjbWnUG8AU',
     more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
     news: 'https://www.facebook.com/share/p/1MSjx7x6TP/',
     link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw',
@@ -869,12 +967,43 @@
         columnRatio: '0/1',    
         playerHeight: '50px'  
       }
+    },},
+  {
+  title: 'Kiffy',
+  year: 2024,
+  image: './image/Kiffy.png',
+  link: '',
+  origin: '',
+  profile: '',
+  description: 'Modern meaning og Belat',
+  tags: ['term'],
+  styles: {
+    thumbnail: {
+      width: 'autopx',
+      height: '175px',
+      objectFit: 'center',
+    objectPosition: 'center' 
+     },
+    player: {
+          width: '400px',        
+          maxWidth: '400px',     
+          height: '100px',      
+          margin: '0 auto',      
+          display: 'block'
+        },
+        modal: {
+          width: '600px',        
+          maxHeight: '80vh',    
+          columnRatio: '0/1',    
+          playerHeight: '40px'  
     },
+  }
   },
+
   {
   title: 'Kami ang ma pabebe girls',
   year: 2015,
-  image: './image/',
+  image: './image/bebeg.jpg',
   embedurl: 'https://youtu.be/X9YnPhYdpnQ?si=mBYFyKt3Z_kF1sri',
   more1: 'https://www.facebook.com/reel/1177077070956851/?fs=e&fs=e',
   more2: 'https://youtu.be/SOO5M8lCVTQ?si=Gf8ufmOF_8E0yA3B',
@@ -893,7 +1022,7 @@
     more1: 'https://youtu.be/bwutxPWw6f4?si=h8qHYIPu51H5UcUh',
     origin: 'Nino Barzaga',
     profile: 'https://www.tiktok.com/@soulcaz?_r=1&_t=ZS-910uWCWKUFQ',
-    more1:'https://www.facebook.com/groups/1236364274722632',
+    news:'https://www.facebook.com/groups/1236364274722632',
     description: 'RIP Kap',
     tags: ['mura'],
     styles: {
@@ -915,34 +1044,35 @@
   { title:'Wooooooooow so Refreshing', 
 year:2014, 
 image:'./image/refresh.png', 
-link:'https://www.youtube.com/shorts/Tc9LGwTR4kA', 
-more1: 'https://youtu.be/8tY7uFL_1Ek?si=NFDu82X1EGy8HYMf&t=87', 
+link:'https://www.tiktok.com/@dunk_it_jonathan2/video/7074230413736037637?_r=1&_t=ZS-91wIDbbKgwG', 
+more1: 'https://www.tiktok.com/@sc.trends0/video/7465951051351362823?_r=1&_t=ZS-91wI6e1wjZc',
+more2: 'https://youtu.be/8tY7uFL_1Ek?si=NFDu82X1EGy8HYMf&t=87', 
 description: 'Yung origin ng sound na to ay galing sa Wow Mali',
 origin:'Wow Mali', 
 profile:'', 
 description:'', 
 tags:['sound','classical'], 
-  styles: {
-  thumbnail: {
+ styles: {
+      tthumbnail: {
     width: 'autopx',
     height: '200px',
     objectFit: 'center',
   objectPosition: 'center' 
-   },
+      },
   player: {
-        width: '400px',        
+        width: '300px',        
         maxWidth: '400px',     
-        height: '600px',      
+        height: '600px',       
         margin: '0 auto',      
         display: 'block'
       },
       modal: {
-        width: '600px',        
-        maxHeight: '80vh',    
+        width: '300px',        
+        maxHeight: '80vh',     
         columnRatio: '0/1',    
-        playerHeight: '50px'  
-  },
-}
+        playerHeight: '500px'  
+      }
+    }
 },
   {
     title: 'Kapeng matapang',
@@ -1077,14 +1207,28 @@ tags:['sound','classical'],
   profile: 'Unknown',
   description: 'No Info Available',
   tags: ['classical', 'image'],
-  styles: {
-  thumbnail: {
-    width: 'auto',
-    height: '175px', 
-    objectFit: 'center',
-    objectPosition: 'center'          
+ styles: {
+    thumbnail: {
+      width: 'autopx',
+      height: '175px',
+      objectFit: 'center',
+    objectPosition: 'center' 
+     },
+    player: {
+          width: '259px',        
+          maxWidth: '400px',     
+          height: 'auto',      
+          margin: '0 auto',      
+          display: 'block'
+        },
+        modal: {
+          width: '400px',        
+          maxHeight: '80vh',    
+          columnRatio: '0/1',    
+          playerHeight: '50px'  
+    },    
   },
-  },},
+  },
   {
     title: 'Cringe Covid Dance',
     year: 2020,
@@ -1146,13 +1290,26 @@ tags:['sound','classical'],
     description: 'Jejomar "Jojo" Cabauatan Binay Sr. is a Filipino lawyer and politician who served as the 13th Vice President of the Philippines from 2010 to 2016.',
     tags: ['politics'],
     styles: {
-  thumbnail: {
-    width: 'auto',
-    height: '175px', 
+      tthumbnail: {
+    width: 'autopx',
+    height: '200px',
     objectFit: 'center',
-    objectPosition: 'center'
-  },
-}
+  objectPosition: 'center' 
+      },
+  player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: 'auto',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '300px',     
+        columnRatio: '0/1',    
+        playerHeight: '200px'  
+      }
+    }
   }
     ];
 
@@ -1229,18 +1386,17 @@ const portraitStyle = {
     for(let y=1999;y<=2025;y++) YEARS.push(y);
 
     const el = {
-      yearNav:document.getElementById('yearNav'),
-      timeline:document.getElementById('timeline'),
-      q:document.getElementById('q'),
-      clear:document.getElementById('clear'),
-      modal:document.getElementById('modal'),
-      modalClose:document.getElementById('modalClose'),
-      mTitle:document.getElementById('mTitle'),
-      mOrigin:document.getElementById('mOrigin'),
-      mDesc:document.getElementById('mDesc'),
-      mImg:document.getElementById('mImg'),
-      mMetaTop:document.getElementById('mMetaTop'), // changed
-      mPlayer:document.getElementById('mPlayer'),
+      yearNav: document.getElementById('yearNav'),
+      timeline: document.getElementById('timeline'),
+      q: document.getElementById('q'),
+      modal: document.getElementById('modal'),
+      modalClose: document.getElementById('modalClose'),
+      mTitle: document.getElementById('mTitle'),
+      mOrigin: document.getElementById('mOrigin'),
+      mDesc: document.getElementById('mDesc'),
+      mImg: document.getElementById('mImg'),
+      mMetaTop: document.getElementById('mMetaTop'),
+      mPlayer: document.getElementById('mPlayer'),
       mLinks: null // will be wired after modal DOM replacement
     };
 
@@ -1833,8 +1989,19 @@ if (modalContent) {
     document.addEventListener('keydown',(e)=>{ if(e.key==='Escape') closeModal(); });
 
     el.q.addEventListener('keydown',(e)=>{ if(e.key==='Enter') renderTimeline(); });
-    el.clear.addEventListener('click',()=>{ el.q.value=''; clearYear(); });
+    el.q.addEventListener('keydown', (e) => { if (e.key === 'Enter') renderTimeline(); });
 
+    // wire Clear Filters button (clearFilters moved into DOM)
+    const topClear = document.getElementById('clearFilters');
+    if (topClear) {
+      topClear.addEventListener('click', () => {
+        el.q.value = '';
+        clearYear();
+        // clear tag UI if present
+        activeTag = null;
+        document.querySelectorAll('#tagNav .year-btn').forEach(b => b.classList.remove('active'));
+      });
+    }
     // escape HTML for safety (simple)
     function escapeHtml(str){ return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
 
