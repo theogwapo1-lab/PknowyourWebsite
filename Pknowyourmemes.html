@@ -256,7 +256,13 @@
   box-shadow: 0 0 14px rgba(255, 215, 0, 0.9);
 }
 
-
+/* Remove TikTok-style excess ratio padding inside modal */
+.modal-card [data-testid="ratio"] {
+  padding-top: 0 !important;
+  height: auto !important;
+  min-height: auto !important;
+  aspect-ratio: 9 / 16;
+}
 
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:#111;display:flex;justify-content:center;padding:28px}
@@ -662,9 +668,9 @@
     <img src="./image/memes.svg" alt="PK Logo" class="logo">
     <div class="brand" style="text-align:center">
       <h1>Pknow Your Memes</h1>
-      <p class="lead">A Website Dedicated to  
-        Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</p>
-    </div>
+      <p class="lead" style="font-size: 15px; font-family: Geneva, sans-serif;">
+        A Website Dedicated to Archiving <br> Filipino Internet Humor, Pop Culture, and Lost Media.
+      </p>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
   </div>
@@ -683,8 +689,11 @@
   <button id="clearFilters" class="filter-btn clear">Clear Filters</button>
 
   <!-- Moved here -->
-  <button id="filtersToggle" class="year-btn" aria-expanded="false" aria-controls="yearNav tagNav" title="Show filters">
-    Filters ▾
+  <button id="filtersToggle" class="year-btn" aria-expanded="false" aria-controls="yearNav" title="Show year filters">
+    Years ▾
+  </button>
+  <button id="tagsToggle" class="year-btn" aria-expanded="false" aria-controls="tagNav" title="Show tag filters">
+    Tags ▾
   </button>
 
   <button id="darkToggle" class="year-btn" aria-pressed="false" title="Toggle dark mode">
@@ -896,7 +905,7 @@
   { title:'Wooooooooow so Refreshing', 
 year:2014, 
 image:'./image/refresh.png', 
-link:'https://www.tiktok.com/@dunk_it_jonathan2/video/7074230413736037637?_r=1&_t=ZS-91wIDbbKgwG', 
+link:'https://www.facebook.com/watch/?v=1119559188425175', 
 more1: 'https://www.tiktok.com/@sc.trends0/video/7465951051351362823?_r=1&_t=ZS-91wI6e1wjZc',
 more2: 'https://youtu.be/8tY7uFL_1Ek?si=NFDu82X1EGy8HYMf&t=87', 
 description: 'Yung origin ng sound na to ay galing sa Wow Mali',
@@ -2027,6 +2036,69 @@ function getEmbedInfo(url) {
     console.warn('getEmbedInfo parse error', err);
   }
   return null;
+}
+/* Replace existing renderFacebookEmbed with this robust version
+   - honors per-meme player.height (accepts "600" or "600px")
+   - sets --modal-player-height on modal-card so CSS sizing rules apply
+   - treats facebook watch/reel as portrait when appropriate
+*/
+function renderFacebookEmbed(container, fbUrl, playerStyle = {}) {
+  if (!fbUrl || !container) return;
+  container.innerHTML = '';
+
+  // consider watch/?v= and /reel/ and /reels/ as "video" (reels -> portrait)
+  const isReel = /\/reel\/|\/reels\/|facebook\.com\/.*\/reel|fb\.watch|\/watch\/\?v=/i.test(fbUrl);
+
+  // normalize height value: numeric -> px, string preserved
+  const norm = v => {
+    if (!v && v !== 0) return null;
+    const s = String(v).trim();
+    if (/^\d+$/.test(s)) return s + 'px';
+    if (/^\d+px$/i.test(s)) return s;
+    return s;
+  };
+
+  // prefer explicit playerStyle.height, otherwise fall back to portrait/landscape defaults
+  const preferredHeight = norm(playerStyle.height)
+    || (isReel ? norm(portraitStyle.player.height) : norm(landscapeStyle.player.height))
+    || '480px';
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'embed-container';
+  wrapper.style.width = playerStyle.width || playerStyle.maxWidth || '100%';
+  wrapper.style.maxWidth = playerStyle.maxWidth || '100%';
+  wrapper.style.height = preferredHeight;
+  wrapper.style.margin = playerStyle.margin || '0 auto';
+  wrapper.style.boxSizing = 'border-box';
+
+  const encoded = encodeURIComponent(fbUrl);
+  const iframe = document.createElement('iframe');
+  iframe.src = `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=false&autoplay=1`;
+  iframe.style.width = '100%';
+  iframe.style.height = '100%';
+  iframe.style.border = '0';
+  iframe.setAttribute('scrolling','no');
+  iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture; fullscreen');
+  iframe.allowFullscreen = true;
+
+  wrapper.appendChild(iframe);
+  container.appendChild(wrapper);
+
+  // Ensure modal sizing follows this wrapper height so CSS sizing rules match
+  const modalCard = container.closest('.modal-card');
+  if (modalCard) {
+    modalCard.style.setProperty('--modal-player-height', preferredHeight);
+    // treat tall players as portrait for layout adjustments
+    const numeric = parseInt(preferredHeight,10) || 0;
+    if (isReel || numeric >= 700) {
+      modalCard.classList.add('portrait');
+      // don't forcibly override md.width if already set; only set a sane default
+      if (!modalCard.style.width) modalCard.style.width = portraitStyle.modal?.width || '600px';
+    } else {
+      modalCard.classList.remove('portrait');
+      if (!modalCard.dataset.forcedWidth) modalCard.style.width = landscapeStyle.modal?.width || '';
+    }
+  }
 }
   </script>
 </body>
