@@ -315,6 +315,24 @@
 
     .vote-box button:last-child.pressed {
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
+
+/* === Fix modal sizing on mobile === */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95vw !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .modal {
+    padding: 10px !important;
+  }
+}
+
+
     }
   </style>
 <!doctype html>
@@ -513,7 +531,7 @@ function buildTabsAndPlayer(m, links){
     const MEMES = [
       { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', link:'https://www.cnet.com/tech/services-and-software/history-of-the-iloveyou-virus/', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
       { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', description:'Viral peace sign clip', tags:['image','viral'] },
-      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
+      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
     news: 'https://www.facebook.com/share/p/1MSjx7x6TP/',
     link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
       { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', description:'Komikero meme', tags:['classical'] },
