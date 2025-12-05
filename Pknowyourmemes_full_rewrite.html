@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pknow Your Memes — Rewrite</title>
+  <meta name="description" content="Pknow Your Memes — compact, single-file rewrite with improved modal system." />
+  <style>
+
+    .fixed-canvas {
+  width: 601px;
+  height: 898px;
+  margin: 0 auto;
+  transform-origin: top center;
+}
+
+@media (max-width: 601px) {
+  .fixed-canvas {
+    transform: scale(calc(100vw / 601));
+  }
+}
+
+    :root{
+      --bg:#9acadd; --card:#ffffff; --accent:#123f72; --muted:#534d4d; --maxw:1100px;
+      --radius:10px; --text:#222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    :root.dark {
+  --bg: #0b0f14;
+      --card: #878f9e;
+      --accent:   #34588d;
+      --muted: #ffffff;
+      --maxw:1100px;
+      --text: #343a41;
+      --muted-contrast: #dfeaf7;
+  }
+
+  :root.dark body{
+    background:var(--bg);
+    color:#f5f9ff;
+    display:flex;
+  
+        }
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text)}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:18px}
+    header{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
+    .logo{width:500px;height:auto;border-radius: 8px;box-shadow:0 2px 6px rgba(255, 252, 252, 0.589);background: rgba(255, 253, 253, 0.603);
+}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:0;color:var(--muted);font-size:13px}
+    .controls{display:flex;gap:opx;align-items:center;margin:18px 2px}
+    input[type=search]{flex:1;padding:10px;border-radius:8px;border:1px;width: 500px; margin-bottom: -24px;}
+
+    /* Filters (placed under controls) */
+    #filters {
+      margin: 20px 0;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .filter-label {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 6px 12px;
+      background: #eaf1ff;
+      color: var(--accent);
+      border: 1px solid #d0dcff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.15s;
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    /* Normal (light mode) */
+#darkToggle {
+  padding: 6px 10px;
+  margin-top: 23px;
+      background: #eaf1ff;
+      color: var(--accent);
+      border: 1px solid #d0dcff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.15s;
+}
+
+.disclaimer {
+  margin: 0 0 -25px 0;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+
+.clear-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* tight spacing */
+}
+
+.clear-note {
+  margin: -15px 0 0 0;
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.8;
+}
+
+/* Dark mode adjustment */
+:root.dark .clear-note {
+  color: var(--muted-contrast, #aaa);
+}
+
+
+/* Dark mode appearance */
+:root.dark #darkToggle {
+  padding: 6px 10px;
+      background: #eaf1ff;
+      color: var(--accent);
+      border: 1px solid #d0dcff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.15s;
+}    
+
+/* === CLEAR FILTERS BUTTON === */
+.clear-btn {
+  padding: 8px 12px;
+  background: #ffecec;
+  color: #b40000;
+  border: 1px solid #ffb3b3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.15s;
+}
+
+/* Hover */
+.clear-btn:hover {
+  background: #ffdddd;
+  border-color: #ff9999;
+}
+
+/* Dark mode */
+:root.dark .clear-btn {
+  background: #4a2a2a;
+  color: #ffbfbf;
+  border: 1px solid #6b3a3a;
+}
+
+:root.dark .clear-btn:hover {
+  background: #5a3232;
+  border-color: #804242;
+}
+
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .card{background:rgba(255,255,255,0.6) ;border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+    .thumb{ width: auto; height: 175px; object-fit: contain;border: 3px solid rgba(0,0,0,0.08);
+  padding: 4px;
+  border-radius: 10px;
+  background: rgba(255, 253, 253, 0.603);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);;
+  }
+    .meta{display:flex;justify-content:space-between;align-items:center}
+    .title{font-weight:700}
+    .origin{font-size:12px;color:var(--muted)}
+    .tag{font-size:11px;padding:6px 8px;border-radius:7px;background:#f2f7ff;color:var(--accent)}
+    .link-btn{display:inline-block;margin-top:8px;padding:6px 8px;border-radius:7px;background:#f2f7ff;color:var(--accent);text-decoration:none;font-size:12px}
+    footer{margin-top:20px;color:var(--muted);font-size:13px;text-align:center}
+
+    /* ===== Clean modal CSS ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.48);
+      z-index: 1200;
+    }
+    .modal.open { display:flex; }
+    .modal-card {
+      --modal-width: 820px;
+      --modal-max-width: 420px;
+      --modal-player-height: 250px;
+      width: var(--modal-width);
+      max-width: var(--modal-max-width);
+      max-height: 94vh;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 30;
+      border: none; background: transparent;
+      font-size: 18px; cursor: pointer;
+      padding: 6px;
+    }
+    .modal-head {
+      padding: 18px 20px 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .modal-head h2 { margin:0; font-size:20px; }
+    .modal-links-row { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+    .modal-body {
+      padding: 12px 20px 6px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
+    .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
+    .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:auto%; justify-content:flex-start; }
+    .video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
+    .video-tabs button.active { background:var(--accent); color:#fff; }
+    .video-player-wrap { width: 100%; display:flex; justify-content:center; }
+    .video-player-wrap iframe,
+    .video-player-wrap video,
+    .video-player-wrap .embed-photo {
+      width: 100%;
+      max-width: calc(var(--modal-width) - 40px);
+      height: var(--modal-player-height);
+      border-radius: 10px;
+      border: none;
+      display:block;
+      box-sizing: border-box;
+    }
+    .modal-card.portrait {
+      --modal-width: 420px;
+      --modal-player-height: 700px;
+      max-width: 92vw;
+    }
+    .modal-card.landscape {
+      --modal-width: 820px;
+      --modal-player-height: 420px;
+      max-width: 95vw;
+    }
+    .modal-actions {
+      display:flex;
+      gap:12px;
+      padding: 12px 16px;
+      align-items:center;
+      border-top: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+    .vote-box { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:#d6d6d6; border:1px solid rgba(77, 62, 62, 0.377); right: 90px;}
+    .vote-box .score { min-width:26px; text-align:center; font-weight:600; color:var(--accent); }
+
+    @media (max-width:780px) {
+      .modal-card { width: calc(100vw - 28px); max-height: 94vh; }
+      .modal-card.portrait { --modal-player-height: 66vh; }
+      .video-player-wrap iframe { max-width: 100%; }
+    }
+
+    /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
+    .vote-box button:first-child:hover {
+      transform: scale(1.12);
+      filter: brightness(1.2);
+      box-shadow: 0 0 12px rgba(5, 148, 29, 0.9); /* GREEN glow */
+    }
+
+    .modal-content.has-portrait-video,
+    .modal-card.has-portrait-video {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-content.has-portrait-video .vote-box,
+    .modal-card.has-portrait-video .vote-box {
+      margin-top: auto;  /* pushes it to the bottom */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    /* ===== DOWNVOTE (last button) ===== */
+    .vote-box button:last-child:hover {
+      transform: scale(1.12);
+      filter: brightness(1.2);
+      box-shadow: 0 0 12px rgba(255, 60, 60, 0.9); /* RED glow */
+    }
+
+    /* ===== CLICK / PRESS GLOWS ===== */
+    .vote-box button:first-child.pressed {
+      box-shadow: 0 0 16px rgba(5, 148, 29, 0.9);
+    }
+
+    .vote-box button:last-child.pressed {
+      box-shadow: 0 0 16px rgba(255, 60, 60, 1);
+    }
+  </style>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pknow Your Memes — Rewrite</title>
+<style>
+/* === NEW: Collapsible Filter Sections === */
+.filter-collapse-btn{
+  padding:8px 12px; background:#eaf1ff; border:1px solid #d0dcff;
+  border-radius:8px; cursor:pointer; font-size:13px; color:var(--accent);
+  width:140px; text-align:left; display:flex; justify-content:space-between;
+}
+.filter-section{ display:none; margin-top:10px; }
+.filter-section.open{ display:block; }
+
+/* === Move video tabs under modal header === */
+.video-tabs-fixed{
+  display:flex; gap:8px; flex-wrap:wrap; width:100%; padding:10px 20px;
+  border-bottom:1px solid rgba(0,0,0,0.1);
+  background:var(--card); position:sticky; top:0; z-index:20;
+}
+.video-tabs-fixed button{
+  padding:6px 10px; border-radius:8px; background:#222; color:#fff;
+  border:none; cursor:pointer; font-weight:600;
+}
+.video-tabs-fixed button.active{ background:var(--accent); }
+</style>
+</head>
+<body>
+  <div class="fixed-canvas">
+<div class="wrap" id="app">
+  <header>
+    <img src="./image/memes.svg" class="logo" />
+    <h1>A Website Dedicated to Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</h1> 
+  </header>
+  <p> </p>
+  <p class="disclaimer">
+  Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.
+  <div class="controls">
+    
+</p>
+<div class="controls">
+<input id="q" type="search" placeholder="Search memes" width="234px" />
+</div>
+
+    <button id="darkToggle" class="year-btn" aria-pressed="false" title="Toggle dark mode"> Dark
+  </div> 
+  <div id="filters">
+  <button id="clearFilters" class="clear-btn">Clear Filters</button>
+    <button class="filter-collapse-btn" data-target="#yearSection">Year ▼</button>
+<button class="filter-collapse-btn" data-target="#tagSection">Tag ▼</button>
+
+  </div>
+  <p class="clear-note">Remember To Always Clear Filters</p>
+
+
+<div id="yearSection" class="filter-section">
+  <div id="yearFilters" class="filter-buttons"></div>
+</div>
+
+    <div id="tagSection" class="filter-section">
+      <div id="tagFilters" class="filter-buttons"></div>
+    </div>
+  </div>
+
+  <main>
+    <section id="timeline" class="grid"></section>
+  </main>
+</div>
+
+<!-- UPDATED MODAL WITH FIXED VIDEO TABS UNDER HEADER -->
+<div id="modal" class="modal">
+  <div class="modal-card landscape">
+    <button id="modalClose" class="modal-close">✕</button>
+
+    <header class="modal-head">
+      <h2 id="mTitle"></h2>
+      <div id="mOrigin" class="meta-row"></div>
+      <div id="mLinks" class="modal-links-row"></div>
+    </header>
+
+    <!-- FIXED TABS HERE -->
+    <div id="videoTabs" class="video-tabs-fixed"></div>
+
+    <div class="modal-body">
+      <div id="mDesc" class="modal-desc"></div>
+      <div id="videoPlayerWrap" class="video-player-wrap"></div>
+    </div>
+
+    <footer class="modal-actions">
+      <div class="vote-box" id="modalVoteBox" data-id="">
+        <button onclick="vote(this,1)">:)</button>
+        <span class="score">0</span>
+        <button onclick="vote(this,-1)">:(</button>
+      </div>
+        </footer>
+  </div>
+</div>
+
+<script>
+/* ==== Collapsible Filter Toggle ==== */
+document.querySelectorAll('.filter-collapse-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const sec = document.querySelector(btn.dataset.target);
+    sec.classList.toggle('open');
+  });
+});
+
+/* ==== Move video tabs under header (modify buildTabsAndPlayer) ==== */
+function buildTabsAndPlayer(m, links){
+  const tabs = document.getElementById('videoTabs');
+  const player = document.getElementById('videoPlayerWrap');
+  tabs.innerHTML = '';
+  player.innerHTML = '';
+
+  links.forEach((link,idx)=>{
+    const b=document.createElement('button');
+    b.textContent='Video '+(idx+1);
+    if(idx===0) b.classList.add('active');
+    b.onclick=()=>{
+      tabs.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      loadEmbed(link);
+    };
+    tabs.appendChild(b);
+  });
+  loadEmbed(links[0]);
+}
+</script>
+</div>
+
+</body>
+</html>
+
+  <!-- END: Clean Modal -->
+
+  <!-- Firebase (keeps your existing vote behavior working) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+    import { getFirestore, doc, setDoc, updateDoc, onSnapshot, increment, getDoc } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAweWQoux3ukKP2QxuRM81ObYcnX4wVQtc",
+      authDomain: "pknowyourmemes-3b18a.firebaseapp.com",
+      projectId: "pknowyourmemes-3b18a",
+      storageBucket: "pknowyourmemes-3b18a.firebasestorage.app",
+      messagingSenderId: "249296416918",
+      appId: "1:249296416918:web:d4c0f67955450a3c0c12b7",
+      measurementId: "G-JDB0EFZ01G"
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // vote function (same idea as your original)
+    window.vote = async function(btn, value) {
+      const box = btn.closest('.vote-box');
+      if (!box) return;
+      const id = box.dataset.id;
+      if (!id) return;
+      try { btn.classList.add('pressed'); } catch(e){}
+      const ref = doc(db, "votes", id);
+      try {
+        const snap = await getDoc(ref);
+        if (!snap.exists()) await setDoc(ref, { score: 0 });
+        await updateDoc(ref, { score: increment(value) });
+      } catch (err) {
+        console.error('vote error', err);
+      } finally {
+        setTimeout(()=>{ try{ btn.classList.remove('pressed'); }catch(e){} }, 350);
+      }
+    };
+    // attachVoteListener (keeps score updated inside modal)
+    let unsubscribeModalVote = null;
+    window.attachVoteListener = async function(voteBox) {
+      if (!voteBox) return;
+      const id = voteBox.dataset.id;
+      if (!id) return;
+      const ref = doc(db, "votes", id);
+      const scoreEl = voteBox.querySelector('.score');
+      if (unsubscribeModalVote) { unsubscribeModalVote(); unsubscribeModalVote = null; }
+      try {
+        const snap = await getDoc(ref);
+        if (scoreEl) scoreEl.textContent = snap.exists() ? snap.data().score : 0;
+      } catch(e){ if(scoreEl) scoreEl.textContent = 0; }
+      unsubscribeModalVote = onSnapshot(ref, snap => {
+        if (scoreEl) scoreEl.textContent = snap.exists() ? snap.data().score : 0;
+      });
+    };
+  </script>
+
+  <script>
+    // ====== Data (sample from your list) ======
+    const MEMES = [
+      { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', link:'https://www.cnet.com/tech/services-and-software/history-of-the-iloveyou-virus/', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
+      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', description:'Viral peace sign clip', tags:['image','viral'] },
+      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
+    news: 'https://www.facebook.com/share/p/1MSjx7x6TP/',
+    link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
+      { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', description:'Komikero meme', tags:['classical'] },
+     {
+  title: 'Kami ang ma pabebe girls',
+  year: 2015,
+  image: './image/bebeg.jpg',
+  embedurl: 'https://youtu.be/X9YnPhYdpnQ?si=mBYFyKt3Z_kF1sri',
+  more1: 'https://www.facebook.com/reel/1177077070956851/?fs=e&fs=e',
+  more2: 'https://youtu.be/SOO5M8lCVTQ?si=Gf8ufmOF_8E0yA3B',
+  more3: 'https://youtu.be/2kAVERtDMM0?si=G5PsQtGMeldDufYf',
+  more4: 'https://youtu.be/E5r12-0ZGoU?si=usKZOE4qGT5b9d3_',
+  origin: 'Vhellpoe Galves',
+  profile: '',
+  description: '',
+  tags: ['classical', 'viral'],
+},
+    {
+  title: 'Kiffy',
+  year: 2024,
+  image: './image/Kiffy.png',
+  link: '',
+  origin: '',
+  profile: '',
+  description: 'Modern meaning og Belat',
+  tags: ['term'],
+},
+
+{
+    title: 'Kapeng matapang',
+    year: 2019,
+    image: './image/Kapengmatapang.jpg',
+    link: 'https://www.facebook.com/reel/1383634471776415',
+    profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
+    origin: 'Renie Bhoy Jovellano',
+    description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
+    tags: ['viral', 'urban legend'],},
+
+    ];
+
+    // Helper: escape
+    function escapeHtml(s=''){ return String(s||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;'); }
+
+    // Utility: convert to embed URL (basic)
+    function convertToEmbed(url){
+      if(!url) return '';
+      try{
+        if(url.includes('youtube.com')||url.includes('youtu.be')){
+          if(url.includes('embed/')) return url;
+          const u = new URL(url.includes('http')?url:'https://'+url.replace(/^\/\//,''));
+          const params = new URLSearchParams(u.search);
+          const id = u.searchParams.get('v') || u.pathname.split('/').pop();
+          if(id) return 'https://www.youtube.com/embed/' + id + (params.toString()?('?'+params.toString()):'');
+        }
+        if(url.includes('tiktok.com')) {
+          const m = url.match(/video\/(\d+)/);
+          if(m) return 'https://www.tiktok.com/embed/v2/' + m[1] + '?muted=0';
+        }
+        if(url.includes('facebook.com')) return 'https://www.facebook.com/plugins/video.php?href=' + encodeURIComponent(url);
+      }catch(e){}
+      return url;
+    }
+
+    // render timeline cards
+    const el = {
+      timeline: document.getElementById('timeline'),
+      q: document.getElementById('q'),
+      modal: document.getElementById('modal'),
+      modalClose: document.getElementById('modalClose'),
+      mTitle: document.getElementById('mTitle'),
+      mOrigin: document.getElementById('mOrigin'),
+      mDesc: document.getElementById('mDesc'),
+      mLinks: document.getElementById('mLinks'),
+      mPlayerWrap: document.getElementById('videoPlayerWrap'),
+      videoTabs: document.getElementById('videoTabs'),
+      modalVoteBox: document.getElementById('modalVoteBox'),
+      modalOpenSource: document.getElementById('modalOpenSource')
+    };
+
+    function createCard(m){
+      const c = document.createElement('article');
+      c.className = 'card';
+      c.tabIndex = 0;
+      const img = document.createElement('img');
+      img.className = 'thumb';
+      img.src = m.image || '';
+      img.alt = m.title || 'thumb';
+      const t = document.createElement('div');
+      t.innerHTML = `<div class="meta"><div><div class="title">${escapeHtml(m.title)}</div><div class="origin">${m.year} · ${escapeHtml(m.origin||'')}</div></div></div>`;
+      c.appendChild(img); c.appendChild(t);
+      c.addEventListener('click', ()=> openModal(m));
+      c.addEventListener('keydown', (e)=> { if(e.key==='Enter') openModal(m); });
+      return c;
+    }
+
+    // filter state
+    let activeYear = null;
+    let activeTag = null;
+
+    // renderTimeline now respects search, year and tag filters
+    function renderTimeline(){
+      const q = el.q.value.trim().toLowerCase();
+      el.timeline.innerHTML = '';
+      const list = MEMES.filter(m=>{
+        // search
+        if(q){
+          const hay = (m.title + ' ' + (m.origin||'') + ' ' + (m.tags||[]).join(' ') + ' ' + (m.description||'')).toLowerCase();
+          if(!hay.includes(q)) return false;
+        }
+        // year
+        if(activeYear && String(m.year) !== String(activeYear)) return false;
+        // tag
+        if(activeTag && !(Array.isArray(m.tags) && m.tags.includes(activeTag))) return false;
+        return true;
+      });
+      if(list.length===0){ el.timeline.innerHTML = '<p class="muted">No memes found.</p>'; return; }
+      list.forEach(m => el.timeline.appendChild(createCard(m)));
+    }
+
+    /* Build filter buttons (years + tags) */
+    function buildFilterButtons(){
+      const years = Array.from(new Set(MEMES.map(m=>m.year).filter(Boolean))).sort((a,b)=>b-a);
+      const tagsSet = new Set(); MEMES.forEach(m => (m.tags||[]).forEach(t=>tagsSet.add(t)));
+      const tags = Array.from(tagsSet).sort((a,b)=>a.localeCompare(b));
+
+      const yearBox = document.getElementById('yearFilters');
+      const tagBox = document.getElementById('tagFilters');
+      if(!yearBox || !tagBox) return;
+      yearBox.innerHTML = '';
+      tagBox.innerHTML = '';
+
+      // "All" year button
+      const allY = document.createElement('button');
+      allY.className = 'filter-btn';
+      allY.textContent = 'All';
+      allY.addEventListener('click', ()=>{
+        activeYear = null;
+        document.querySelectorAll('#yearFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+        allY.classList.add('active');
+        renderTimeline();
+      });
+      yearBox.appendChild(allY);
+      if(!activeYear) allY.classList.add('active');
+
+      years.forEach(y=>{
+        const b = document.createElement('button');
+        b.className = 'filter-btn';
+        b.textContent = String(y);
+        b.addEventListener('click', ()=> toggleYearFilter(y, b));
+        yearBox.appendChild(b);
+      });
+
+      // Tags
+      const allT = document.createElement('button');
+      allT.className = 'filter-btn';
+      allT.textContent = 'All';
+      allT.addEventListener('click', ()=>{
+        activeTag = null;
+        document.querySelectorAll('#tagFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+        allT.classList.add('active');
+        renderTimeline();
+      });
+      tagBox.appendChild(allT);
+      if(!activeTag) allT.classList.add('active');
+
+      tags.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'filter-btn';
+        b.textContent = t;
+        b.addEventListener('click', ()=> toggleTagFilter(t, b));
+        tagBox.appendChild(b);
+      });
+    }
+
+    function toggleYearFilter(year, btn){
+      if(activeYear === year){
+        activeYear = null;
+        btn.classList.remove('active');
+        // mark "All" active
+        const allBtn = document.querySelector('#yearFilters .filter-btn');
+        if(allBtn) allBtn.classList.add('active');
+      } else {
+        activeYear = year;
+        document.querySelectorAll('#yearFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      renderTimeline();
+    }
+
+      const darkBtn = document.getElementById('darkToggle');
+   function setDarkMode(enabled){
+     try{
+       if(enabled){
+         document.documentElement.classList.add('dark');
+         localStorage.setItem('pk-dark','1');
+         if(darkBtn){ darkBtn.textContent = 'Light'; darkBtn.setAttribute('aria-pressed','true'); }
+       } else {
+         document.documentElement.classList.remove('dark');
+         localStorage.removeItem('pk-dark');
+         if(darkBtn){ darkBtn.textContent = 'Dark'; darkBtn.setAttribute('aria-pressed','false'); }
+       }
+     }catch(e){}
+   }
+   if(darkBtn){
+     darkBtn.addEventListener('click', ()=> setDarkMode(!document.documentElement.classList.contains('dark')));
+   }
+
+    function toggleTagFilter(tag, btn){
+      if(activeTag === tag){
+        activeTag = null;
+        btn.classList.remove('active');
+        const allBtn = document.querySelector('#tagFilters .filter-btn');
+        if(allBtn) allBtn.classList.add('active');
+      } else {
+        activeTag = tag;
+        document.querySelectorAll('#tagFilters .filter-btn').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      renderTimeline();
+    }
+
+    // modal open/close & player
+    function clearModalState(){
+      el.mPlayerWrap.innerHTML = '';
+      el.videoTabs.innerHTML = '';
+      el.mLinks.innerHTML = '';
+      el.modalVoteBox.dataset.id = '';
+      if(window.attachVoteListener) { /*unsubscribe handled inside*/ }
+      el.modal.classList.remove('open');
+      el.modal.setAttribute('aria-hidden','true');
+      const modalCard = document.querySelector('.modal-card');
+      if(modalCard) {
+        modalCard.classList.remove('portrait','landscape');
+        modalCard.style.removeProperty('--modal-width');
+        modalCard.style.removeProperty('--modal-player-height');
+        modalCard.classList.remove('has-portrait-video');
+      }
+    }
+    function closeModal(){ clearModalState(); }
+
+    function isPortraitUrl(url){
+      if(!url) return false;
+      return /tiktok\.com|facebook\.com.*\/reel|shorts\/|\/shorts\//i.test(url);
+    }
+
+    function buildTabsAndPlayer(m, links){
+      el.videoTabs.innerHTML = '';
+      el.mPlayerWrap.innerHTML = '';
+      if(!links.length) return;
+      // default choose first
+      const modalCard = document.querySelector('.modal-card');
+      const portrait = links.filter(isPortraitUrl).length > links.length/2 || isPortraitUrl(links[0]);
+      modalCard.classList.add(portrait? 'portrait':'landscape');
+      modalCard.classList.toggle('has-portrait-video', portrait);
+      // apply per-meme overrides
+      if(m.styles && m.styles.modal){
+        if(m.styles.modal.width) modalCard.style.setProperty('--modal-width', m.styles.modal.width);
+        if(m.styles.modal.playerHeight) modalCard.style.setProperty('--modal-player-height', m.styles.modal.playerHeight);
+      }
+      // create tabs
+      links.forEach((link, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        btn.textContent = 'Video ' + (idx+1);
+        if(idx===0) btn.classList.add('active');
+        btn.addEventListener('click', ()=>{
+          document.querySelectorAll('#videoTabs .tab-btn').forEach(b=>b.classList.remove('active'));
+          btn.classList.add('active');
+          loadEmbed(link);
+          const newPortrait = isPortraitUrl(link);
+          modalCard.classList.toggle('portrait', newPortrait);
+          modalCard.classList.toggle('landscape', !newPortrait);
+          modalCard.classList.toggle('has-portrait-video', newPortrait);
+        });
+        el.videoTabs.appendChild(btn);
+      });
+      // load first
+      loadEmbed(links[0]);
+    }
+
+    function loadEmbed(src){
+      el.mPlayerWrap.innerHTML = '';
+      const embed = convertToEmbed(src) || src;
+      // simple heuristics
+      if(embed.includes('youtube.com/embed') || embed.includes('tiktok.com/embed') || embed.includes('facebook.com/plugins')) {
+        const iframe = document.createElement('iframe');
+        iframe.src = embed;
+        iframe.frameBorder = '0';
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        el.mPlayerWrap.appendChild(iframe);
+      } else if(src && /\.(png|jpg|jpeg|webp|gif)$/.test(src)) {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'embed-photo';
+        el.mPlayerWrap.appendChild(img);
+      } else {
+        const a = document.createElement('a');
+        a.href = src;
+        a.textContent = 'Open video';
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        el.mPlayerWrap.appendChild(a);
+      }
+    }
+
+    async function openModal(m){
+      // set text fields
+      el.mTitle.textContent = m.title || '';
+      el.mOrigin.textContent = (m.year||'') + (m.origin? ' · ' + m.origin : '');
+      el.mDesc.textContent = m.description || '';
+      // set links
+      el.mLinks.innerHTML = '';
+      const mainLinks = [];
+      if(m.link) mainLinks.push({href:m.link, text:'Source'});
+      if(m.news) mainLinks.push({href:m.news, text:'News'});
+      if(m.profile) mainLinks.push({href:m.profile, text:'Profile'});
+      mainLinks.forEach(l=>{
+        const a = document.createElement('a');
+        a.href = l.href; a.target='_blank'; a.rel='noopener noreferrer';
+        a.className = 'link-btn';
+        a.textContent = l.text;
+        el.mLinks.appendChild(a);
+      });
+      // prepare vote box id
+      const verId = 'modal_' + (m.title||'meme').replace(/[^a-z0-9]/ig,'_').toLowerCase() + '_' + (m.year||'0');
+      el.modalVoteBox.dataset.id = verId;
+      if(window.attachVoteListener) attachVoteListener(el.modalVoteBox);
+
+      // gather video links (embedurl, link, video, more1..more9)
+      const links = [];
+      const primary = m.embedurl || m.link || m.video;
+      if(primary) links.push(primary);
+      for(let i=1;i<=9;i++){ if(m['more'+i]) links.push(m['more'+i]); }
+      // open modal
+      el.modal.classList.add('open'); el.modal.setAttribute('aria-hidden','false');
+      // build player/tabs
+      if(links.length>1) buildTabsAndPlayer(m, links);
+      else if(links.length===1) buildTabsAndPlayer(m, links);
+      else {
+        // no videos: show image if available
+        if(m.image){
+          loadEmbed(m.image);
+        } else {
+          el.mPlayerWrap.innerHTML = '<p class="muted">No media available</p>';
+        }
+      }
+      // ensure modalOpenSource points to first link or '#'
+      el.modalOpenSource.href = m.link || m.embedurl || '#';
+    }
+
+    // wire modal close interactions
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modal').addEventListener('click', (e)=>{ if(e.target.id==='modal') closeModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+    // search and init
+    document.getElementById('q').addEventListener('input', renderTimeline);
+document.getElementById('clearFilters').addEventListener('click', () => {
+  // Clear search
+  el.q.value = '';
+
+  // Reset filter state
+  activeYear = null;
+  activeTag = null;
+
+  // Rebuild buttons so "All" is highlighted again
+  buildFilterButtons();
+
+  // Re-render timeline
+  renderTimeline();
+});
+
+    // initial render
+    renderTimeline();
+    buildFilterButtons();
+  </script>
+</body>
+</html>
