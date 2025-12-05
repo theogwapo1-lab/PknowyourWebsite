@@ -2,10 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pknow Your Memes — Rewrite</title>
   <meta name="description" content="Pknow Your Memes — compact, single-file rewrite with improved modal system." />
   <style>
+
+    .fixed-canvas {
+  width: 601px;
+  height: 898px;
+  margin: 0 auto;
+  transform-origin: top center;
+}
+
+@media (max-width: 601px) {
+  .fixed-canvas {
+    transform: scale(calc(100vw / 601));
+  }
+}
+
     :root{
       --bg:#9acadd; --card:#ffffff; --accent:#123f72; --muted:#6b7480; --maxw:1100px;
       --radius:10px; --text:#222; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -13,7 +27,7 @@
     html,body{height:100%;margin:0;background:var(--bg);color:var(--text)}
     .wrap{max-width:var(--maxw);margin:28px auto;padding:18px}
     header{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}
-    .logo{width:240px;height:auto;border-radius:8px}
+    .logo{width:500px;height:auto;border-radius:8px}
     h1{margin:0;font-size:20px}
     p.lead{margin:0;color:var(--muted);font-size:13px}
     .controls{display:flex;gap:12px;align-items:center;margin:18px 0}
@@ -60,7 +74,7 @@
 
     .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
     .card{background:var(--card);border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
-    .thumb{width:100%;height:160px;object-fit:cover;border-radius:8px;border:1px solid rgba(0,0,0,0.04)}
+    .thumb{ width: auto; height: 175px; object-fit: contain; border-radius: 8px;}
     .meta{display:flex;justify-content:space-between;align-items:center}
     .title{font-weight:700}
     .origin{font-size:12px;color:var(--muted)}
@@ -118,7 +132,7 @@
       flex-direction: column;
       gap: 12px;
     }
-    .modal-desc { color: var(--muted); font-size: 13px; line-height:1.45; }
+    .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
     .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:100%;}
     .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:100%; justify-content:flex-start; }
     .video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
@@ -153,7 +167,7 @@
       border-top: 1px solid rgba(0,0,0,0.05);
       background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
     }
-    .vote-box { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:var(--card); border:1px solid rgba(0,0,0,0.06); }
+    .vote-box { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:var(--card); border:1px solid rgba(0,0,0,0.06); right: 90px;}
     .vote-box .score { min-width:26px; text-align:center; font-weight:600; color:var(--accent); }
 
     @media (max-width:780px) {
@@ -197,80 +211,130 @@
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
     }
   </style>
+<<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pknow Your Memes — Rewrite</title>
+<style>
+/* === NEW: Collapsible Filter Sections === */
+.filter-collapse-btn{
+  padding:8px 12px; background:#eaf1ff; border:1px solid #d0dcff;
+  border-radius:8px; cursor:pointer; font-size:13px; color:var(--accent);
+  width:140px; text-align:left; display:flex; justify-content:space-between;
+}
+.filter-section{ display:none; margin-top:10px; }
+.filter-section.open{ display:block; }
+
+/* === Move video tabs under modal header === */
+.video-tabs-fixed{
+  display:flex; gap:8px; flex-wrap:wrap; width:100%; padding:10px 20px;
+  border-bottom:1px solid rgba(0,0,0,0.1);
+  background:var(--card); position:sticky; top:0; z-index:20;
+}
+.video-tabs-fixed button{
+  padding:6px 10px; border-radius:8px; background:#222; color:#fff;
+  border:none; cursor:pointer; font-weight:600;
+}
+.video-tabs-fixed button.active{ background:var(--accent); }
+</style>
 </head>
-  <body>
+<body>
+  <div class="fixed-canvas">
+<div class="wrap" id="app">
+  <header>
+    <img src="./image/memes.svg" class="logo" />
+    <h1>A Website Dedicated to Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</h1> 
+  </header>
 
-  <div class="wrap" id="app">
-    <header>
-      <div style="background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(255, 253, 253, 0.301); display: inline-block;">
-        <img src="./image/memes.svg" alt="PK Logo" class="logo" style="width: 400px; height: auto;" />
-      </div>
-       <div class="brand">
-         <h1>Pknow Your Memes</h1>
-         <p class="lead">A Website Dedicated to Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</p>
-       </div>
-     </header>
-
-    <div class="controls" role="search" aria-label="Search memes">
-      <input id="q" type="search" placeholder="Search meme title, tag, or origin" />
-      <button id="clearFilters" class="link-btn">Clear</button>
-    </div>
-
-    <!-- YEAR + TAG FILTERS (place below search bar) -->
-    <div id="filters" aria-hidden="false">
-      <div class="filter-group">
-        <h3 class="filter-label">Filter by Year</h3>
-        <div id="yearFilters" class="filter-buttons"></div>
-      </div>
-
-      <div class="filter-group">
-        <h3 class="filter-label">Filter by Tag</h3>
-        <div id="tagFilters" class="filter-buttons"></div>
-      </div>
-    </div>
-
-    <main>
-      <section id="timeline" class="grid" aria-live="polite"></section>
-    </main>
-
-    <footer>
-      Report dead links or suggest memes to add — built for demonstration.
-    </footer>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search memes" />
+    <button id="clearFilters" class="link-btn">Clear</button>
   </div>
 
-  <!-- START: Clean Modal -->
-  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal-card landscape" role="document" aria-live="polite">
-      <button class="modal-close" id="modalClose" aria-label="Close modal">✕</button>
+  <!-- NEW COLLAPSIBLE FILTER UI -->
+  <div id="filters">
+    <button class="filter-collapse-btn" data-target="#yearSection">Year ▼</button>
+    <div id="yearSection" class="filter-section">
+      <div id="yearFilters" class="filter-buttons"></div>
+    </div>
 
-      <header class="modal-head">
-        <h2 id="mTitle">Title</h2>
-        <div class="meta-row muted" id="mOrigin">Year · Origin</div>
-        <div id="mLinks" class="modal-links-row"></div>
-      </header>
-
-      <div class="modal-body">
-        <div id="mDesc" class="modal-desc"></div>
-
-        <div id="videoArea" class="video-area" aria-live="polite">
-          <div class="video-tabs" id="videoTabs" aria-hidden="false"></div>
-          <div class="video-player-wrap" id="videoPlayerWrap"></div>
-        </div>
-
-        <div id="mMetaTop" class="modal-tags"></div>
-      </div>
-
-      <footer class="modal-actions">
-        <div class="vote-box" id="modalVoteBox" data-id="">
-          <button onclick="vote(this,1)" aria-label="Upvote">:)</button>
-          <span class="score">0</span>
-          <button onclick="vote(this,-1)" aria-label="Downvote">:(</button>
-        </div>
-        <div style="flex:1"></div>
-        <a id="modalOpenSource" class="link-btn" href="#" target="_blank" rel="noopener noreferrer">Open Source</a>
-      </footer>
+    <button class="filter-collapse-btn" data-target="#tagSection">Tag ▼</button>
+    <div id="tagSection" class="filter-section">
+      <div id="tagFilters" class="filter-buttons"></div>
     </div>
   </div>
+
+  <main>
+    <section id="timeline" class="grid"></section>
+  </main>
+</div>
+
+<!-- UPDATED MODAL WITH FIXED VIDEO TABS UNDER HEADER -->
+<div id="modal" class="modal">
+  <div class="modal-card landscape">
+    <button id="modalClose" class="modal-close">✕</button>
+
+    <header class="modal-head">
+      <h2 id="mTitle"></h2>
+      <div id="mOrigin" class="meta-row"></div>
+      <div id="mLinks" class="modal-links-row"></div>
+    </header>
+
+    <!-- FIXED TABS HERE -->
+    <div id="videoTabs" class="video-tabs-fixed"></div>
+
+    <div class="modal-body">
+      <div id="mDesc" class="modal-desc"></div>
+      <div id="videoPlayerWrap" class="video-player-wrap"></div>
+    </div>
+
+    <footer class="modal-actions">
+      <div class="vote-box" id="modalVoteBox" data-id="">
+        <button onclick="vote(this,1)">:)</button>
+        <span class="score">0</span>
+        <button onclick="vote(this,-1)">:(</button>
+      </div>
+        </footer>
+  </div>
+</div>
+
+<script>
+/* ==== Collapsible Filter Toggle ==== */
+document.querySelectorAll('.filter-collapse-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const sec = document.querySelector(btn.dataset.target);
+    sec.classList.toggle('open');
+  });
+});
+
+/* ==== Move video tabs under header (modify buildTabsAndPlayer) ==== */
+function buildTabsAndPlayer(m, links){
+  const tabs = document.getElementById('videoTabs');
+  const player = document.getElementById('videoPlayerWrap');
+  tabs.innerHTML = '';
+  player.innerHTML = '';
+
+  links.forEach((link,idx)=>{
+    const b=document.createElement('button');
+    b.textContent='Video '+(idx+1);
+    if(idx===0) b.classList.add('active');
+    b.onclick=()=>{
+      tabs.querySelectorAll('button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      loadEmbed(link);
+    };
+    tabs.appendChild(b);
+  });
+  loadEmbed(links[0]);
+}
+</script>
+</div>
+
+</body>
+</html>
+
   <!-- END: Clean Modal -->
 
   <!-- Firebase (keeps your existing vote behavior working) -->
@@ -330,7 +394,7 @@
   <script>
     // ====== Data (sample from your list) ======
     const MEMES = [
-      { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', link:'https://www.cnet.com/tech/services-and-software/history-of-the-iloveyou-virus/', origin: 'Onel de Guzman', description: 'A historic Filipino internet incident', tags:['news','criminal'] },
+      { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', link:'https://www.cnet.com/tech/services-and-software/history-of-the-iloveyou-virus/', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
       { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', description:'Viral peace sign clip', tags:['image','viral'] },
       { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
     news: 'https://www.facebook.com/share/p/1MSjx7x6TP/',
