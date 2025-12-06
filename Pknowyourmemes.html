@@ -216,6 +216,26 @@
       flex-direction: column;
       position: relative;
     }
+
+    @media (max-width:780px) {
+      .modal-card { 
+        width: calc(100vw - 28px); 
+        max-width: calc(100vw - 28px);
+        max-height: 94vh; 
+      }
+      .modal-card.portrait { 
+        --modal-player-height: 66vh; 
+        max-width: calc(100vw - 28px);
+      }
+      .modal-card.landscape {
+        --modal-player-height: 50vh;
+        max-width: calc(100vw - 28px);
+      }
+      .video-player-wrap iframe { 
+        max-width: 100%; 
+      }
+    }
+
     .modal-close {
       position: absolute;
       top: 12px;
@@ -279,7 +299,59 @@
     @media (max-width:780px) {
       .modal-card { width: calc(100vw - 28px); max-height: 94vh; }
       .modal-card.portrait { --modal-player-height: 66vh; }
+      .modal-card.landscape {
+        --modal-player-height: 50vh;
+        max-width: calc(100vw - 28px);
+      }
       .video-player-wrap iframe { max-width: 100%; }
+    }
+
+    /* ===== Clean modal CSS ===== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.48);
+      z-index: 1200;
+    }
+    .modal.open { display:flex; }
+    .modal-card {
+      --modal-width: 820px;
+      --modal-max-width: 420px;
+      --modal-player-height: 250px;
+      width: var(--modal-width);
+      max-width: var(--modal-max-width);
+      max-height: 94vh;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    @media (max-width:780px) {
+      .modal-card { 
+        width: calc(100vw - 28px); 
+        max-width: calc(100vw - 28px);
+        max-height: 94vh; 
+      }
+      .modal-card.portrait { 
+        --modal-player-height: 66vh; 
+        max-width: calc(100vw - 28px);
+      }
+      .modal-card.landscape {
+        --modal-player-height: 50vh;
+        max-width: calc(100vw - 28px);
+      }
+      .video-player-wrap iframe { 
+        max-width: 100%; 
+      }
     }
 
     /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
