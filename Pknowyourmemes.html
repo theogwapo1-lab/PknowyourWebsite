@@ -233,10 +233,12 @@
     .modal-links-row { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
     .modal-body {
       padding: 12px 20px 6px;
-      overflow: auto;
+      overflow-y: auto;
+      overflow-x: hidden;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-height: calc(88vh - 180px);
     }
     .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
     .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
@@ -321,10 +323,10 @@
     @media (max-width: 1000px) {
       /* Make modal take almost the whole screen */
       .modal-card {
-        width: 200vw !important;
-        max-width: 200vw !important;
+        width: 95vw !important;
+        max-width: 95vw !important;
         height: auto !important;
-        max-height: 200vh !important;
+        max-height: 88vh !important;
         border-radius: 14px !important;
       }
 
@@ -334,7 +336,7 @@
         aspect-ratio: 16/9 !important;
         width: 100% !important;
         height: auto !important;
-        max-height: 200vh !important; 
+        max-height: 65vh !important; 
       }
 
       /* TikTok / Facebook Reels / portrait videos - TALLER */
@@ -342,12 +344,12 @@
       .modal-card.portrait .video-player-wrap video {
         aspect-ratio: 9/16 !important;
         width: 100% !important;
-        max-height: 150vh !important;
+        max-height: 85vh !important;
       }
 
       /* Tabs overflow fix */
       .video-tabs-fixed {
-        overflow-x: scroll;
+        overflow-x: auto;
         white-space: nowrap;
       }
     }
