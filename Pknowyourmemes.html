@@ -200,64 +200,71 @@
       z-index: 1200;
     }
     .modal.open { display:flex; }
-   /* === Responsive Modal Core === */
-.modal-card {
-  width: 90vw;
-  max-width: 800px;
-  max-height: 90vh;
-  background: var(--card);
-  border-radius: 14px;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
-}
-
-/* Portrait = tall videos (TikTok/Facebook Reels/Shorts) */
-.modal-card.portrait {
-  max-width: 480px;
-  width: 100%;
-}
-
-/* Landscape = YouTube wide videos */
-.modal-card.landscape {
-  max-width: 800px;
-}
-
-/* === Video always scales correctly === */
-.video-player-wrap iframe,
-.video-player-wrap video,
-.video-player-wrap .embed-photo {
-  width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;     /* default */
-  border: none;
-  border-radius: 12px;
-  display: block;
-}
-
-/* Portrait videos override aspect ratio */
-.modal-card.portrait .video-player-wrap iframe {
-  aspect-ratio: 9 / 16;   /* TikTok/Reels */
-}
-
-/* Mobile-specific optimizations */
-@media (max-width: 700px) {
-  .modal-card {
-    width: 96vw !important;
-    max-width: 96vw !important;
-    max-height: 88vh !important;
-  }
-
-  .video-player-wrap iframe {
-    max-height: 70vh; /* prevent overflow */
-  }
-
-  .modal-body {
-    overflow-y: auto;
-  }
-}
-
+    .modal-card {
+      --modal-width: 820px;
+      --modal-max-width: 420px;
+      --modal-player-height: 250px;
+      width: var(--modal-width);
+      max-width: var(--modal-max-width);
+      max-height: 94vh;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 30;
+      border: none; background: transparent;
+      font-size: 18px; cursor: pointer;
+      padding: 6px;
+    }
+    .modal-head {
+      padding: 18px 20px 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .modal-head h2 { margin:0; font-size:20px; }
+    .modal-links-row { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
+    .modal-body {
+      padding: 12px 20px 6px;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
+    .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
+    .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:auto%; justify-content:flex-start; }
+    .video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
+    .video-tabs button.active { background:var(--accent); color:#fff; }
+    .video-player-wrap { width: 100%; display:flex; justify-content:center; }
+    .video-player-wrap iframe,
+    .video-player-wrap video,
+    .video-player-wrap .embed-photo {
+      width: 100%;
+      max-width: calc(var(--modal-width) - 40px);
+      height: var(--modal-player-height);
+      border-radius: 10px;
+      border: none;
+      display:block;
+      box-sizing: border-box;
+    }
+    .modal-card.portrait {
+      --modal-width: 420px;
+      --modal-player-height: 700px;
+      max-width: 92vw;
+    }
+    .modal-card.landscape {
+      --modal-width: 820px;
+      --modal-player-height: 420px;
+      max-width: 95vw;
+    }
     .modal-actions {
       display:flex;
       gap:12px;
@@ -308,7 +315,6 @@
 
     .vote-box button:last-child.pressed {
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
-
 
     }
   </style>
