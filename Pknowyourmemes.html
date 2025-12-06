@@ -239,32 +239,70 @@
       gap: 12px;
     }
     .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
-    .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
-    .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:auto%; justify-content:flex-start; }
-    .video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
-    .video-tabs button.active { background:var(--accent); color:#fff; }
-    .video-player-wrap { width: 100%; display:flex; justify-content:center; }
-    .video-player-wrap iframe,
-    .video-player-wrap video,
-    .video-player-wrap .embed-photo {
-      width: 100%;
-      max-width: calc(var(--modal-width) - 40px);
-      height: var(--modal-player-height);
-      border-radius: 10px;
-      border: none;
-      display:block;
-      box-sizing: border-box;
-    }
-    .modal-card.portrait {
-      --modal-width: 420px;
-      --modal-player-height: 700px;
-      max-width: 92vw;
-    }
-    .modal-card.landscape {
-      --modal-width: 820px;
-      --modal-player-height: 420px;
-      max-width: 95vw;
-    }
+    .video-area { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+  align-items: center; 
+  width: 100%;
+}
+
+.video-tabs { 
+  display:flex; 
+  gap:8px; 
+  flex-wrap:wrap; 
+  width:100%; 
+  justify-content:flex-start; 
+}
+
+.video-tabs button { 
+  padding:8px 10px; 
+  border-radius:8px; 
+  background:#222; 
+  color:#fff; 
+  border:none; 
+  cursor:pointer; 
+  font-weight:600; 
+}
+
+.video-tabs button.active { 
+  background:var(--accent); 
+  color:#fff; 
+}
+
+.video-player-wrap { 
+  width: 100%; 
+  display:flex; 
+  justify-content:center; 
+}
+
+/* PLAYER */
+.video-player-wrap iframe,
+.video-player-wrap video,
+.video-player-wrap .embed-photo {
+  width: 100%;
+  max-width: min(100%, calc(var(--modal-width) - 40px));
+  aspect-ratio: var(--player-ratio);   /* ✅ responsive height */
+  height: auto;                        /* let height scale */
+  border-radius: 10px;
+  border: none;
+  display:block;
+  box-sizing: border-box;
+}
+
+/* MODAL TYPES */
+.modal-card.portrait {
+  --modal-width: 420px;
+  --player-ratio: 9 / 16;   /* portrait */
+  max-width: 92vw;
+}
+
+.modal-card.landscape {
+  --modal-width: 820px;
+  --player-ratio: 16 / 9;   /* landscape */
+  max-width: 95vw;
+}
+
     .modal-actions {
       display:flex;
       gap:12px;
@@ -315,7 +353,6 @@
 
     .vote-box button:last-child.pressed {
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
-
 
     }
   </style>
