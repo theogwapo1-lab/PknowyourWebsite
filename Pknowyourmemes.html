@@ -7,12 +7,6 @@
   <meta name="description" content="Pknow Your Memes — compact, single-file rewrite with improved modal system." />
   <style>
 
-    .fixed-canvas {
-  width: 601px;
-  height: 898px;
-  margin: 0 auto;
-  transform-origin: top center;
-}
 
 @media (max-width: 601px) {
   .fixed-canvas {
@@ -201,12 +195,12 @@
     }
     .modal.open { display:flex; }
     .modal-card {
-      --modal-width: autopx;
-      --modal-max-width: 500px;
-      --modal-player-height: auto;
+      --modal-width: 820px;
+      --modal-max-width: 420px;
+      --modal-player-height: 250px;
       width: var(--modal-width);
       max-width: var(--modal-max-width);
-      max-height: 500px;
+      max-height: 94vh;
       border-radius: 12px;
       background: var(--card);
       color: var(--text);
