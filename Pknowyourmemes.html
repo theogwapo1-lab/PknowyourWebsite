@@ -7,6 +7,12 @@
   <meta name="description" content="Pknow Your Memes — compact, single-file rewrite with improved modal system." />
   <style>
 
+    .fixed-canvas {
+  width: 601px;
+  height: 898px;
+  margin: 0 auto;
+  transform-origin: top center;
+}
 
 @media (max-width: 601px) {
   .fixed-canvas {
@@ -196,8 +202,8 @@
     .modal.open { display:flex; }
     .modal-card {
       --modal-width: 820px;
-      --modal-max-width: 420px;
-      --modal-player-height: 250px;
+      --modal-max-width: 90vw;
+      --modal-player-height: 420px;
       width: var(--modal-width);
       max-width: var(--modal-max-width);
       max-height: 94vh;
@@ -209,6 +215,82 @@
       display: flex;
       flex-direction: column;
       position: relative;
+      transition: all 0.3s ease;
+    }
+
+    /* Landscape videos */
+    .modal-card.landscape {
+      --modal-width: 85vw;
+      --modal-max-width: 85vw;
+      --modal-player-height: clamp(300px, 60vh, 600px);
+    }
+
+    /* Portrait videos */
+    .modal-card.portrait {
+      --modal-width: clamp(320px, 90vw, 500px);
+      --modal-max-width: 90vw;
+      --modal-player-height: clamp(500px, 85vh, 900px);
+    }
+
+    /* Expand mode - landscape */
+    .modal-card.expanded.landscape {
+      --modal-width: clamp(600px, 95vw, 1200px);
+      --modal-max-width: 95vw;
+      --modal-player-height: clamp(400px, 75vh, 800px);
+    }
+
+    /* Expand mode - portrait */
+    .modal-card.expanded.portrait {
+      --modal-width: clamp(400px, 92vw, 600px);
+      --modal-max-width: 92vw;
+      --modal-player-height: clamp(600px, 90vh, 1000px);
+    }
+
+    /* Tablet (768px - 1024px) */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .modal-card.landscape {
+        --modal-width: 80vw;
+        --modal-player-height: clamp(300px, 55vh, 500px);
+      }
+      .modal-card.portrait {
+        --modal-width: clamp(350px, 85vw, 480px);
+        --modal-player-height: clamp(550px, 80vh, 850px);
+      }
+    }
+
+    /* Mobile (under 768px) */
+    @media (max-width: 767px) {
+      .modal-card {
+        width: calc(100vw - 28px);
+        max-width: calc(100vw - 28px);
+        max-height: 94vh;
+      }
+      .modal-card.landscape {
+        --modal-width: calc(100vw - 28px);
+        --modal-max-width: calc(100vw - 28px);
+        --modal-player-height: clamp(250px, 50vh, 400px);
+      }
+      .modal-card.portrait {
+        --modal-width: calc(100vw - 28px);
+        --modal-max-width: calc(100vw - 28px);
+        --modal-player-height: clamp(400px, 70vh, 800px);
+      }
+      .modal-card.expanded.landscape {
+        --modal-player-height: clamp(300px, 65vh, 500px);
+      }
+      .modal-card.expanded.portrait {
+        --modal-player-height: clamp(500px, 85vh, 900px);
+      }
+    }
+
+    /* Small phones (under 480px) */
+    @media (max-width: 479px) {
+      .modal-card.portrait {
+        --modal-player-height: clamp(350px, 65vh, 700px);
+      }
+      .modal-card.landscape {
+        --modal-player-height: clamp(200px, 45vh, 350px);
+      }
     }
     .modal-close {
       position: absolute;
@@ -250,14 +332,14 @@
       box-sizing: border-box;
     }
     .modal-card.portrait {
-      --modal-width: 420px;
-      --modal-player-height: 700px;
-      max-width: 92vw;
+      --modal-width: clamp(320px, 90vw, 500px);
+      --modal-max-width: 90vw;
+      --modal-player-height: clamp(500px, 85vh, 900px);
     }
     .modal-card.landscape {
-      --modal-width: 820px;
-      --modal-player-height: 420px;
-      max-width: 95vw;
+      --modal-width: 85vw;
+      --modal-max-width: 85vw;
+      --modal-player-height: clamp(300px, 60vh, 600px);
     }
     .modal-actions {
       display:flex;
