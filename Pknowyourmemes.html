@@ -570,11 +570,86 @@ function buildTabsAndPlayer(m, links){
     // ====== Data (sample from your list) ======
     const MEMES = [
       { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', news: 'https://www.bbc.com/news/technology-52458765', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
-      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
       { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911', profile: 'https://www.facebook.com/profile.php?id=61580183191602', news: 'https://www.facebook.com/share/p/1MSjx7x6TP/', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
+    
+{
+    title: 'Kapeng matapang',
+    year: 2019,
+    image: './image/Kapengmatapang.jpg',
+    link: 'https://www.facebook.com/reel/1383634471776415',
+    profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
+    origin: 'Renie Bhoy Jovellano',
+    description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
+    tags: ['viral', 'urban legend'],
+  },
+
+{
+  title: 'White Sando Girl',
+  year: 2014,
+  image: './image/sando.jpg',
+  link: 'https://youtu.be/iDGhJoYdOEw?si=rKBKcFO1ahfYG4me',
+  origin: '@norieee095',
+  profile: 'https://www.tiktok.com/@norieee095?_r=1&_t=ZS-91RB25bhKxU',
+  description: 'Im not sure kung sya yang nasa profile link, pero kamukha nya naman talaga',
+  tags: ['classical', 'ancient', 'dance'],
+  styles: {
+        player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '700px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '150vh',     
+        columnRatio: '0/1',    
+        playerHeight: '500px'  
+      }
+    }
+},
+
+      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
       { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', profile: 'https://www.facebook.com/komiksmuseum', news: 'https://en.wikipedia.org/wiki/Gerry_Alanguilan',description:'Hey Baby', tags:['classical','image'] },
-    
-    
+
+{
+    title: 'Hangang Leeg',
+    year: 2019,
+    image: './image/arlene.jpg',
+    link: 'https://youtu.be/0zieYY3eBqs?si=Hg0fig0lbxS8j5yN',
+    more1: 'https://youtu.be/VjMJHJKwvVE?si=zVNTs08wG-00Nsjk',
+    profile: 'https://www.youtube.com/@kweenarlenesabandalofficia2628',
+    origin: 'Arlene Sabandal',
+    description: '',
+    tags: ['mythology'],
+    styles: {
+        player: {
+        width: '400px',        
+        maxWidth: '400px',     
+        height: '600px',       
+        margin: '0 auto',      
+        display: 'block'
+      },
+      modal: {
+        width: '600px',        
+        maxHeight: '80vh',     
+        columnRatio: '0/1',    
+        playerHeight: '500px'  
+      }
+    }
+  },
+
+{
+    title: 'Adobong Menok',
+    year: 2007,
+    image: './image/adobo.jpg',
+    link: 'https://youtu.be/H_UxyQ7cb3I?si=8D0xOr9IMy1cB3XX',
+    origin: 'Travis Craft',
+    profile: 'https://www.youtube.com/@poolboyinla',
+    description: 'dahon ng laurel, angsarap sarap',
+    tags: ['vlog']
+  },
+
 {
   title: 'Kami ang ma pabebe girls',
   year: 2015,
@@ -600,30 +675,6 @@ function buildTabsAndPlayer(m, links){
   description: 'Modern meaning og Belat',
   tags: ['term'],
 },
-
-{
-    title: 'Kapeng matapang',
-    year: 2019,
-    image: './image/Kapengmatapang.jpg',
-    link: 'https://www.facebook.com/reel/1383634471776415',
-    profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
-    origin: 'Renie Bhoy Jovellano',
-    description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
-    tags: ['viral', 'urban legend'],
-  },
-
-{
-  title: 'White Sando Girl',
-  year: 2014,
-  image: './image/sando.jpg',
-  link: 'https://youtu.be/iDGhJoYdOEw?si=rKBKcFO1ahfYG4me',
-  origin: '@norieee095',
-  profile: 'https://www.tiktok.com/@norieee095?_r=1&_t=ZS-91RB25bhKxU',
-  description: 'Im not sure kung sya yang nasa profile link, pero kamukha nya naman talaga',
-  tags: ['classical', 'ancient', 'dance']
-},
-
-
 
 
 
