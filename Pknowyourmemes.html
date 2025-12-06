@@ -382,6 +382,25 @@
   border:none; cursor:pointer; font-weight:600;
 }
 .video-tabs-fixed button.active{ background:var(--accent); }
+
+/* === SHUFFLE BUTTON === */
+    .shuffle-btn {
+      padding: 8px 12px;
+      background: #eaf1ff;
+      color: var(--accent);
+      border: 1px solid #d0dcff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.15s;
+    }
+    .shuffle-btn:hover {
+      background: #d0dcff;
+      transform: scale(1.05);
+    }
+    .shuffle-btn:active {
+      transform: scale(0.95) rotate(180deg);
+    }
 </style>
 </head>
 <body>
@@ -389,7 +408,7 @@
 <div class="wrap" id="app">
   <header>
     <img src="./image/memes.svg" class="logo" />
-    <h1>A Website Dedicated to Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</h1> 
+    <h1 style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif font-size: 28px; font-weight: bold; letter-spacing: 1px; ">A Website Dedicated to Archiving Filipino Internet Humor, Pop Culture, and Lost Media.</h1>
   </header>
   <p> </p>
   <p class="disclaimer">
@@ -407,6 +426,7 @@
   <button id="clearFilters" class="clear-btn">Clear Filters</button>
     <button class="filter-collapse-btn" data-target="#yearSection">Year ▼</button>
 <button class="filter-collapse-btn" data-target="#tagSection">Tag ▼</button>
+  <button id="shuffleBtn" class="shuffle-btn">🔀 Shuffle</button>
 
   </div>
   <p class="clear-note">Remember To Always Clear Filters</p>
@@ -549,13 +569,13 @@ function buildTabsAndPlayer(m, links){
   <script>
     // ====== Data (sample from your list) ======
     const MEMES = [
-      { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', link:'https://www.cnet.com/tech/services-and-software/history-of-the-iloveyou-virus/', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
-      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', description:'Viral peace sign clip', tags:['image','viral'] },
-      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911',
-    news: 'https://www.facebook.com/share/p/1MSjx7x6TP/',
-    link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
-      { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', description:'Komikero meme', tags:['classical'] },
-     {
+      { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', news: 'https://www.bbc.com/news/technology-52458765', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
+      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
+      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911', profile: 'https://www.facebook.com/profile.php?id=61580183191602', news: 'https://www.facebook.com/share/p/1MSjx7x6TP/', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
+      { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', profile: 'https://www.facebook.com/komiksmuseum', news: 'https://en.wikipedia.org/wiki/Gerry_Alanguilan',description:'Hey Baby', tags:['classical','image'] },
+    
+    
+{
   title: 'Kami ang ma pabebe girls',
   year: 2015,
   image: './image/bebeg.jpg',
@@ -572,6 +592,7 @@ function buildTabsAndPlayer(m, links){
     {
   title: 'Kiffy',
   year: 2024,
+  month: '',
   image: './image/Kiffy.png',
   link: '',
   origin: '',
@@ -588,7 +609,26 @@ function buildTabsAndPlayer(m, links){
     profile: 'https://www.facebook.com/reniebhoycjovellanos.jovellanos',
     origin: 'Renie Bhoy Jovellano',
     description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
-    tags: ['viral', 'urban legend'],},
+    tags: ['viral', 'urban legend'],
+  },
+
+{
+  title: 'White Sando Girl',
+  year: 2014,
+  image: './image/sando.jpg',
+  link: 'https://youtu.be/iDGhJoYdOEw?si=rKBKcFO1ahfYG4me',
+  origin: '@norieee095',
+  profile: 'https://www.tiktok.com/@norieee095?_r=1&_t=ZS-91RB25bhKxU',
+  description: 'Im not sure kung sya yang nasa profile link, pero kamukha nya naman talaga',
+  tags: ['classical', 'ancient', 'dance']
+},
+
+
+
+
+
+
+
 
     ];
 
@@ -640,7 +680,8 @@ function buildTabsAndPlayer(m, links){
       img.src = m.image || '';
       img.alt = m.title || 'thumb';
       const t = document.createElement('div');
-      t.innerHTML = `<div class="meta"><div><div class="title">${escapeHtml(m.title)}</div><div class="origin">${m.year} · ${escapeHtml(m.origin||'')}</div></div></div>`;
+      const dateStr = m.month ? `${m.month} ${m.year || ''}` : (m.year || '');
+      t.innerHTML = `<div class="meta"><div><div class="title">${escapeHtml(m.title)}</div><div class="origin">${dateStr} · ${escapeHtml(m.origin||'')}</div></div></div>`;
       c.appendChild(img); c.appendChild(t);
       c.addEventListener('click', ()=> openModal(m));
       c.addEventListener('keydown', (e)=> { if(e.key==='Enter') openModal(m); });
@@ -861,7 +902,8 @@ function buildTabsAndPlayer(m, links){
     async function openModal(m){
       // set text fields
       el.mTitle.textContent = m.title || '';
-      el.mOrigin.textContent = (m.year||'') + (m.origin? ' · ' + m.origin : '');
+      const dateStr = m.month ? `${m.month} ${m.year || ''}` : (m.year || '');
+      el.mOrigin.textContent = dateStr + (m.origin? ' · ' + m.origin : '');
       el.mDesc.textContent = m.description || '';
       // set links
       el.mLinks.innerHTML = '';
@@ -925,6 +967,14 @@ document.getElementById('clearFilters').addEventListener('click', () => {
   renderTimeline();
 });
 
+    // shuffle function
+    function shuffleCards(){
+      const shuffled = [...MEMES].sort(()=> Math.random() - 0.5);
+      el.timeline.innerHTML = '';
+      shuffled.forEach(m => el.timeline.appendChild(createCard(m)));
+    }
+
+    document.getElementById('shuffleBtn').addEventListener('click', shuffleCards);
     // initial render
     renderTimeline();
     buildFilterButtons();
