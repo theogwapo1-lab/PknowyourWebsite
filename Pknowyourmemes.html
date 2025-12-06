@@ -29,9 +29,9 @@
   --bg: #0b0f14;
       --card: #878f9e;
       --accent:   #34588d;
-      --muted: #ffffff;
+      --muted: #fafafa;
       --maxw:1100px;
-      --text: #343a41;
+      --text: #ffffff;
       --muted-contrast: #dfeaf7;
   }
 
@@ -444,7 +444,12 @@
   <main>
     <section id="timeline" class="grid"></section>
   </main>
-</div>
+<main>
+      <section id="timeline" class="grid" aria-live="polite"></section>
+
+      <footer>
+        <p>Report dead links or suggest memes to add</p>         
+      </footer>
 
 <!-- UPDATED MODAL WITH FIXED VIDEO TABS UNDER HEADER -->
 <div id="modal" class="modal">
@@ -471,6 +476,9 @@
         <span class="score">0</span>
         <button onclick="vote(this,-1)">:(</button>
       </div>
+
+      
+      
         </footer>
   </div>
 </div>
@@ -595,6 +603,19 @@ function buildTabsAndPlayer(m, links){
 },
 
 {
+  title: 'Ms. Nene',
+  year: 2010,
+  image: './image/nene.jpg',
+  link: 'https://www.facebook.com/watch/?extid=CL-UNK-UNK-UNK-IOS_GK0T-GK1C&v=888953397794659',
+  origin: 'Mariel Anne Villegas',
+  news: 'https://m.facebook.com/story.php?story_fbid=pfbid0nEZm9UWbbXe5wPoZgdEF6dzrwMKG5MqFDh89ZnZTkwLQCAhHKNiCaLDjaWpA3ec5l&id=100063552917656',
+  more2: 'https://www.tiktok.com/@maiku_ft/video/7122822108907851034?_r=1&_t=ZS-91RbyWYrwHI',
+  profile: '',
+  description: 'Click Source link because of facebook video embedding issues',
+  tags: ['ancient', 'classical',]
+},
+
+{
     title: 'Hangang Leeg',
     year: 2019,
     image: './image/arlene.jpg',
@@ -608,6 +629,22 @@ function buildTabsAndPlayer(m, links){
   },
 
 {
+    title: 'Butete',
+    year: 2008,
+    image: './image/butete.png',
+    link: 'https://www.youtube.com/watch?v=iVIS6KIQx78&list=RDiVIS6KIQx78&start_radio=1',
+    more1: 'https://www.youtube.com/watch?v=9erjVo9BSKc&list=RD9erjVo9BSKc&start_radio=1',
+    origin: 'Rack Friends (DJ Oye)',
+    profile: 'https://www.facebook.com/djoye1047/',
+    description: `Grabe among shot-shot
+Ug grabe among hab-hab (among hab-hab)
+Pagka taod-taod murag mi malibat... heyyy
+Wa mi balo (wa mi balo)
+Diay kadto makahilo... low low low...`,
+    tags: ['bisaya', 'song', 'rap', 'parody']
+  },
+
+{
     title: 'Adobong Menok',
     year: 2007,
     image: './image/adobo.jpg',
@@ -618,6 +655,74 @@ function buildTabsAndPlayer(m, links){
     tags: ['vlog']
   },
 
+{
+    title: 'Kap Nino',
+    year: 2021,
+    image: './image/kap.jpg',
+    more2: 'https://www.tiktok.com/@rxssyyy/video/7441034846325050679?_r=1&_t=ZS-910uR2v8lQz',
+    more1: 'https://youtu.be/bwutxPWw6f4?si=h8qHYIPu51H5UcUh',
+    origin: 'Nino Barzaga',
+    profile: 'https://www.tiktok.com/@soulcaz?_r=1&_t=ZS-910uWCWKUFQ',
+    more1:'https://www.facebook.com/groups/1236364274722632',
+    description: 'RIP Kap',
+    tags: ['mura'],
+},
+
+{
+    title: 'Okey Kayo, Lami Kaayo',
+    year: 2019,
+    image: './image/lami.png',
+    link: 'https://youtu.be/q1Bgc84jivA?si=1rfkbl3jigSPq3jH',
+    profile: 'https://www.tiktok.com/@kelvinray19?lang=en',
+    origin: 'Kelvin Ray',
+    description: '',
+    tags: ['bisaya', 'vlog', 'mythology']
+  },
+
+{
+    title: 'So Weird',
+    year: 2018,
+    image: './image/weird.jpg',
+    link: 'https://youtu.be/PQOnud5GJqw?si=v9jycQ5f5wmejm7f',
+    profile: 'https://www.youtube.com/@JaperSniperOfficial/shorts',
+    origin: 'Japer Sniper',
+    description: '',
+    tags: ['vlog', 'mythology']
+  },
+
+{ 
+  title:'Mar Roxas Traffic', 
+  year:2009, 
+  image:'./image/traffic.jpg', 
+  link:'https://youtu.be/SFXDprPullo?si=reipF_nZVJE9OmG8', 
+  news:'https://web.senate.gov.ph/press_release/2009/0727_roxas4.asp', 
+  origin:'SONA 2009', 
+  description:'Manuel Araneta Roxas II is a Filipino politician who served as a senator of the Philippines from 2004 to 2010. He is the grandson and namesake of former Philippine President Manuel Roxas', 
+  tags:['politics',] 
+},
+
+{
+    title: 'Happy New Year Ebriwan',
+    year: 2016,
+    image: './image/happynewyear.jpg',
+    link: 'https://www.facebook.com/MannyPacquiao/videos/1512832759020745/?extid=CL-UNK-UNK-UNK-IOS_GK0T-GK1C&ref=sharing',
+    profile: '',
+    origin: 'Manny Pacquiao',
+    description: '',
+    tags: ['celebrity'], 
+  },
+
+{ 
+    title: 'Mapriso ka',
+    year: 2022,
+    image: './image/mapriso.jpg',
+    link: 'https://youtu.be/Q60GknIxwoU?si=pJLGBC62HvcjRHrw',
+    more2: 'https://www.tiktok.com/@ianlood/video/7162741051483000090?is_from_webapp=1&sender_device=pc&web_id=7489810933461239317',
+    origin: 'Unknown',
+    profile: '',
+    description: 'aguy videohi ko',
+    tags: ['bisaya', 'public rage']
+},
 {
     title: 'C2 ad',
     year: 2021,
@@ -639,6 +744,31 @@ function buildTabsAndPlayer(m, links){
     more2: 'https://www.facebook.com/watch/?v=476309229173558',
     tags: ['ancient']
   },
+  
+{
+    title: 'Jhepoy Dizon',
+    year: 2013,
+    image: './image/jhepoydizon.jpg',
+    news: 'https://youtube.fandom.com/wiki/KapKek',
+    link: 'https://youtu.be/SzOWy1o2dTA?si=k2Qdgd6mJilJfZ8g',
+    profile: 'https://www.youtube.com/@ShupetGaming',
+    more2: 'https://www.tiktok.com/@ampoginiseangrabe/video/7314176964128935173?q=jhepoy%20dizon%20marry%20christmas&t=1764509823474',
+    origin: 'John Alfred Richards Tejero',
+    description: 'TANGINA MO, JHEPOY DIZON! ANG PANGIT NG PAGMUMUKHA MO, KITA MO NA BANG MUKHA MO SA SALAMIN? TANGINA MO! ANG PANGIT MO, HA? Tangina mo! At anong ang sinasabi mong pulubi at taga-hugas ako ng pinggan ha? TANGINA MO!',
+    tags: ['games']
+  },
+
+{
+    title: 'Oh Ano Ano Ano Say nyo??? Natameme kayo noh!',
+    year: 2016,
+    embedUrl: '',
+    image: './image/anosay.png',
+    link: 'https://www.youtube.com/watch?v=6lykRh7vfuA',
+    origin: 'Jejomar Binay',
+    description: 'Jejomar "Jojo" Cabauatan Binay Sr. is a Filipino lawyer and politician who served as the 13th Vice President of the Philippines from 2010 to 2016.',
+    tags: ['politics'],
+},
+
 
   {
     title: 'Pipoy Como',
@@ -646,6 +776,7 @@ function buildTabsAndPlayer(m, links){
     embedurl: 'https://www.tiktok.com/@pipoycomo/video/6843691465021902081?is_from_webapp=1&sender_device=pc',
     image: './image/Pipoy.png',
     link: 'https://www.tiktok.com/@pipoycomo/video/6843691465021902081?is_from_webapp=1&sender_device=pc',
+        more1: 'https://www.tiktok.com/@umiiyakakongayonn05/video/7557713620029820167?lang=en&q=duduruginnaminkayo%20meme&t=1764509930575',
     profile: 'https://www.tiktok.com/@pipoycomo',
     origin: 'Catfish',
     description: 'ewan ko ba parang tarantado lang',
@@ -667,6 +798,29 @@ function buildTabsAndPlayer(m, links){
     styles:{ modal:{ width:'460px', playerHeight:'720px' } }
 },
 
+  {
+    title: 'Sa Langit Wala og Beer',
+    year: 2010,
+    image: './image/beer.jpg',
+    link: 'https://www.youtube.com/watch?v=UUfsIbxsO94&list=RDUUfsIbxsO94&start_radio=1',
+    more1: 'https://www.youtube.com/watch?v=Z9aCpR5sEMk&list=RDZ9aCpR5sEMk&start_radio=1',
+    more2: 'https://youtu.be/1eDGLpmRMQE?si=H2DPh9qEjzGZQj_E&t=91',
+    origin: 'Michael Locastales',
+    profile: '',
+    description: 'Sa Impyerno wala sigarilyo pero may marijuana ug shabu',
+    tags: ['bisaya','song']
+  },
+  {
+    title: 'Impatso',
+    year: 2010,
+    image: './image/impatso.png',
+    link: 'https://www.youtube.com/watch?v=DGor2u2tFaI&list=RDDGor2u2tFaI&start_radio=1',
+    origin: 'Michael Locastales',
+    profile: '',
+    description: '',
+    tags: ['bisaya','song']
+  },
+
 
       { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911', profile: 'https://www.facebook.com/profile.php?id=61580183191602', news: 'https://www.facebook.com/share/p/1MSjx7x6TP/', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
 { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
@@ -686,6 +840,18 @@ function buildTabsAndPlayer(m, links){
   description: '',
   tags: ['classical', 'viral'],
 },
+
+{ title:'Wooooooooow so Refreshing', 
+year:2014, 
+image:'./image/refresh.png', 
+link:'https://www.youtube.com/shorts/Tc9LGwTR4kA', 
+more1: 'https://youtu.be/8tY7uFL_1Ek?si=NFDu82X1EGy8HYMf&t=87', 
+description: 'Yung origin ng sound na to ay galing sa Wow Mali',
+origin:'Wow Mali', 
+profile:'', 
+description:'', 
+tags:['sound','classical'], 
+},
     {
   title: 'Kiffy',
   year: 2024,
@@ -697,6 +863,30 @@ function buildTabsAndPlayer(m, links){
   description: 'Modern meaning og Belat',
   tags: ['term'],
 },
+
+{
+    title: 'Crying Maris',
+    year: 2023,
+    image: './image/maris.png',
+    profile: 'https://www.instagram.com/reel/Cxh9gx0SKCt/?utm_source=ig_web_copy_link',
+    origin: 'Maris',
+    more1: 'https://www.youtube.com/shorts/XnSSFeLMho8',
+    description: '',
+    tags: ['celebrity', 'image'],
+    styles:{ modal:{ width:'460px', playerHeight:'720px' }}
+},
+
+{
+    title: 'N-word Binay',
+    year: 2020, 
+    image: './image/nancy.png',
+    news: 'https://newsinfo.inquirer.net/1213399/n-word-abby-binay-receives-offensive-messages-for-not-suspending-classes',
+    origin: 'Nancy Binay',
+    description: 'Maria Lourdes Nancy Sombillo Binay Angeles is a Filipino politician who is serving as the 22nd mayor of Makati since June 30, 2025. She previously served as a senator of the Philippines from 2013 to 2025. Binay is the daughter of former Vice President Jejomar Binay.',
+    tags: ['politics'],
+    styles:{ modal:{ width:'460px', playerHeight:'720px' } }
+}, 
+
 
 
 
@@ -869,9 +1059,15 @@ function buildTabsAndPlayer(m, links){
        }
      }catch(e){}
    }
-   if(darkBtn){
-     darkBtn.addEventListener('click', ()=> setDarkMode(!document.documentElement.classList.contains('dark')));
-   }
+
+    // Load dark mode from localStorage on page load
+    if(localStorage.getItem('pk-dark')){
+      setDarkMode(true);
+    }
+
+    if(darkBtn){
+      darkBtn.addEventListener('click', ()=> setDarkMode(!document.documentElement.classList.contains('dark')));
+    }
 
     function toggleTagFilter(tag, btn){
       if(activeTag === tag){
