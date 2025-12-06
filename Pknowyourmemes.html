@@ -239,8 +239,9 @@
       gap: 12px;
     }
     .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
-    .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:100%; }
-.video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:100%; justify-content:flex-start; }.video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
+    .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
+    .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:auto%; justify-content:flex-start; }
+    .video-tabs button { padding:8px 10px; border-radius:8px; background:#222; color:#fff; border:none; cursor:pointer; font-weight:600; }
     .video-tabs button.active { background:var(--accent); color:#fff; }
     .video-player-wrap { width: 100%; display:flex; justify-content:center; }
     .video-player-wrap iframe,
@@ -275,18 +276,18 @@
     .vote-box { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:#d6d6d6; border:1px solid rgba(77, 62, 62, 0.377); right: 90px;}
     .vote-box .score { min-width:26px; text-align:center; font-weight:600; color:var(--accent); }
 
-    @media (max-width:700px) {
-  .modal-card { width: 94vw; max-width: 94vw; max-height: 90vh; padding: 16px; border-radius: 14px; box-sizing: border-box; }
-  .modal-head { padding: 14px 16px 8px; }
-  .modal-body { padding: 10px 16px 10px; }
-  .modal-card.landscape { --modal-player-height: 50vh; }
-  .modal-card.portrait { --modal-player-height: 75vh; }
-}
+    @media (max-width:780px) {
+      .modal-card { width: calc(100vw - 28px); max-height: 94vh; }
+      .modal-card.portrait { --modal-player-height: 66vh; }
+      .video-player-wrap iframe { max-width: 100%; }
+    }
 
     /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
-.vote-box button:last-child.pressed {
-  box-shadow: 0 0 16px rgba(255, 60, 60, 1);
-}
+    .vote-box button:first-child:hover {
+      transform: scale(1.12);
+      filter: brightness(1.2);
+      box-shadow: 0 0 12px rgba(5, 148, 29, 0.9); /* GREEN glow */
+    }
 
     .modal-content.has-portrait-video,
     .modal-card.has-portrait-video {
@@ -314,19 +315,7 @@
 
     .vote-box button:last-child.pressed {
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
-      
-      /* Make modal bigger ONLY on mobile */
-@media (max-width: 700px) {
-  .modal-content {
-    width: 90vw !important;       /* almost full width */
-    max-width: 90vw !important;   /* override desktop max-width */
-    height: auto !important;
-    max-height: 85vh !important;  /* prevent off-screen */
-    padding: 20px !important;     /* tighter padding */
-    border-radius: 14px !important;
-    box-sizing: border-box !important;
-  }
-}
+
 
     }
   </style>
