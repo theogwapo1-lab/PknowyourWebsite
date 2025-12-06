@@ -570,7 +570,6 @@ function buildTabsAndPlayer(m, links){
     // ====== Data (sample from your list) ======
     const MEMES = [
       { title: 'I love you virus', year: 2000, image: './image/iloveyou.jpg', embedurl: 'https://www.youtube.com/embed/tHUi04CwSFk', news: 'https://www.bbc.com/news/technology-52458765', origin: 'Onel de Guzman', description: 'A major player for Filipino internet presence', tags:['news','criminal'] },
-      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911', profile: 'https://www.facebook.com/profile.php?id=61580183191602', news: 'https://www.facebook.com/share/p/1MSjx7x6TP/', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
     
 {
     title: 'Kapeng matapang',
@@ -592,25 +591,8 @@ function buildTabsAndPlayer(m, links){
   profile: 'https://www.tiktok.com/@norieee095?_r=1&_t=ZS-91RB25bhKxU',
   description: 'Im not sure kung sya yang nasa profile link, pero kamukha nya naman talaga',
   tags: ['classical', 'ancient', 'dance'],
-  styles: {
-        player: {
-        width: '400px',        
-        maxWidth: '400px',     
-        height: '700px',       
-        margin: '0 auto',      
-        display: 'block'
-      },
-      modal: {
-        width: '600px',        
-        maxHeight: '150vh',     
-        columnRatio: '0/1',    
-        playerHeight: '500px'  
-      }
-    }
+  styles:{ modal:{ width:'460px', playerHeight:'720px' } }
 },
-
-      { title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
-      { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', profile: 'https://www.facebook.com/komiksmuseum', news: 'https://en.wikipedia.org/wiki/Gerry_Alanguilan',description:'Hey Baby', tags:['classical','image'] },
 
 {
     title: 'Hangang Leeg',
@@ -622,21 +604,7 @@ function buildTabsAndPlayer(m, links){
     origin: 'Arlene Sabandal',
     description: '',
     tags: ['mythology'],
-    styles: {
-        player: {
-        width: '400px',        
-        maxWidth: '400px',     
-        height: '600px',       
-        margin: '0 auto',      
-        display: 'block'
-      },
-      modal: {
-        width: '600px',        
-        maxHeight: '80vh',     
-        columnRatio: '0/1',    
-        playerHeight: '500px'  
-      }
-    }
+    styles:{ modal:{ width:'460px', playerHeight:'720px' } }
   },
 
 {
@@ -649,6 +617,60 @@ function buildTabsAndPlayer(m, links){
     description: 'dahon ng laurel, angsarap sarap',
     tags: ['vlog']
   },
+
+{
+    title: 'C2 ad',
+    year: 2021,
+    image: './image/c2.png',
+    link: 'https://youtube.com/shorts/lLOVTJUlObI?si=HfRkiLTStAJANteQ',
+    profile: '',
+    origin: 'Jessabele of Antipolo',
+    description: '',
+    tags: [ 'mythology', 'ads'],
+    styles:{ modal:{ width:'460px', playerHeight:'720px' } }
+  },
+  {
+    title: 'Anim na umbrella',
+    year: 2008,
+    image: './image/jessabel.png',
+    link: 'https://www.youtube.com/watch?v=ajcHR549DMg&list=RDajcHR549DMg&start_radio=1',
+    origin: 'Jessabele of Antipolo',
+    description: 'matagal na pala sya may mga videos before ba yung C2 ads',
+    more2: 'https://www.facebook.com/watch/?v=476309229173558',
+    tags: ['ancient']
+  },
+
+  {
+    title: 'Pipoy Como',
+    year: 2020,
+    embedurl: 'https://www.tiktok.com/@pipoycomo/video/6843691465021902081?is_from_webapp=1&sender_device=pc',
+    image: './image/Pipoy.png',
+    link: 'https://www.tiktok.com/@pipoycomo/video/6843691465021902081?is_from_webapp=1&sender_device=pc',
+    profile: 'https://www.tiktok.com/@pipoycomo',
+    origin: 'Catfish',
+    description: 'ewan ko ba parang tarantado lang',
+    tags: ['urban legend', 'tiktok'],
+    styles:{ modal:{ width:'460px', playerHeight:'720px' } }
+
+},
+
+  {
+    title: 'Darwin Lim',
+    year: 2020,
+    image: './image/darwin.jpeg',
+    link: 'https://www.tiktok.com/@inggopogi25/video/6883795382950841601?lang=en',
+    more1: 'https://www.tiktok.com/@umiiyakakongayonn05/video/7557713620029820167?lang=en&q=duduruginnaminkayo%20meme&t=1764509930575',
+    profile: 'https://www.tiktok.com/@inggopogi25?lang=en',
+    origin: 'Doombringer',
+    description: 'ewan ko rin parang tarantadao din (1)',
+    tags: ['urban legend', 'tiktok'], 
+    styles:{ modal:{ width:'460px', playerHeight:'720px' } }
+},
+
+
+      { title: 'Justin Nabunturan', year: 2025, image: './image/justin.jpeg', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282', origin:'Lester Bohol', description:'Ricardo Milos long lost son',more2: 'https://www.tiktok.com/@apolinario_29/video/7549381313896172808?q=Justin%20nabunturan%20pogi&t=1762764067911', profile: 'https://www.facebook.com/profile.php?id=61580183191602', news: 'https://www.facebook.com/share/p/1MSjx7x6TP/', link: 'https://www.tiktok.com/@nabunturan69/video/7558041789949611282?_r=1&_t=ZS-910uxG1zKFw', tags:['tiktok','image'], styles:{ modal:{ width:'460px', playerHeight:'720px' } } },
+{ title: 'Kween Yasmin Peace Sign', year: 2023, image: './image/kweenyasmin.jpg', embedurl: 'https://www.youtube.com/embed/4OIQLxhhVMc?start=25', link:'https://youtu.be/4OIQLxhhVMc?si=9C6Ro7w1YMrTnahJ&t=25', origin:'Yasmin Marie M. Asistido', profile: 'https://www.facebook.com/www.facebookyasminasistido.090', description:'Bat ka nag mimiddle finger kween?', tags:['image','viral'] },
+      { title: 'Komikero', year: 2009, image: './image/komikero.webp', embedurl:'https://www.youtube.com/embed/bhuYIr1J1zc', origin:'Gerry Alanguilan', profile: 'https://www.facebook.com/komiksmuseum', news: 'https://en.wikipedia.org/wiki/Gerry_Alanguilan',description:'Hey Baby', tags:['classical','image'] },
 
 {
   title: 'Kami ang ma pabebe girls',
