@@ -319,40 +319,57 @@
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
     }
 
-    /* === MOBILE FULL-WIDTH MODAL FIX === */
-    @media (max-width: 1000px) {
-      /* Make modal take almost the whole screen */
-      .modal-card {
-        width: 150vw !important;
-        max-width: 150vw !important;
-        height: 175vw !important;
-        max-height: 150vh !important;
-        border-radius: 14px !important;
-      }
+    /* === MOBILE MODAL FIX FOR FIXED CANVAS === */
+@media (max-width: 601px) {
 
-      /* Make video bigger - LANDSCAPE +30% */
-      .modal-card.landscape .video-player-wrap iframe,
-      .modal-card.landscape .video-player-wrap video {
-        aspect-ratio: 16/9 !important;
-        width: 100% !important;
-        height: 175vh !important;
-        max-height: 150vh !important; 
-      }
+  /* Modal scaled to canvas size */
+  .modal-card {
+    width: 560px !important;      /* ~93% of 601px */
+    max-width: 560px !important;
 
-      /* TikTok / Facebook Reels / portrait videos - TALLER +30% */
-      .modal-card.portrait .video-player-wrap iframe,
-      .modal-card.portrait .video-player-wrap video {
-        aspect-ratio: 9/16 !important;
-        width: 100% !important;
-        height: 175vh !important;
-        max-height: 175vh !important;
-      }
+    height: 860px !important;    /* ~96% of 898px */
+    max-height: 860px !important;
 
-      /* Tabs overflow fix */
-      .video-tabs-fixed {
-        overflow-x: auto;
-        white-space: nowrap;
-      }
+    margin: auto;
+    border-radius: 14px !important;
+
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Video wrapper */
+  .video-player-wrap {
+    width: 100%;
+    flex: 0 0 auto;
+    max-height: 620px;            /* keeps room for tabs & notes */
+  }
+
+  /* Landscape videos */
+  .modal-card.landscape .video-player-wrap iframe,
+  .modal-card.landscape .video-player-wrap video {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16 / 9 !important;
+    max-height: 315px !important;  /* fits nicely inside canvas */
+  }
+
+  /* Portrait / TikTok videos */
+  .modal-card.portrait .video-player-wrap iframe,
+  .modal-card.portrait .video-player-wrap video {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 9 / 16 !important;
+    max-height: 545px !important;  /* tall but contained */
+  }
+
+  /* Tabs scrolling fix */
+  .video-tabs-fixed {
+    overflow-x: auto;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
     }
   </style>
 <!doctype html>
