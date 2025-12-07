@@ -284,6 +284,41 @@
       .video-player-wrap iframe { max-width: 100%; }
     }
 
+    /* ============================
+   MOBILE MODAL OVERRIDES ONLY
+   ============================ */
+
+@media (max-width: 601px) {
+
+  /* Modal fills canvas width */
+  .modal-card {
+    width: 560px !important;      /* ~93% of 601px canvas */
+    max-width: 560px !important;
+    max-height: 860px !important;
+  }
+
+  /* Portrait video boost */
+  .modal-card.portrait {
+    --modal-player-height: 640px !important;
+    max-width: 560px !important;
+  }
+
+  /* Landscape video boost */
+  .modal-card.landscape {
+    --modal-player-height: 380px !important;
+    max-width: 560px !important;
+  }
+
+  /* Avoid video shrink from desktop max-width */
+  .video-player-wrap iframe,
+  .video-player-wrap video,
+  .video-player-wrap .embed-photo {
+    max-width: 520px !important;
+  }
+
+}
+
+
     /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
     .vote-box button:first-child:hover {
       transform: scale(1.12);
