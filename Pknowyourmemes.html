@@ -284,41 +284,6 @@
       .video-player-wrap iframe { max-width: 100%; }
     }
 
-    /* ============================
-   MOBILE MODAL OVERRIDES ONLY
-   ============================ */
-
-@media (max-width: 601px) {
-
-  /* Modal fills canvas width */
-  .modal-card {
-    width: 560px !important;      /* ~93% of 601px canvas */
-    max-width: 560px !important;
-    max-height: auto !important;
-  }
-
-  /* Portrait video boost */
-  .modal-card.portrait {
-    --modal-player-height: 600px !important;
-    max-width: 560px !important;
-  }
-
-  /* Landscape video boost */
-  .modal-card.landscape {
-    --modal-player-height: auto !important;
-    max-width: 560px !important;
-  }
-
-  /* Avoid video shrink from desktop max-width */
-  .video-player-wrap iframe,
-  .video-player-wrap video,
-  .video-player-wrap .embed-photo {
-    max-width: 520px !important;
-  }
-
-}
-
-
     /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
     .vote-box button:first-child:hover {
       transform: scale(1.12);
@@ -354,55 +319,53 @@
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
     }
 
-    /* === MOBILE MODAL FIX FOR FIXED CANVAS === */
-@media (max-width: 601px) {
+   /* === MOBILE FULL-WIDTH MODAL FIX === */
+@media (max-width: 1000px) {
 
-  /* Modal scaled to canvas size */
+  /* Make modal take almost the whole screen */
   .modal-card {
-    width: 560px !important;      /* ~93% of 601px */
-    max-width: 560px !important;
-
-    height: 860px !important;    /* ~96% of 898px */
-    max-height: 900px !important;
-
-    margin: auto;
+    width: 150vw !important;
+    max-width: 150vw !important;
+    height: 175vw !important;
+    max-height: 150vh !important;
     border-radius: 14px !important;
 
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
     overflow: hidden;
   }
 
-  /* Video wrapper */
-  .video-player-wrap {
-    width: 100%;
-    flex: 0 0 auto;
-    max-height: auto;            /* keeps room for tabs & notes */
+  /* LANDSCAPE VIDEOS (16:9) */
+  .modal-card.landscape 
+  .video-player-wrap iframe,
+  .modal-card.landscape 
+  .video-player-wrap video {
+    width: 100% !important;
+    aspect-ratio: 16/9 !important;
+
+    height: auto !important;
+    max-height: 150vh !important;
   }
 
-  /* Landscape videos */
-  .modal-card.landscape .video-player-wrap iframe,
-  .modal-card.landscape .video-player-wrap video {
+  /* PORTRAIT VIDEOS (9:16 | TikTok / Reels) */
+  .modal-card.portrait 
+  .video-player-wrap iframe,
+  .modal-card.portrait 
+  .video-player-wrap video {
     width: 100% !important;
-    aspect-ratio: 16 / 9 !important;
-    max-height: auto !important;  /* fits nicely inside canvas */
-  }
-
-  /* Portrait / TikTok videos */
-  .modal-card.portrait .video-player-wrap iframe,
-  .modal-card.portrait .video-player-wrap video {
-    width: 100% !important;
-    height: 600px !important;
     aspect-ratio: 9 / 16 !important;
-    max-height: auto !important;  /* tall but contained */
+
+    height: auto !important;
+    max-height: 175vh !important;
   }
 
-  /* Tabs scrolling fix */
+  /* Tabs overflow fix */
   .video-tabs-fixed {
     overflow-x: auto;
     white-space: nowrap;
-    max-width: 100%;
   }
+
 
     }
   </style>
@@ -937,7 +900,7 @@ Diay kadto makahilo... low low low...`,
     origin: 'Ryan Rojas',
     profile: 'https://www.youtube.com/@mahgenggeng',
     description: 'Yes, uh, randy fakalding I would like to greet you a happy birthday and wish you a, wah, the best of everything Sorry Im not a speaking straighting but Im just adjusting Ah, you wanted some rings huh? Ah, what do you want? I will give you this, this, and everything This is ummm... Im so rich, my n!gga.',
-    tags: ['urban legend','sound']
+    tags: ['urban legend','sound', 'greetings']
   },
 
 {
@@ -1051,13 +1014,15 @@ Diay kadto makahilo... low low low...`,
   year: 2019,
   image: './image/asawa.jpg',
   link: 'https://www.tiktok.com/@fairy.affiliates/video/7481204252308688135?_r=1&_t=ZS-91Rd4gwABof',
+  more2: 'https://youtu.be/frCL7prvjU0?si=_aGS3nRfiN3h98eV',
   more1: 'https://www.tiktok.com/@roccababe/video/6726881497518705922?_r=1&_t=ZS-91Rd3qM6705',
-  origin: 'EdElizha Rocca',
+  origin: 'EdElizha Rocca | One more try',
   profile: 'https://www.tiktok.com/@roccababe?_r=1&_t=ZS-91Rd1KJXGt7',
   description: '',
-  tags: ['tiktok', 'urban legend'],
+  tags: ['tiktok', 'urban legend', 'film', 'hugot'],
   styles:{ modal:{ width:'460px', playerHeight:'720px' } }
 },
+
 
 {
   title: 'Wehhh Di nga',
@@ -1318,7 +1283,7 @@ tags:['sound','classical'],
   origin: 'Daren Espanto | Lion Iji Gutierrez',
   profile: 'https://www.tiktok.com/@iji.mochi?_r=1&_t=ZS-91R9qQGRumP',
   description: 'Super Idol Bing Bong',
-  tags: ['celebrity', 'creepy', 'look alike'],
+  tags: ['celebrity', 'creepy', 'look-alike'],
   styles:{ modal:{ width:'460px', playerHeight:'720px' } }
 },
 
@@ -1964,7 +1929,7 @@ tags:['sound','classical'],
     origin: 'Unknown Nikoy',
     profile: '',
     description: 'at least sinubukan nyang mahalin',
-    tags: ['urban legend']
+    tags: ['urban legend','hugot']
   },
   {
     title: 'Bebe ko, gising na ikaw',
@@ -2368,7 +2333,7 @@ tags:['sound','classical'],
     origin: '1997 Family Rubbing Alcohol Commercial',
     profile: '',
     description: '',
-    tags: ['sound','pre-Historic','ads']
+    tags: ['sound','pre-historic','ads']
   },
   {
     title: 'Cristine Dacera',
@@ -2539,7 +2504,7 @@ tags:['sound','classical'],
     title: 'Lumpiang Pisot', 
     year: 2022, 
     image: './image/pisot.png', 
-    link: 'https://phcorner.org/threads/shanghai-na-pisot.1461570/', 
+    context: 'https://phcorner.org/threads/shanghai-na-pisot.1461570/', 
     origin: 'Unknown', 
     profile: '', 
     description: 'Hahaha supot', 
@@ -4484,12 +4449,12 @@ title: 'Philippine Pooper',
 {
   title: 'Rawmi rawmi baby',
   year: 2020,
-  image: './image/',
+  image: './image/rawmi.png',
   link: 'https://youtu.be/OqKUYTWdYOQ?si=g3fCSEBEJR3uNjXW',
-  origin: '',
+  origin: 'unknown',
   profile: '',
   description: 'average exb fanp',
-  tags: ['urban legend', 'song']
+  tags: ['urban legend', 'song', 'parody', 'jejemon']
 },
 
 {
@@ -4497,6 +4462,7 @@ title: 'Philippine Pooper',
   year: 2010,
   image: './image/lyn.png',
   link: 'https://youtu.be/YnbE4Lk0UWI?si=kj4i2C4YBYCcxywO',
+  more1: 'https://youtu.be/XvEygHEc9nQ?si=UJsZMxLn2KlU2pQe',
   origin: 'Cecile Zamora',
   profile: '',
   description: `Hi! I'm Lynn from Las Vegas—Models.
@@ -4510,7 +4476,7 @@ Epso, dees offorchunity meebee for yew.
 if dis sounds entresting?
 please Emil uss so we can arrenz a fersonal entrophy.
 Tengs.`,
-  tags: ['ancient', 'ads']
+  tags: ['ancient', 'ads', 'gay humor']
 },
 
 {
@@ -4524,16 +4490,6 @@ Tengs.`,
   tags: ['ancient', 'show']
 },
 
-{
-  title: 'Arizona B',
-  year: 2025,
-  image: './image/arizona.png',
-  link: 'https://youtu.be/XvEygHEc9nQ?si=UJsZMxLn2KlU2pQe',
-  origin: 'Arizona Brandy',
-  profile: '',
-  description: '',
-  tags: ['song', 'parody', 'gay humor']
-},
 
 {
   title: 'Bugbog Berna',
@@ -4567,8 +4523,8 @@ Tengs.`,
 {
   title: 'Babae nahulog sa upuan habang kumakain',
   year: 2022,
-  image: './image/',
-  link: 'https://vt.tiktok.com/ZSyEtUc4q/',
+  image: './image/hulog.png',
+  link: 'https://www.tiktok.com/@jopaylazada/video/7158815877469605147?_r=1&_t=ZS-91RcCh56Bs1',
   origin: '',
   profile: '',
   description: '',
@@ -4578,20 +4534,20 @@ Tengs.`,
 {
   title: 'Lugaw ka ba?',
   year: 2021,
-  image: './image/',
-  link: 'https://vt.tiktok.com/ZSyEtHr5m/',
+  image: './image/lugaw.jpg',
+  link: 'https://www.tiktok.com/@s4ettusok/video/6943909899214671106?_r=1&_t=ZS-91RcJLP7sRs',
   origin: 'Rian',
   profile: '',
   description: '',
-  tags: ['show']
+  tags: ['show', 'sensual']
 },
 
 {
   title: 'Malaya ka na',
   year: 2020,
-  image: './image/',
+  image: './image/malaya.jpg',
   link: 'https://www.tiktok.com/@jonlyrics/video/7243647591504809222?_r=1&_t=ZS-91RcNO3WRRh',
-  more1: 'https://vt.tiktok.com/ZSyEnNR3k/',
+  more1: 'https://www.tiktok.com/@glenntotcantcable/video/7144250431936400666?_r=1&_t=ZS-91RcUYEcSJN',
   origin: 'Unknown | french fries',
   profile: '',
   description: '',
@@ -4603,44 +4559,36 @@ Tengs.`,
 {
   title: 'Masarap ba asawa ko Nicole?',
   year: 2014,
-  image: './image/',
+  image: './image/masarap.jpg',
   link: 'https://youtu.be/7T67I9WV-n0?si=DE0RYuuYXLMKVNIX',
   origin: 'Legal Wife',
   profile: '',
   description: '',
-  tags: ['show', 'celebrity']
-},
-
-{
-  title: 'Pahiram ng Asawa mo',
-  year: 2012,
-  image: './image/',
-  link: 'https://youtu.be/frCL7prvjU0?si=_aGS3nRfiN3h98eV',
-  origin: 'One More Try',
-  profile: '',
-  description: '',
-  tags: ['sound', 'celebrity']
+  tags: ['show', 'celebrity','hugot']
 },
 
 
 {
   title: 'Happy New Year 2025🥳 From Hagolena Family',
   year: 2025,
-  image: './image/',
-  link: 'https://vt.tiktok.com/ZSyEWXHCV/',
+  image: './image/hago.png',
+  link: 'https://www.tiktok.com/@francoisrollenvilleta/video/7454558060183457042?_r=1&_t=ZS-91RdF6fHUnZ',
   origin: 'Francois Rollen Velleta',
-  more1: 'https://vt.tiktok.com/ZSyEWV6Qh/',
-  more2: 'https://vt.tiktok.com/ZSyEWSuqc/',
+  more1: 'https://www.tiktok.com/@francoisrollenvilleta/video/7451974983783304455?_r=1&_t=ZS-91RdOTwg9Zp',
+  more2: 'https://www.tiktok.com/@francoisrollenvilleta/video/7451975214163889415?_r=1&_t=ZS-91RdNyepWvQ',
   profile: 'https://www.tiktok.com/@francoisrollenvilleta?_r=1&_t=ZS-91RdN5PpgO0',
   description: '',
-  tags: ['tiktok', 'sound']
+  tags: ['tiktok', 'sound', 'greetings']
 },
 
 {
   title: 'Nobody Nobody But You',
   year: 2008,
-  image: './image/',
+  image: './image/nobody.jpg',
   link: 'https://youtu.be/QZBn1e9pr2Q?si=1FZaIUvMK_Y-oWXz',
+  more1: 'https://www.youtube.com/watch?v=PJhxIUyrN0o&list=RDPJhxIUyrN0o&start_radio=1',
+  more2: 'https://www.youtube.com/watch?v=8mutAQb0lW8&list=RD8mutAQb0lW8&start_radio=1',
+  more3: 'https://www.youtube.com/watch?v=qQZwQOx_tb4&list=RDqQZwQOx_tb4&start_radio=1',
   origin: 'Wondergirls',
   profile: '',
   description: '',
@@ -5374,7 +5322,7 @@ styles: {
 },
 {
   title:'Tignan ko nga etong notebook ko kung perfect ba ako sa quiz namin',
-  year:'November 11, 2025',
+  year: 2025,
   image:'./image/exam.png',
   link:'https://www.facebook.com/watch/?v=1171652055064580',
   origin:'Genelyn',
@@ -5396,7 +5344,7 @@ styles: {
 },
 {
   title:'Kween Yasmin Font',
-  year:'November 2025',
+  year: 2025,
   image:'./image/',
   link:'https://www.tiktok.com/@nellijournals/video/7577450180736306452?_r=1&_t=ZS-91oYBCCP3Fk',
   context: 'https://www.facebook.com/gmapublicaffairs/posts/pfbid02caL259jR8sziZojiBw6KZk8o18GEmX2qrvbx9zECj2CHLLR5YLqjfhDjqJQnQFH7l',
@@ -5516,7 +5464,7 @@ styles: {
   origin:'',
   profile:'',
   description:'Di ko rin alam ibig sabihin nito',
-  tags:['term']
+  tags:['terms']
 },
 {
   title:'Micola Original taste',
@@ -5655,7 +5603,7 @@ styles: {
 },
 {
   title:'Camille Prats',
-  year:'October 2025',
+  year:2025,
   image:'./image/',
   link:'https://vt.tiktok.com/ZSfXE3NV4/',
   origin:'Tiktok Clock',
@@ -5720,7 +5668,7 @@ styles: {
 },
 {
   title:'Badjao Budots',
-  year:'Nov 2025',
+  year: 2025,
   image:'./image/',
   link:'https://vt.tiktok.com/ZSf4ebNrG/',
   origin:'Inday Daisy Vlog',
@@ -5730,7 +5678,7 @@ styles: {
 },
 {
   title:'Babalik na ako sa Pilipinas. Ang Galing ni Lord Wawawewa',
-  year:'November 2025',
+  year: 2025,
   image:'./image/',
   link:'https://vt.tiktok.com/ZSfENbqPU/',
   origin:'Emyris Ari',
@@ -5740,7 +5688,7 @@ styles: {
 },
 {
   title:'Wall Friction',
-  year:'November 2025',
+  year: 2025,
   image:'./image/',
   link:'https://vt.tiktok.com/ZSfE6gujH/',
   more1:'https://vt.tiktok.com/ZSfE6cdKo/',
@@ -5893,7 +5841,7 @@ styles: {
   origin:'',
   profile:'',
   description:'Twerk na paharap',
-  tags:['term','dance','tiktok']
+  tags:['terms','dance','tiktok']
 },
 {
   title:'Jungcock ng Valenzuela',
@@ -5946,7 +5894,7 @@ styles: {
   origin:'',
   profile:'',
   description:'A Foreigner Assigned in Manila | A loser back home',
-  tags:['term']
+  tags:['terms']
 },
 {
   title:'Taho Ulol na Pitsel',
