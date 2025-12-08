@@ -320,46 +320,40 @@
     }
 
    /* === MOBILE FULL-WIDTH MODAL FIX === */ 
-/* === FIXED CANVAS MODAL RESPONSIVE SIZE === */
-.modal-card{
-  width: min(95vw, var(--modal-width));
-  max-width: 100%;
-  max-height: 92vh;
-}
-
-/* Landscape video sizing */
-.modal-card.landscape .video-player-wrap iframe,
-.modal-card.landscape .video-player-wrap video{
-  width: 100%;
-  height: var(--modal-player-height);
-  max-height: 70vh;
-}
-
-/* Portrait reels / TikToks */
-.modal-card.portrait .video-player-wrap iframe,
-.modal-card.portrait .video-player-wrap video{
-  width: 100%;
-  height: min(80vh, var(--modal-player-height));
-}
-
-/* Small screens (mobile inside fixed canvas) */
+/* === MOBILE BOOST: Make modal fill most of the screen === */
 @media (max-width: 780px){
   .modal-card{
-    width: 100%;
-    max-width: 100%;
-    max-height: 90vh;
-    border-radius: 12px;
+    width: 96vw;        /* almost full screen */
+    max-width: 96vw;
+    height: 85vh;      /* forces large presence */
+    max-height: 85vh;
   }
 
-  .modal-card.landscape .video-player-wrap iframe{
-    height: 48vw;      /* keeps 16:9 look */
-    max-height: 55vh;
+  /* LANDSCAPE videos (YouTube etc) */
+  .modal-card.landscape
+  .video-player-wrap iframe,
+  .modal-card.landscape
+  .video-player-wrap video{
+    height: 45vh;      /* ~60% of modal */
+    max-height: 45vh;
+    aspect-ratio: 16 / 9;
   }
 
-  .modal-card.portrait .video-player-wrap iframe{
-    height: 72vh;     /* tall but safe */
-    max-height: 78vh;
+  /* PORTRAIT videos (TikTok / Reels) */
+  .modal-card.portrait
+  .video-player-wrap iframe,
+  .modal-card.portrait
+  .video-player-wrap video{
+    height: 68vh;      /* tall immersive look */
+    max-height: 68vh;
+    aspect-ratio: 9 / 16;
   }
+
+  /* Tighten internal padding so content fits without squish */
+  .modal-body{
+    padding: 8px 14px;
+  }
+
  
     }
   </style>
