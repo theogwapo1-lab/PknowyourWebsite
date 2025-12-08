@@ -7,16 +7,18 @@
   <meta name="description" content="Pknow Your Memes — Filipino Memes Collection" />
   <style>
 
-    .fixed-canvas {
-  width: 601px;
-  height: 898px;
+   .fixed-canvas{
+  width: min(95vw, 1100px);   /* fluid on all devices */
+  max-width: 1100px;
+  height: auto;
   margin: 0 auto;
-  transform-origin: top center;
+  transform: none;           /* removes zoom issues */
 }
 
-@media (max-width: 601px) {
-  .fixed-canvas {
-    transform: scale(calc(100vw / 601));
+/* Mobile iOS / Android target widths */
+@media (max-width: 420px){
+  .fixed-canvas{
+    width: 100vw;
   }
 }
 
@@ -321,46 +323,48 @@
 
    /* === MOBILE FULL-WIDTH MODAL FIX === */ 
 /* === MOBILE BOOST: Make modal fill most of the screen === */
-@media (max-width: 1000px){
-.modal-
+@media (max-width: 780px){
 
+  /* Modal fills ~90% of screen width */
   .modal-card{
-    width: 1000px !important; 
-max-width: 1000px !important; 
-    height: 850px;      /* forces large presence */
-    max-height: 900px;
+    width: 94vw;
+    max-width: 94vw;
   }
 
   .modal-card.landscape{
-    height: 700px;      /* ~60% of modal */
-    width: 500px; 
-    max-height: 750px;
-    aspect-ratio: 16 / 9;
+    width: 94vw;
+  }
 
-}
+  .modal-card.portrait{
+    width: 80vw;
+  }
 
-  /* LANDSCAPE videos (YouTube etc) */
+  /* Video always fills modal width */
+  .video-player-wrap iframe,
+  .video-player-wrap video{
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Landscape gets 60%+ screen height */
+  .modal-card.landscape
   .video-player-wrap iframe,
   .modal-card.landscape
   .video-player-wrap video{
-    height: 700px;      /* ~60% of modal */
-    width: 75% !important; 
-    max-height: 750px;
+    height: 55vh;
     aspect-ratio: 16 / 9;
   }
 
-  /* PORTRAIT videos (TikTok / Reels) */
+  /* Portrait becomes tall immersive */
   .modal-card.portrait
   .video-player-wrap iframe,
   .modal-card.portrait
   .video-player-wrap video{
-    height: 700px;      /* tall immersive look */
-    width: 75% !important; 
-    max-height: 850px;
+    height: 70vh;
     aspect-ratio: 9 / 16;
   }
 
-  /* Tighten internal padding so content fits without squish */
+  /* Keep spacing tight */
   .modal-body{
     padding: 8px 14px;
   }
