@@ -319,12 +319,40 @@
       box-shadow: 0 0 16px rgba(255, 60, 60, 1);
     }
 
-   /* === MOBILE FULL-WIDTH MODAL FIX === */ @media (max-width: 1000px) { 
-  /* Make modal take almost the whole screen */ .modal-card { width: 150vw !important; max-width: 150vw !important; height: 175vw !important; max-height: 150vh !important; border-radius: 14px !important; } 
-  /* Make video bigger - LANDSCAPE +30% */ .modal-card.landscape .video-player-wrap iframe, .modal-card.landscape .video-player-wrap video { aspect-ratio: 16/9 !important; width: 100% !important; height: 175vh !important; max-height: 150vh !important; } 
-  /* TikTok / Facebook Reels / portrait videos - TALLER +30% */ .modal-card.portrait .video-player-wrap iframe, .modal-card.portrait .video-player-wrap video { aspect-ratio: 9/16 !important; width: 100% !important; height: auto !important; max-height: 175vh !important; } 
-   /* Tabs overflow fix */ .video-tabs-fixed { overflow-x: auto; white-space: nowrap; }
+   /* === MOBILE FULL-WIDTH MODAL FIX === */ 
+@media (max-width: 1000px) { 
+/* Make modal take almost the whole screen */ 
+.modal-card { 
+width: 150vw !important; 
+max-width: 150vw !important; 
+height: 175vw !important; 
+max-height: 150vh !important; 
+border-radius: 14px !important; 
+} 
 
+/* Make video bigger - LANDSCAPE +30% */ 
+.modal-card.landscape .video-player-wrap iframe, 
+.modal-card.landscape .video-player-wrap video { 
+aspect-ratio: 16/9 !important; 
+width: 100% !important; 
+height: 175vh !important; 
+max-height: 150vh !important; 
+} 
+
+/* TikTok / Facebook Reels / portrait videos - TALLER +30% */ 
+.modal-card.portrait .video-player-wrap iframe, 
+.modal-card.portrait .video-player-wrap video { 
+aspect-ratio: 9/16 !important; 
+width: 100% !important; 
+height: auto !important; 
+max-height: 175vh !important; 
+} 
+
+/* Tabs overflow fix */ 
+.video-tabs-fixed { 
+overflow-x: auto; 
+white-space: nowrap; 
+}
     }
   </style>
 <!doctype html>
