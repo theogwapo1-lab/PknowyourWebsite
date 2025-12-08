@@ -7,18 +7,16 @@
   <meta name="description" content="Pknow Your Memes — Filipino Memes Collection" />
   <style>
 
-   .fixed-canvas{
-  width: min(95vw, 1100px);   /* fluid on all devices */
-  max-width: 1100px;
-  height: auto;
+    .fixed-canvas {
+  width: 601px;
+  height: 898px;
   margin: 0 auto;
-  transform: none;           /* removes zoom issues */
+  transform-origin: top center;
 }
 
-/* Mobile iOS / Android target widths */
-@media (max-width: 420px){
-  .fixed-canvas{
-    width: 100vw;
+@media (max-width: 601px) {
+  .fixed-canvas {
+    transform: scale(calc(100vw / 601));
   }
 }
 
@@ -322,7 +320,6 @@
     }
 
    /* === MOBILE FULL-WIDTH MODAL FIX === */ 
-/* === MOBILE BOOST: Make modal fill most of the screen === */
 @media (max-width: 780px){
 
   /* Modal fills ~90% of screen width */
@@ -368,6 +365,7 @@
   .modal-body{
     padding: 8px 14px;
   }
+
 
  
     }
