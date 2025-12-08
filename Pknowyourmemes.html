@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>Pknow Your Memes — Rewrite</title>
   <meta name="description" content="Pknow Your Memes — Filipino Memes Collection" />
   <style>
 
-    .fixed-canvas {
+.fixed-canvas{
   width: 601px;
-  height: 898px;
   margin: 0 auto;
   transform-origin: top center;
 }
 
-@media (max-width: 601px) {
-  .fixed-canvas {
-    transform: scale(calc(100vw / 601));
+@media (max-width: 601px){
+  .fixed-canvas{
+    transform: scale(0.999);
+    width: 100vw;
   }
 }
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+
+
 
     :root{
       --bg:#9acadd; --card:#ffffff; --accent:#123f72; --muted:#534d4d; --maxw:1100px;
@@ -360,8 +369,7 @@
     padding: 8px 14px;
   }
 
- 
-    }
+
   </style>
 <!doctype html>
 <html lang="en">
