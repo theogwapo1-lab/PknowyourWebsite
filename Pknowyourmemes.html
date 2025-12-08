@@ -320,52 +320,51 @@
     }
 
    /* === MOBILE FULL-WIDTH MODAL FIX === */ 
-@media (max-width: 1000px){
+@media (max-width: 780px){
 
   /* Modal fills ~90% of screen width */
   .modal-card{
-  width: 225vw;        /* 150vw → 225vw (+50%) */
-  max-width: 300vw;   /* 200vw → 300vw */
-}
+    width: 150vw;
+    max-width: 200vw;
+  }
 
-.modal-card.landscape{
-  width: 141vw;       /* 94vw → 141vw */
-}
+  .modal-card.landscape{
+    width: 94vw;
+  }
 
-.modal-card.portrait{
-  width: 188vw;       /* 125vw → 188vw */
-}
+  .modal-card.portrait{
+    width: 125vw;
+  }
 
-/* Video always fills modal width */
-.video-player-wrap iframe,
-.video-player-wrap video{
-  width: 100%;
-  max-width: 100%;
-}
+  /* Video always fills modal width */
+  .video-player-wrap iframe,
+  .video-player-wrap video{
+    width: 100%;
+    max-width: 100%;
+  }
 
-/* Landscape gets ~90%+ screen height */
-.modal-card.landscape
-.video-player-wrap iframe,
-.modal-card.landscape
-.video-player-wrap video{
-  height: 150vh;      /* 100vh → 150vh */
-  aspect-ratio: 16 / 9;
-}
+  /* Landscape gets 60%+ screen height */
+  .modal-card.landscape
+  .video-player-wrap iframe,
+  .modal-card.landscape
+  .video-player-wrap video{
+    height: 100vh;
+    aspect-ratio: 16 / 9;
+  }
 
-/* Portrait becomes ultra immersive */
-.modal-card.portrait
-.video-player-wrap iframe,
-.modal-card.portrait
-.video-player-wrap video{
-  height: 195vh;      /* 130vh → 195vh */
-  aspect-ratio: 9 / 16;
-}
+  /* Portrait becomes tall immersive */
+  .modal-card.portrait
+  .video-player-wrap iframe,
+  .modal-card.portrait
+  .video-player-wrap video{
+    height: 130vh;
+    aspect-ratio: 9 / 16;
+  }
 
-/* Keep spacing tight */
-.modal-body{
-  padding: 8px 14px;
-}
-
+  /* Keep spacing tight */
+  .modal-body{
+    padding: 8px 14px;
+  }
 
 
  
