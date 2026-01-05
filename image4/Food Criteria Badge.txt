@@ -1,0 +1,159 @@
+Food Criteria Badge
+
+Refreshment - Liquid
+Dessert - Taste Sweet
+Indigenous - Not really too well known anymore
+Ulam -Can be indigenous but still usually served sold in carenderias 
+Kakanin - rice based food
+International food - International food that is well known in the PH and had become a staple
+Street Food - usually sold as street snacks by small scale vendors
+
+🍽️ Filipino Food Criteria Badges (Expanded)
+🥤 Refreshment
+
+Definition:
+Primarily liquid or semi-liquid foods consumed to cool, hydrate, or refresh the body rather than to satisfy hunger.
+
+Criteria:
+
+Drinkable or spoonable
+
+Often served cold or at room temperature
+
+Commonly sold as beverages or light refreshments
+
+Examples:
+Sago’t gulaman, Buko juice, Calamansi juice, Samalamig
+
+🍰 Dessert
+
+Definition:
+Sweet foods traditionally eaten after meals or as snacks, emphasizing sugar, coconut, fruit, or dairy flavors.
+
+Criteria:
+
+Predominantly sweet in taste
+
+Not intended as a main dish
+
+Often paired with coffee or tea
+
+Examples:
+Leche flan, Turon, Ube halaya
+
+🌾 Indigenous
+
+Definition:
+Foods that originated before foreign colonization and are rooted in native Filipino ingredients, techniques, and regional traditions. Many are now less commonly known or prepared today.
+
+Criteria:
+
+Pre-colonial or native in origin
+
+Uses local ingredients and traditional methods
+
+Often regional or ancestral in nature
+
+Examples:
+Kinilaw, Pinikpikan, Tinubong, Inabraw
+
+🍛 Ulam
+
+Definition:
+Savory dishes eaten with rice as part of a regular meal, commonly served in homes and carinderias.
+
+Criteria:
+
+Served alongside rice
+
+Can be indigenous, foreign-influenced, or modern
+
+Hearty and filling
+
+Examples:
+Adobo, Sinigang, Laing, Dinuguan
+
+🍙 Kakanin
+
+Definition:
+Traditional Filipino rice-based delicacies, often steamed, boiled, or cooked with coconut milk and sugar.
+
+Criteria:
+
+Made primarily from rice or glutinous rice
+
+Usually sweet or mildly savory
+
+Often sold in markets or during festivities
+
+Examples:
+Bibingka, Puto, Sapin-sapin, Kutsinta
+
+🌍 International Food
+
+Definition:
+Foods with foreign origins that have been widely adopted, localized, and become everyday staples in Filipino cuisine.
+
+Criteria:
+
+Clearly foreign in origin
+
+Adapted to Filipino taste
+
+Commonly eaten across generations
+
+Examples:
+Pancit (Chinese), Lumpia (Chinese), Spaghetti (American-Italian), Menudo
+
+🛒 Street Food
+
+Definition:
+Foods sold by small-scale vendors in streets, markets, school areas, and night stalls, typically affordable and ready-to-eat.
+
+Criteria:
+
+Sold in public or outdoor spaces
+
+Handheld or skewer-based
+
+Casual, snack-style portions
+
+Examples:
+Kwek-kwek, Fish balls, Isaw, Banana cue
+
+💡 Optional Extra Badges (Highly Recommended)
+
+If you want deeper classification later:
+
+🔄 Foreign-Influenced
+
+Foods that originated locally but were modified by colonial or foreign cooking techniques.
+Example: Adobo, Caldereta
+
+🎉 Festive
+
+Foods traditionally prepared for celebrations and special occasions.
+Example: Lechon, Bibingka, Moron
+
+🗺️ Regional
+
+Dishes strongly associated with a specific Philippine region.
+Example: Bicol Express, Chicken Inasal
+
+🧭 Suggested Usage for Your Website
+
+Multiple badges per food (e.g., Kwek-kwek: Street Food + International Food)
+
+Use badges as filters (history, origin, cooking method)
+
+Add short hover tooltips using these definitions
+
+If you want, I can:
+
+convert these into JSON badge definitions
+
+shorten them into one-line UI tooltips
+
+help classify your existing food list accurately
+
+Just tell me how your site is structured 👌
