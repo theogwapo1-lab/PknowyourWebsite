@@ -1195,7 +1195,7 @@ header {
 {
     title: "Live Show",
   year: 2000,
-  poster: "./image3/Live Show.jpg",
+  poster: "./image3/live.jpg",
   genre: [ "Bold"],
   director: {
     name: "Jose Javier Reyes",
@@ -2314,6 +2314,7 @@ function toEmbedUrl(url){
       const videoId = u.pathname.split('/').pop();
       if (videoId) return `https://ok.ru/videoembed/${videoId}`;
     }
+    
       // Dailymotion video links (short and full) -> embed
     if (u.hostname.endsWith('dailymotion.com')) {
       // Already embed
