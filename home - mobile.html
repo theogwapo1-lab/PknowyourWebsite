@@ -6,6 +6,14 @@
 <title>Pinoy Know Your Website</title>
 
 <style>
+
+.fixed-canvas{
+  width: min(670px,); 
+  min-height: 800px;
+  margin: 0 auto;          
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -111,10 +119,35 @@ h1 {
   .cards { gap: 20px; }
   .card { aspect-ratio: 3 / 2; }
 }
+
+
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 120;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 100%;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.09) translateY(-6px);
+  z-index: 3;
+}
+
+
 </style>
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
+  <a href="index.html" class="index-logo-link" aria-label="Back to Index">
+    <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
+  </a>
+
 <div class="container">
   <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
 
