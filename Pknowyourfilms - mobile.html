@@ -9,6 +9,13 @@
   <meta name="description" content="Pknow Your Films — Filipino Films Collection" />
   <style>
 
+.fixed-canvas{
+  width: min(603px,); /* don’t overflow on small screens */
+  min-height: 800px;
+  margin: 0 auto;          /* center */
+  box-sizing: border-box;
+}
+
 :root {
   --bg: url("image/bolbohol.jpg");
   --text: #111;
@@ -196,8 +203,10 @@ header {
   transition: transform .2s;
 }
 .index-logo-link:hover .main-logo {
-  transform: scale(1.08);
+  transform: scale(1.09) translateY(-6px);
+  z-index: 3;
 }
+
 
 /* ===========================
    FILM CARD CSS (Your Style)
@@ -1100,13 +1109,13 @@ header {
     title: "Orapronobis (Fight For Us)",
   year: 1989,
   poster: "./image3/ora.jpg",
-  genre: ["Drama"],
+  genre: ["Drama",'Political'],
   director: {
     name: "Lino Brocka",
     link: "https://en.wikipedia.org/wiki/Lino_Brocka"
   },
-  details: "", 
-  synopsis: "Dalagang Bukid follows the story of Angelita, a young and virtuous country girl who lives a simple life in her provincial town. She falls in love with a humble man, but their budding romance faces obstacles from societal expectations, family pressures, and misunderstandings. Through trials and challenges, Angelita’s innocence, courage, and sincerity shine, ultimately leading to love, reconciliation, and a reaffirmation of traditional Filipino values.",
+  details: "Fight for Us (released in the Philippines as Orapronobis) is a 1989 Philippine political thriller directed by Lino Brocka and written by Jose F. Lacaba, starring Phillip Salvador and Dina Bonnevie. The film screened out of competition at the 1989 Cannes Film Festival. For its release in France, the title Orapronobis was changed because of its religious connotations. In the Philippines, the film drew strong condemnation from government officials for its critical portrayal of the Aquino administration. Due to censorship, it was never shown theatrically in the country.", 
+  synopsis: "In 1985, in the isolated town of Santa Filomena, the cult Orapronobis, led by Kumander Kontra, murders a foreign priest and an alleged rebel. After the 1986 EDSA Revolution, political prisoners are freed, including Jimmy Cordero, a former priest turned revolutionary. Jimmy marries human rights activist Trixie and dedicates himself to advocacy, but later joins her brother Roland on a mission to investigate Orapronobis abuses. In Santa Filomena, Jimmy reunites with his former lover Esper and discovers he has a son, Camilo, whose true parentage they keep secret. As the cult collaborates with the military and intensifies its violence, Jimmy helps evacuate villagers to safety in Manila. An ambush kills Roland, while Jimmy survives and witnesses the continued persecution of refugees by the authorities. Esper and Camilo are abducted by the Orapronobis, and after Esper resists abuse, Kumander Kontra massacres her, the child, and other captives. The film ends with Jimmy mourning their deaths and reconnecting with the underground movement.",
   trailer: "https://www.youtube.com/watch?v=OHOtdcdd8R0",
   movie:'https://www.youtube.com/watch?v=ubJtywJcS6E',
   mpa_rating: "SPG",
@@ -1117,8 +1126,8 @@ header {
       icon: "./icons/imdb.png"
     },
     rotten_tomatoes: {
-      tomatometer: "0%",
-      popcornmeter: "0",
+      tomatometer: "",
+      popcornmeter: "",
       link: "https://www.rottentomatoes.com/m/national_anarchist_lino_brocka",
     },
     letterboxd: {
@@ -1126,9 +1135,56 @@ header {
       link: "https://letterboxd.com/film/fight-for-us/",
       icon: "./icons/letterboxd.png"
     }
-  }
 },
+  cast: [
+    { name: "Lino Brocka", role: "Director", photo: "./image3/lino.jpg", link: "https://en.wikipedia.org/wiki/Lino_Brocka" },
+    { name: "Jose F. Lacaba", role: "Writer", photo: "./image3/pete.jpg", link: "https://en.wikipedia.org/wiki/Pete_Lacaba" },
+    { name: "Philip Salvado", role: "Jimmy", photo: "./image3/phil.jpg", link: "https://en.wikipedia.org/wiki/Phillip_Salvador" },
+    { name: "Dina Bonnevie", role: "Trixie", photo: "./image3/dina.jpg", link: "https://en.wikipedia.org/wiki/Dina_Bonnevie" },
+        { name: "Gina Alajar", role: "Esper", photo: "./image3/gina.jpg", link: "https://en.wikipedia.org/wiki/Gina_Alajar" },
 
+  ]
+},
+{
+    title: "Azucena",
+  year: 2000,
+  poster: "./image3/Azucena.jpg",
+  genre: ["Gore", "Drama"],
+  director: {
+    name: "Carlitos Siguion-Reyna",
+    link: "https://www.imdb.com/name/nm0797570/"
+  },
+  details: "Azucena is a Filipino coming-of-age drama that follows a young girl’s emotional struggle against family neglect, social prejudice, and moral hypocrisy. Centered on a child’s bond with her dog and an unlikely friendship with a marginalized man, the film explores themes of compassion, abuse, and the search for parental care. Through the eyes of its young protagonist, the story critiques authority, cruelty, and societal judgment.", 
+  synopsis: "Twelve-year-old Lily lives with her suspended policeman father and her passive stepmother in a troubled household. When her parents sell her aging dog to a dog-meat vendor named Mr. Teban, Lily desperately persuades him to give the dog back. Despite her family’s disapproval, she forms a close bond with Mr. Teban, who gradually becomes a father figure to her. As Lily endures abuse from her father and indifference from her stepmother, Mr. Teban offers protection, understanding, and emotional support. Their relationship challenges the community’s prejudices and exposes the cruelty hidden within Lily’s own home.",
+  trailer: "https://www.youtube.com/watch?v=4bGOzjzp9e8",
+  movie:'https://www.youtube.com/watch?v=ew9Hy9gOxUk',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt0224832/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/national_anarchist_lino_brocka",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/dog-food/",
+      icon: "./icons/letterboxd.png"
+    }
+  },
+  cast: [
+    { name: "Carlos Siguion-Reyna", role: "Director", photo: "./image3/carlos.jpg", link: "https://www.imdb.com/name/nm0797570/" },
+    { name: "Eric Ramos", role: "Writer", photo: "./image3/eric.jpg", link: "https://www.imdb.com/name/nm0708609/" },
+    { name: "Ricky Davao", role: "Tomas", photo: "./image3/davao.webp", link: "https://en.wikipedia.org/wiki/Ricky_Davao" },
+        { name: "Dante Rivero", role: "Teban", photo: "./image3/dante.jpg", link: "https://en.wikipedia.org/wiki/Dante_Rivero" },
+    { name: "Alessandra De Rose", role: "Lily", photo: "./image3/alessandra.webp", link: "https://en.wikipedia.org/wiki/Alessandra_De_Rossi" },
+    { name: "Glydel Mercado", role: "Sonia", photo: "./image3/glydel.webp", link: "https://en.wikipedia.org/wiki/Glydel_Mercado" },
+
+  ]
+},
 
 ];
 
@@ -1228,6 +1284,82 @@ function toEmbedUrl(url){
       // already embed or other paths
       if (u.pathname.includes('/embed/')) return u.href;
     }
+    // ok.ru direct video link embed
+    if (u.hostname.endsWith('ok.ru') && u.pathname.startsWith('/video/')) {
+      const videoId = u.pathname.split('/').pop();
+      if (videoId) return `https://ok.ru/videoembed/${videoId}`;
+    }
+    
+      // Dailymotion video links (short and full) -> embed
+    if (u.hostname.endsWith('dailymotion.com')) {
+      // Already embed
+      if (u.pathname.startsWith('/embed/video/')) return u.href;
+      // Standard /video/<id>...
+      const m = u.pathname.match(/^\/video\/([a-zA-Z0-9]+)(?:[_\/]|$)/);
+      const videoId = m && m[1];
+      if (videoId) return `https://www.dailymotion.com/embed/video/${videoId}`;
+    }
+    if (u.hostname.endsWith('dai.ly')) {
+      const videoId = u.pathname.replace('/','').split('_')[0];
+      if (videoId) return `https://www.dailymotion.com/embed/video/${videoId}`;
+    }
+    // Google Drive preview link
+    if (u.hostname.includes('drive.google.com')) {
+      // Accept both /file/d/<id>/preview and /open?id=<id>
+      let match = u.pathname.match(/\/file\/d\/([^/]+)\/preview/);
+      if (match && match[1]) {
+        return `https://drive.google.com/file/d/${match[1]}/preview`;
+      }
+      if (u.pathname === '/open' && u.searchParams.get('id')) {
+        return `https://drive.google.com/file/d/${u.searchParams.get('id')}/preview`;
+      }
+       // Bilibili (intl .tv)
+    if (u.hostname.endsWith('bilibili.tv')) {
+      // Already embed
+      if (u.pathname.includes('/embed/')) return u.href;
+      // Locale-aware: /{locale}/video/{id}
+      const m = u.pathname.match(/^\/([a-z]{2})\/video\/(\d+)(?:[\/?#]|$)/i);
+      if (m) return `https://${u.hostname}/${m[1]}/embed/${m[2]}`;
+      // Default: /video/{id}
+      const m2 = u.pathname.match(/^\/video\/(\d+)(?:[\/?#]|$)/i);
+      if (m2) return `https://${u.hostname}/embed/${m2[1]}`;
+    }
+
+    // Bilibili (main .com with BV id)
+    if (u.hostname.endsWith('bilibili.com')) {
+      const bv = u.pathname.match(/^\/video\/(BV[0-9A-Za-z]+)(?:[\/?#]|$)/);
+      if (bv) return `https://player.bilibili.com/player.html?bvid=${bv[1]}&page=1`;
+      const aid = u.searchParams.get('aid');
+      if (aid) return `https://player.bilibili.com/player.html?aid=${aid}&page=1`;
+    }
+     // Facebook (watch, page/videos, short fb.watch) -> plugin embed
+    if (host.endsWith('facebook.com')) {
+      if (u.pathname.startsWith('/plugins/video.php')) return u.href; // already embed
+      let canonical = u.href;
+      if (u.pathname.startsWith('/watch')) {
+        const vid = u.searchParams.get('v');
+        if (vid) canonical = `https://www.facebook.com/watch/?v=${vid}`;
+      } else {
+        const m = u.pathname.match(/\/videos\/(\d+)/);
+        if (m) canonical = `https://www.facebook.com${u.pathname.replace(/\/$/, '')}`;
+      }
+      return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(canonical)}&show_text=false&width=720&height=405&t=0`;
+    }
+    if (host.endsWith('fb.watch')) {
+      return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(u.href)}&show_text=false&width=720&height=405&t=0`;
+    }
+
+    }
+    // Internet Archive (archive.org) -> embed
+    if (u.hostname.includes('archive.org')) {
+      if (u.pathname.startsWith('/embed/')) return u.href;
+      const mDetails = u.pathname.match(/^\/details\/([^\/?#]+)(?:[\/?#]|$)/);
+      if (mDetails) return `https://archive.org/embed/${mDetails[1]}`;
+      const mDownload = u.pathname.match(/^\/download\/([^\/?#]+)(?:[\/?#]|$)/);
+      if (mDownload) return `https://archive.org/embed/${mDownload[1]}`;
+      const mMeta = u.pathname.match(/^\/metadata\/([^\/?#]+)(?:[\/?#]|$)/);
+      if (mMeta) return `https://archive.org/embed/${mMeta[1]}`;
+    }
     return u.href;
   }catch(e){
     return url;
@@ -1291,15 +1423,25 @@ function populateFilters() {
   const directors = new Set();
 
   FILMS.forEach(f => {
-    years.add(f.year);
-    f.genre.forEach(g => genres.add(g));
+    if (f.year != null) years.add(f.year);
+    (Array.isArray(f.genre) ? f.genre : []).forEach(g => {
+      if (g && g.trim()) genres.add(g.trim());
+    });
     const directorName = (f.director && typeof f.director === 'object') ? f.director.name : (f.director || '');
-    if (directorName) directors.add(directorName);
+    if (directorName && directorName.trim()) directors.add(directorName.trim());
   });
 
-  years.forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
-  genres.forEach(g => genreFilter.innerHTML += `<option value="${g}">${g}</option>`);
-  directors.forEach(d => directorFilter.innerHTML += `<option value="${d}">${d}</option>`);
+  // Sort years ascending (numeric)
+  const yearsSorted = Array.from(years).sort((a, b) => Number(a) - Number(b));
+  yearsSorted.forEach(y => yearFilter.innerHTML += `<option value="${y}">${y}</option>`);
+
+  // Sort genres A–Z (case-insensitive)
+  const genresSorted = Array.from(genres).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  genresSorted.forEach(g => genreFilter.innerHTML += `<option value="${g}">${g}</option>`);
+
+  // Sort directors A–Z (case-insensitive)
+  const directorsSorted = Array.from(directors).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+  directorsSorted.forEach(d => directorFilter.innerHTML += `<option value="${d}">${d}</option>`);
 }
 
 // Render
@@ -1722,7 +1864,7 @@ function openModal(f) {
   //   }
   // } else {
   //   modalTrailer.style.display = 'none';
-  //   modalTrailer.src = '';
+   modalTrailer.src = '';
   //   if (openTrailerBtn) openTrailerBtn.style.display = 'none';
   // }
 
@@ -1736,7 +1878,7 @@ function openModal(f) {
     castData.forEach(item => {
       if (typeof item === 'string') {
         castList.insertAdjacentHTML('beforeend', `<li><span class="name">${item}</span></li>`);
-      } else if (item && typeof item === 'object') {
+           } else if (item && typeof item === 'object') {
         const name = item.name || '';
         const role = item.role || item.job || '';
         const photo = item.photo || item.image || '';
@@ -1802,39 +1944,6 @@ if (modal) {
     }
   });
 }
-
-// Open trailer in a separate centered window (toggle close if already open)
-/* REMOVE this entire block (it causes the ReferenceError):
-if (openTrailerBtn) {
-  openTrailerBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const url = openTrailerBtn.dataset.trailer;
-    if (!url) return;
-
-    // If popup already open, close it
-    if (trailerWindow && !trailerWindow.closed) {
-      trailerWindow.close();
-      trailerWindow = null;
-      openTrailerBtn.textContent = 'Watch Trailer';
-      return;
-    }
-
-    const watchUrl = embedToWatchUrl(url);
-    const w = 960, h = 540;
-    const left = Math.round((window.screen.width - w) / 2);
-    const top = Math.round((window.screen.height - h) / 2);
-    const opts = `toolbar=0,location=0,status=0,menubar=0,scrollbars=0,resizable=1,width=${w},height=${h},left=${left},top=${top}`;
-    trailerWindow = window.open(watchUrl, 'trailerWindow', opts);
-    if (trailerWindow) {
-      openTrailerBtn.textContent = 'Close Trailer';
-      trailerWindow.focus();
-    } else {
-      // popup blocked: fallback open in new tab
-      window.open(watchUrl, '_blank');
-    }
-  });
-}
-*/
 
 document.querySelectorAll('.tab-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{

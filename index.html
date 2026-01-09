@@ -2,228 +2,160 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Screen Mode Selector</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pinoy Know Your Website</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: url("image/philippines.jpg") no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-  text-align: center;
-}
+    * {
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+    }
 
-.container {
-  padding: 48px 24px;
-  max-width: 1200px;
-  margin: auto;
-}
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: #0f0f0f;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.main-logo {
-  max-width: 700px;
-  width: 100%;
-  margin: -30px auto 0;
-  transition: transform .2s ease;
-}
-.main-logo:hover { transform: scale(1.05); }
+    /* ===== Selection Screen ===== */
+    .selector {
+        text-align: center;
+    }
 
-@font-face {
-  font-family: 'Bangers';
-  src: url('image4/Bangers-YPnj.ttf') format('truetype');
-}
+    .selector h1 {
+        margin-bottom: 20px;
+        font-size: 32px;
+    }
 
-h1 {
-  font-family: 'Bangers', Arial, sans-serif;
-  margin-top:-25px;
-  max-width:900px;
-  margin-left:auto;
-  margin-right:auto;
-  font-size:32px;
-  font-weight:500;
-  letter-spacing:0.4px;
-  text-transform:uppercase;
-  line-height:1.5;
-  text-shadow:
-    -2px -2px 0 #222,
-    2px -2px 0 #222,
-    -2px 2px 0 #222,
-    2px 2px 0 #222,
-    2px 0px 0 #222,
-    0px 2px 0 #222,
-    -2px 0px 0 #222,
-    0px -2px 0 #222,
-    2px 2px 5px rgba(0,0,0,.7);
-}
+    .selector button {
+        padding: 14px 28px;
+        margin: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        border-radius: 10px;
+        border: none;
+        background: #ffb703;
+        color: #000;
+        transition: transform 0.2s, background 0.2s;
+    }
 
+    .selector button:hover {
+        transform: scale(1.05);
+        background: #ffd166;
+    }
 
-.cards {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 32px;
-}
+    /* ===== App Wrapper ===== */
+    .app-wrapper {
+        display: none;
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background: #111;
+    }
 
-/* Remove card frames (no background, border radius, or shadow) */
-.card {
-  position: relative;
-  overflow: visible;
-  aspect-ratio: 16 / 9;
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-  backdrop-filter: none;
-  transition: transform .2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card:hover {
-  transform: scale(1.06);
-  background: none;
-  color: #5b3535;
-}
+    /* ===== Fixed Canvas ===== */
+    .canvas {
+        background: #1c1c1c;
+        border-radius: 14px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.8);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
 
-.card a {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+    .canvas-header {
+        padding: 12px 16px;
+        background: #222;
+        font-size: 14px;
+        opacity: 0.8;
+    }
 
-/* Add x/y adjustment for each card image using CSS variables */
-.card-img {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: auto;
-  height: 150%;
-  transform: translate(
-    calc(-50% + var(--img-x, 0px)),
-    calc(-50% + var(--img-y, 0px))
-  );
-  object-fit: contain;
-  z-index: 1;
-  pointer-events: none;
-  transition: transform 0.25s cubic-bezier(.4,1.4,.6,1);
-}
+    .canvas-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
 
-@media (max-width: 600px) {
-  .cards { gap: 20px; }
-  .card { aspect-ratio: 3 / 2; }
-}
+    /* ===== Mobile Size ===== */
+    .mobile {
+        width: 375px;
+        height: 667px;
+    }
 
-/* AUTHOR SECTION - top right corner */
-.author-inline {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 14px 16px;
-  border-radius: 10px;
-  backdrop-filter: blur(6px);
-  z-index: 100;
-  max-width: 280px;
-  border: 1px solid rgba(255,255,255,0.1);
-}
+    /* ===== Desktop Size ===== */
+    .desktop {
+        width: 1280px;
+        height: 800px;
+    }
 
-.author-photo {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid rgba(255,255,255,0.4);
-  flex-shrink: 0;
-}
-
-.author-info {
-  text-align: left;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.author-name {
-  font-weight: 700;
-  font-size: 13px;
-  margin-bottom: 4px;
-}
-
-.author-bio {
-  margin: 4px 0;
-  opacity: 0.9;
-  font-size: 11px;
-}
-
-.author-email {
-  color: #64b5f6;
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s;
-}
-
-.author-email:hover {
-  color: #90caf9;
-  text-decoration: underline;
-}
+    /* ===== Exit Button ===== */
+    .exit {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        background: #ef476f;
+        color: #fff;
+        font-weight: bold;
+    }
 </style>
 </head>
 
 <body>
-<div class="author-inline" aria-labelledby="authorName">
-  <img src="./image/theo.jpg" alt="Theo Jan Joseph" class="author-photo" />
-  <div class="author-info">
-    <div class="author-name" id="authorName">Theo Jan Joseph</div>
-    <p class="author-bio">For Fun and Historical Records Timeline</p>
-    <p class="author-bio">
-      Email: <a href="mailto:tmdanao@up.edu.ph" class="author-email">tmdanao@up.edu.ph</a>
-    </p>
-    <p class="author-bio">
-      <a href="https://linktr.ee/theojan1" class="author-email" target="_blank">LinkTree →</a>
-    </p>
-    <p class="author-bio">
-      <a href="contributors.html" class="author-email">View Contributors →</a>
-    </p>
-  </div>
+
+<!-- Selection Screen -->
+<div class="selector" id="selector">
+    <h1>What device are you using?</h1>
+    <button onclick="startApp('mobile')">📱 Mobile/Phone</button>
+    <button onclick="startApp('desktop')">🖥️ Desktop/Tablet</button>
 </div>
 
-<div class="container">
-  <!-- Main Header Logo -->
-  <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
+<!-- App Screen -->
+<div class="app-wrapper" id="app">
+    <button class="exit" onclick="location.reload()">Exit</button>
 
-  <h1>
-    A collection of everything Pinoy — trivia, culture, history, customs, and
-    the shared knowledge that defines the Filipino experience.
-  </h1>
-
-  <div class="cards">
-    <div class="card">
-      <a href="Pknowyourmemes.html">
-        <img src="image/memeslogo.svg" class="card-img" alt="Memes" style="--img-x: -30px; --img-y: 0px;">
-      </a>
+            </p>
+        </div>
     </div>
-
-    <div class="card">
-      <a href="Pknowyourfilms.html">
-        <img src="image/films.svg" class="card-img" alt="Films" style="--img-x: -30px; --img-y: 8px;">
-      </a>
-    </div>
-
-    <div class="card">
-      <a href="Pknowyourreligion.html">
-        <img src="image/relihiyon.svg" class="card-img" alt="Religion" style="--img-x: 30px; --img-y: 12px;">
-      </a>
-    </div>
-
-    <div class="card">
-      <a href="Pknowyourfood.html">
-        <img src="image/food.svg" class="card-img" alt="Food" style="--img-x: 50px; --img-y: 15px;">
-
-      
 </div>
+
+<script>
+function startApp(mode) {
+    const selector = document.getElementById('selector');
+    const app = document.getElementById('app');
+    const canvas = document.getElementById('canvas');
+    const header = document.getElementById('header');
+
+    if (mode === 'desktop') {
+        window.location.href = 'home.html';
+        return;
+    }
+
+    if (mode === 'mobile') {
+        window.location.href = 'home - mobile.html';
+        return;
+    }
+    selector.style.display = 'none';
+    app.style.display = 'flex';
+
+    canvas.classList.add(mode);
+
+    if (mode === 'mobile') {
+        header.textContent = 'Mobile Canvas – 375 × 667';
+    } else {
+        header.textContent = 'Desktop Canvas – 1280 × 800';
+    }
+}
+</script>
+
 </body>
 </html>

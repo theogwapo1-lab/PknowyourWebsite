@@ -9,13 +9,13 @@
 body {
   margin: 0;
   font-family: Inter, system-ui, sans-serif;
-  background: url("image2/night.jpg") no-repeat center center fixed ;
+  background:  url("image2/cat3.jpg") no-repeat center center fixed ;
   background-size: contain;
   color: #000 !important;
 }
 
 body.dark {
-  background: url("image2/cat3.jpg") no-repeat center center fixed ;
+  background: url("image2/night.jpg") no-repeat center center fixed ;
   background-size: contain;
   color: #000000 !important;
   /* JS will set background-image for dark mode */
@@ -25,8 +25,8 @@ body.dark {
   --modal-bg: #191818;
   --modal-text: #ffffff;
   --card-text: #222;
-  --muted: #393939;
-  color: #000 !important;
+  --muted: #efeaea;
+  color: #322b2b !important;
 }
 body.dark, html.dark {
   --modal-bg: #222;
@@ -348,7 +348,7 @@ p.subtitle {
 .photo-gallery img {
   max-width: 100%;
   height: auto;
-  aspect-ratio: 1/1;
+  aspect-ratio: 16/9;
   width: min(160px, 100%);
   border-radius: 10px;
   background: #222;
@@ -356,6 +356,25 @@ p.subtitle {
   flex: 1 1 120px;
   border: 2px solid #444;
 }
+
+/* Thumbnails with captions */
+.photo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(160px, 100%);
+}
+.photo-caption {
+  color: #ccc;
+  font-size: 0.85em;
+  margin-top: 4px;
+  text-align: center;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .video-gallery {
   display: flex;
   flex-wrap: wrap;
@@ -364,8 +383,8 @@ p.subtitle {
   margin-bottom: 40px;
 }
 .video-gallery iframe {
-  width: 320px;
-  height: 180px;
+  width: 500px;
+  height: 300px;
   border-radius: 10px;
   background: #181818;
   border: 2px solid #444;
@@ -392,7 +411,7 @@ p.subtitle {
   .video-gallery iframe {
     width: 100%;
     min-width: 220px;
-    height: 180px;
+    height: 300px;
   }
 }
 .desc-section {
@@ -495,7 +514,7 @@ input[type="submit"]:active {
   margin-top: -50px;
   margin-left: 150px;
   font-size: 12px;
-  color: var(--muted, #ffffff);
+  color: var(--muted, #000000);
   opacity: 0.85;
   text-align: center;
 }
@@ -638,6 +657,67 @@ input[type="submit"]:active {
   color: #7cf;
   text-decoration: underline;
 }
+
+/* Photo viewer (lightbox) */
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.photo-viewer.open { display: flex; }
+.photo-viewer-content {
+  position: relative;
+  max-width: 92vw;
+  max-height: 88vh;
+}
+.photo-viewer-img {
+  max-width: 900px;
+  max-height: 500px;
+  border-radius: 10px;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.7);
+  background: #111;
+}
+.photo-viewer-close,
+.photo-viewer-prev,
+.photo-viewer-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 18px;
+  backdrop-filter: blur(2px);
+}
+.photo-viewer-prev { left: -64px; }
+.photo-viewer-next { right: -64px; }
+.photo-viewer-close {
+  top: -52px;
+  right: 0;
+  transform: none;
+  font-size: 22px;
+}
+.photo-viewer-close:hover,
+.photo-viewer-prev:hover,
+.photo-viewer-next:hover {
+  background: rgba(255,255,255,0.22);
+}
+
+/* Lightbox caption */
+.photo-viewer-caption {
+  margin-top: 8px;
+  text-align: center;
+  color: #ccc;
+  font-size: 0.95em;
+  max-width: 92vw;
+}
 </style>
 </head>
 <body>
@@ -696,7 +776,7 @@ input[type="submit"]:active {
       <button class="tab" data-tab="photos">Photos</button>
       <button class="tab" data-tab="videos">Videos</button>
       <!-- Added References tab -->
-      <button class="tab" data-tab="references">References</button>
+      <button class="tab" data-tab="references">Footnotes and References</button>
     </div>
     <div class="panel active" id="info"></div>
     <div class="panel" id="photos"></div>
@@ -709,44 +789,145 @@ input[type="submit"]:active {
 <!-- Add invisible footer spacer for photo preview hover -->
 <div style="height:60px;width:100%"></div>
 
+<!-- Simple photo viewer (lightbox) -->
+<div class="photo-viewer" id="photoViewer">
+  <div class="photo-viewer-content">
+    <img class="photo-viewer-img" alt="Photo"/>
+    <button class="photo-viewer-close" title="Close">×</button>
+    <button class="photo-viewer-prev" title="Previous">‹</button>
+    <button class="photo-viewer-next" title="Next">›</button>
+    <div class="photo-viewer-caption"></div>
+  </div>
+</div>
+
 <script>
 const DATA = [
-
-{
-  name:"Philippine Benevolent Missionaries Association",
-  classification: "Christianity — Religious Movement",
-  founder: "Ruben Edera Ecleo Sr.",
-  place: "Dinagat Island",
-  origin:"Roman Catholic (Spanish Colonial Period)",
-  description:"A Filipino religious group founded in 1965.",
-  summary: "A syncretic religious group founded by Ruben Ecleo Sr. in the Philippines.",
-  history:"Founded by Ruben Ecleo Sr. in 1965, blending Christian and esoteric beliefs.",
-  coreBeliefs: "Belief in spiritual healing, benevolence, and the teachings of its founder.",
-  practices: "Community rituals, healing sessions, and annual gatherings.",
-  controversies: "Leadership disputes, legal issues, and media scrutiny.",
-  orgStructure: "Led by a Supreme President, with local chapters.",
-  membership: "Tens of thousands, mainly in Dinagat Islands.",
-  relationship: "Influential in local politics and society.",
-  status: "Active, with ongoing activities.",
-  image:"image2/ruben2.png",
-  photos: [
-    "image2/ruben.png",
-    "image4/halohalo.png"
-  ],
-  videos: [
-    "https://www.youtube.com/embed/6v2L2UGZJAM"
-  ],
-  highlights: [
-  { term: "religious", url: "https://en.wikipedia.org/wiki/Halo-halo?utm_source=chatgpt.com" },
-     { term: "benevolence", url: "https://en.wikipedia.org/wiki/Halo-halo?utm_source=chatgpt.com" },
-]
-},
+  {
+    name:"Iglesia Watawat ng Lahi",
+    classification: "Socio-folk Religious Movement, Rizalista Variant",
+    founder: "",
+    place: " Lecheria Hill in Calamba, Laguna",
+    origin:"",
+    description:"",
+    summary: "",
+    history:"",
+    coreBeliefs: "",
+    practices: "",
+    controversies: "",
+    orgStructure: "",
+    membership: "",
+    relationship: "",
+    status: "",
+    references: ['https://www.facebook.com/photo.php?fbid=117618116603304&id=107718370926612&set=a.107736270924822'],
+    image:"image2/watawat.jpg",
+    photos: [
+      { photo: "image2/rizal.png", caption: "bahoasdbausdbsa" },
+      { photo: "image2/watawat.jpg", caption: "bahoasdbausdbsa" },
+    ],
+    videos: [
+      "https://www.youtube.com/watch?v=8WN4pN90L-I"
+    ],
+    highlights: [
+    { term: "socio-folk religious movement", url: "https://en.wikipedia.org/wiki/Indigenous_religion" },
+       { term: "", url: "" },
+    ]
+  },
+  {
+    name:"Philippine Benevolent Missionaries Association",
+    classification: "",
+    founder: "",
+    place: "",
+    origin:"",
+    description:"",
+    summary: "",
+    history:"",
+    coreBeliefs: "",
+    practices: "",
+    controversies: "",
+    orgStructure: "",
+    membership: "",
+    relationship: "",
+    status: "",
+    image:"image2/ruben2.png",
+    references:'',
+    photos: [
+    { photo: "image2/rizal.png", caption: "bahoasdbausdbsa" },
+        { photo: "image2/ecleo.jpg", caption: "Robin Ecleo Jr." },
+    ],
+    videos: [
+      ""
+    ],
+    highlights: [
+    { term: "", url: "" },
+       { term: "", url: "" },
+    ]
+  },
+  {
+    name:"Rizalista Religious Movements",
+    classification: "Folk Catholicism",
+    founder: "",
+    place: "",
+    origin:"",
+    description:"",
+    summary: "",
+    history:"",
+    coreBeliefs: "",
+    practices: "",
+    controversies: "",
+    orgStructure: "",
+    membership: "",
+    relationship: "",
+    status: "",
+    image:"image2/jose.jpg",
+    references: ['https://www.facebook.com/VirgenDeLasMesas/posts/the-sacred-heart-and-jose-rizaltoday-19-june-2020-is-a-special-day-because-today/2558316911087935/'],
+    photos: [
+      "image2/.png",
+      "image2/.png"
+    ],
+    videos: [
+      ""
+    ],
+    highlights: [
+    { term: "Folk Catholicism", url: "https://en.wikipedia.org/wiki/Folk_Catholicism" },
+       { term: "", url: "" },
+    ]
+  },
+  {
+    name:"",
+    classification: "",
+    founder: "",
+    place: "",
+    origin:"",
+    description:"",
+    summary: "",
+    history:"",
+    coreBeliefs: "",
+    practices: "",
+    controversies: "",
+    orgStructure: "",
+    membership: "",
+    relationship: "",
+    status: "",
+    image:"image2/.png",
+    photos: [
+      "image2/.png",
+      "image2/.png"
+    ],
+    videos: [
+      ""
+    ],
+    highlights: [
+    { term: "", url: "" },
+       { term: "", url: "" },
+    ]
+  },
 
 ];
 
 const grid=document.getElementById('grid');
 const modal=document.getElementById('modal');
 const search=document.getElementById('searchBar');
+const photoViewer = document.getElementById('photoViewer');
 
 // --- Category Dropdown, Shuffle, Clear ---
 const categoryDropdownBtn = document.getElementById('categoryDropdownBtn');
@@ -853,22 +1034,58 @@ function render(list){
 }
 
 // Utility: highlight terms in text using highlights array
-function highlightTerms(text, highlights) {
+function highlightTerms(text, highlights, footnoteIndexByUrl) {
   if (!highlights || !Array.isArray(highlights) || !text) return text;
-  // Filter valid highlights and sort by descending term length to avoid partial matches
   const sorted = [...highlights].filter(h => h && h.term && h.url)
                                 .sort((a, b) => b.term.length - a.term.length);
   if (!sorted.length) return text;
-  // Build lookup map (case-insensitive) and escaped terms for regex
-  const map = {};
+  const termToUrl = {};
   const escaped = sorted.map(h => {
-    map[h.term.toLowerCase()] = h.url;
+    termToUrl[h.term.toLowerCase()] = h.url;
     return h.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   });
   const re = new RegExp(`\\b(${escaped.join('|')})\\b`, 'gi');
   return text.replace(re, match => {
-    const url = map[match.toLowerCase()];
-    return url ? `<a href="${url}" target="_blank" style="color:#7cf; text-decoration:underline">${match}</a>` : match;
+    const url = termToUrl[match.toLowerCase()];
+    const n = footnoteIndexByUrl && url ? footnoteIndexByUrl.get(url) : null;
+    const linked = url
+      ? `<a href="${url}" target="_blank" rel="noopener noreferrer" style="color:#7cf; text-decoration:underline">${match}</a>`
+      : match;
+    const sup = n ? `<sup class="fn"><a href="#ref-${n}" class="fn-link" data-ref-index="${n}" title="See reference [${n}]">[${n}]</a></sup>` : '';
+    return linked + sup;
+  });
+}
+
+// Combine references from d.references and d.highlights
+function getCombinedReferences(d) {
+  const refs = [];
+  // d.references can be a string, array of strings, or array of {label/url}/{term/url}
+  if (d.references) {
+    if (Array.isArray(d.references)) {
+      d.references.forEach(r => {
+        if (typeof r === 'string' && r.trim()) {
+          refs.push({ label: r, url: r });
+        } else if (r && typeof r === 'object' && r.url) {
+          refs.push({ label: r.label || r.term || r.url, url: r.url });
+        }
+      });
+    } else if (typeof d.references === 'string' && d.references.trim()) {
+      refs.push({ label: d.references, url: d.references });
+    }
+  }
+  // add highlight links
+  if (Array.isArray(d.highlights)) {
+    d.highlights.forEach(h => {
+      if (h && h.url) refs.push({ label: h.term || h.url, url: h.url });
+    });
+  }
+  // dedupe by URL
+  const seen = new Set();
+  return refs.filter(r => {
+    if (!r.url) return false;
+    if (seen.has(r.url)) return false;
+    seen.add(r.url);
+    return true;
   });
 }
 
@@ -903,29 +1120,49 @@ function openModal(d){
     imgBox.style.display = '';
   }
 
-  // Description tab with subtopics, using highlightTerms for all fields
+  // Build combined references and footnote map once
+  const combinedRefs = getCombinedReferences(d);
+  const footnoteIndexByUrl = new Map(combinedRefs.map((r,i) => [r.url, i+1]));
+
+  // Description tab with subtopics — inline footnote numbers next to linked terms
   const infoPanel = document.getElementById('info');
   infoPanel.innerHTML = `
-    <div class="desc-section"><h3>Summary</h3><p>${highlightTerms(d.summary || d.description || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Founder</h3><p>${highlightTerms(d.founder || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>History</h3><p>${highlightTerms(d.history || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Core Beliefs and Teachings</h3><p>${highlightTerms(d.coreBeliefs || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Practices and Ritual</h3><p>${highlightTerms(d.practices || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Controversies</h3><p>${highlightTerms(d.controversies || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Organizational Structure</h3><p>${highlightTerms(d.orgStructure || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Estimated Membership & Reach</h3><p>${highlightTerms(d.membership || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Relationship with Society</h3><p>${highlightTerms(d.relationship || 'No data available.', d.highlights)}</p></div>
-    <div class="desc-section"><h3>Current Status</h3><p>${highlightTerms(d.status || 'No data available.', d.highlights)}</p></div>
+    <div class="desc-section"><h3>Summary</h3><p>${highlightTerms(d.summary || d.description || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Founder</h3><p>${highlightTerms(d.founder || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>History</h3><p>${highlightTerms(d.history || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Core Beliefs and Teachings</h3><p>${highlightTerms(d.coreBeliefs || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Practices and Ritual</h3><p>${highlightTerms(d.practices || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Controversies</h3><p>${highlightTerms(d.controversies || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Organizational Structure</h3><p>${highlightTerms(d.orgStructure || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Estimated Membership & Reach</h3><p>${highlightTerms(d.membership || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Relationship with Society</h3><p>${highlightTerms(d.relationship || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
+    <div class="desc-section"><h3>Current Status</h3><p>${highlightTerms(d.status || 'No data available.', d.highlights, footnoteIndexByUrl)}</p></div>
   `;
 
   // Photos tab
   const photosPanel = document.getElementById('photos');
-  if (d.photos && d.photos.length) {
-    photosPanel.innerHTML = `<div class="photo-gallery">${d.photos.map(url =>
-      `<img src="${url}" alt="photo of ${d.name}"/>`).join('')}</div>`;
+  const normalizedPhotos = normalizePhotos(d.photos);
+  if (normalizedPhotos.length) {
+    photosPanel.innerHTML = `<div class="photo-gallery">${
+      normalizedPhotos.map((p,i) => `
+        <div class="photo-item">
+          <img src="${p.url}" alt="${p.caption ? p.caption : 'photo of ' + (d.name || '')}" data-index="${i}"/>
+          ${p.caption ? `<div class="photo-caption">${p.caption}</div>` : ''}
+        </div>
+      `).join('')
+    }</div>`;
   } else {
     photosPanel.innerHTML = '<div style="opacity:.7">No photos available.</div>';
   }
+
+  // Make photos clickable to open viewer
+  photosPanel.onclick = function(e) {
+    const img = e.target.closest('img');
+    if (!img) return;
+    const idx = Number(img.getAttribute('data-index')) || 0;
+    openPhotoViewer(normalizedPhotos, idx);
+  };
+
   // Videos tab
   const videosPanel = document.getElementById('videos');
   if (d.videos && d.videos.length) {
@@ -935,12 +1172,13 @@ function openModal(d){
     videosPanel.innerHTML = '<div style="opacity:.7">No videos available.</div>';
   }
 
-  // References tab: list highlights as references
+  // References tab (combined from highlights + d.references), with anchors for inline footnote jumps
   const refsPanel = document.getElementById('references');
-  if (d.highlights && d.highlights.length) {
-    refsPanel.innerHTML = `<ul class="references-list">${d.highlights.map(h =>
-      `<li><a href="${h.url}" target="_blank" rel="noopener noreferrer">${h.term}</a></li>`
-    ).join('')}</ul>`;
+  if (combinedRefs.length) {
+    refsPanel.innerHTML = `
+      <ul class="references-list">
+        ${combinedRefs.map((r,i)=>`<li id="ref-${i+1}">[${i+1}] <a href="${r.url}" target="_blank" rel="noopener noreferrer">${r.label}</a></li>`).join('')}
+      </ul>`;
   } else {
     refsPanel.innerHTML = '<div style="opacity:.7">No references available.</div>';
   }
@@ -955,35 +1193,28 @@ function openModal(d){
     else p.classList.remove('active');
   });
 
-  // ensure scroll at top immediately and shortly after layout settles
-	resetModalScroll();
-
-	// attach image load handlers so images loading later don't push scroll down
-	modal.querySelectorAll('.modal-content img').forEach(img => {
-		const handler = () => resetModalScroll();
-		img.addEventListener('load', handler);
-		__modalImageLoadHandlers.set(img, handler);
-	});
-
-	// ensure we observe DOM changes inside modal-content and reset after mutations
-	if (!__modalObserver) {
-		const mc = modal.querySelector('.modal-content');
-		if (mc) {
-			__modalObserver = new MutationObserver(() => {
-				requestAnimationFrame(() => setTimeout(resetModalScroll, 0));
-			});
-			__modalObserver.observe(mc, { childList: true, subtree: true, attributes: true });
-		}
-	}
-
+  resetModalScroll();
+  modal.querySelectorAll('.modal-content img').forEach(img => {
+    const handler = () => resetModalScroll();
+    img.addEventListener('load', handler);
+    __modalImageLoadHandlers.set(img, handler);
+  });
+  if (!__modalObserver) {
+    const mc = modal.querySelector('.modal-content');
+    if (mc) {
+      __modalObserver = new MutationObserver(() => {
+        requestAnimationFrame(() => setTimeout(resetModalScroll, 0));
+      });
+      __modalObserver.observe(mc, { childList: true, subtree: true, attributes: true });
+    }
+  }
   modal.classList.remove('closing');
   modal.classList.add('open');
-
-  // extra safeties for async layout changes
-	setTimeout(resetModalScroll, 50);
-	setTimeout(resetModalScroll, 250);
+  setTimeout(resetModalScroll, 50);
+  setTimeout(resetModalScroll, 250);
 }
 
+// Close modal function (remains unchanged)
 function closeModal() {
 	modal.classList.remove('open');
 	modal.classList.remove('closing');
@@ -1026,7 +1257,7 @@ filterAndRender();
 
 // --- Dark mode memory ---
 function setDarkBackground() {
-  const url = "image2/cat3.jpg";
+  const url = "image2/night.jpg";
   document.body.style.backgroundImage = `url("${url}")`;
   document.body.style.backgroundRepeat = 'no-repeat';
   document.body.style.backgroundPosition = 'center center';
@@ -1037,7 +1268,7 @@ function setDarkBackground() {
 
 function setLightBackground() {
   // Use the same background as light mode
-  const url = "image2/night.jpg";
+  const url = "image2/cat3.jpg";
   document.body.style.backgroundImage = `url("${url}")`;
   document.body.style.backgroundRepeat = 'no-repeat';
   document.body.style.backgroundPosition = 'center center';
@@ -1073,6 +1304,105 @@ document.addEventListener('keydown', function(e) {
     closeModal();
   }
 });
+
+// Jump to References tab when clicking inline footnote numbers
+modal.addEventListener('click', function(e) {
+  const link = e.target.closest('.fn-link');
+  if (!link) return;
+  e.preventDefault();
+  const idx = link.dataset.refIndex;
+  // activate References tab
+  document.querySelectorAll('.tab').forEach(b=>{
+    b.classList.toggle('active', b.dataset.tab === 'references');
+  });
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.classList.toggle('active', p.id === 'references');
+  });
+  // scroll to the reference item
+  const target = document.getElementById(`ref-${idx}`);
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// Normalize photos: accept string or { url|photo|src, caption|description }
+function normalizePhotos(photos) {
+  if (!Array.isArray(photos)) return [];
+  return photos
+    .map(p => {
+      const url = typeof p === 'string' ? p : (p && (p.url || p.photo || p.src));
+      const caption = (p && typeof p === 'object') ? (p.caption || p.description || '') : '';
+      if (typeof url !== 'string' || !url.trim()) return null;
+      return { url, caption };
+    })
+    .filter(Boolean);
+}
+
+// Simple photo viewer (lightbox)
+let __photoViewer, __pvImg, __pvPrev, __pvNext, __pvClose, __pvCaption;
+let __pvPhotos = [], __pvIndex = 0;
+
+function ensurePhotoViewer() {
+  if (__photoViewer) return;
+  __photoViewer = document.createElement('div');
+  __photoViewer.className = 'photo-viewer';
+  __photoViewer.innerHTML = `
+    <div class="photo-viewer-content">
+      <img class="photo-viewer-img" alt="Photo"/>
+      <button class="photo-viewer-close" title="Close">×</button>
+      <button class="photo-viewer-prev" title="Previous">‹</button>
+      <button class="photo-viewer-next" title="Next">›</button>
+      <div class="photo-viewer-caption"></div>
+    </div>
+  `;
+  document.body.appendChild(__photoViewer);
+  __pvImg = __photoViewer.querySelector('.photo-viewer-img');
+  __pvPrev = __photoViewer.querySelector('.photo-viewer-prev');
+  __pvNext = __photoViewer.querySelector('.photo-viewer-next');
+  __pvClose = __photoViewer.querySelector('.photo-viewer-close');
+  __pvCaption = __photoViewer.querySelector('.photo-viewer-caption');
+
+  __pvClose.onclick = closePhotoViewer;
+  __pvPrev.onclick = () => navPhoto(-1);
+  __pvNext.onclick = () => navPhoto(1);
+
+  // Click backdrop to close
+  __photoViewer.addEventListener('mousedown', (e) => {
+    if (e.target === __photoViewer) closePhotoViewer();
+  });
+
+  // Keyboard nav when viewer is open
+  document.addEventListener('keydown', (e) => {
+    if (!__photoViewer.classList.contains('open')) return;
+    if (e.key === 'Escape') { closePhotoViewer(); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { navPhoto(-1); e.preventDefault(); }
+    else if (e.key === 'ArrowRight') { navPhoto(1); e.preventDefault(); }
+  });
+}
+
+function openPhotoViewer(photos, index = 0) {
+  ensurePhotoViewer();
+  __pvPhotos = normalizePhotos(photos);
+  if (!__pvPhotos.length) return;
+  __pvIndex = Math.max(0, Math.min(index, __pvPhotos.length - 1));
+  updatePhotoViewer();
+  __photoViewer.classList.add('open');
+}
+
+function closePhotoViewer() {
+  if (__photoViewer) __photoViewer.classList.remove('open');
+}
+
+function navPhoto(delta) {
+  if (!__pvPhotos.length) return;
+  __pvIndex = (__pvIndex + delta + __pvPhotos.length) % __pvPhotos.length;
+  updatePhotoViewer();
+}
+
+function updatePhotoViewer() {
+  const item = __pvPhotos[__pvIndex];
+  __pvImg.src = item.url;
+  __pvImg.alt = item.caption || `Photo ${__pvIndex + 1} of ${__pvPhotos.length}`;
+  if (__pvCaption) __pvCaption.textContent = item.caption || '';
+}
 </script>
 
 </body>
