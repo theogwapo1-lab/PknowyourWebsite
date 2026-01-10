@@ -34,6 +34,19 @@
   --accent: #8bc2ff;
 }
 
+#darkToggle {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+
+}
+
 /* Fixed background layer to avoid scroll adjustment */
 .page-bg {
   position: fixed;
@@ -557,7 +570,7 @@ header {
   border-radius: 14px;
 
   width: 95%;
-  max-width: 3500px;
+  max-width: 350px;
 
   height: 580px;
   max-height: 565px;
@@ -589,7 +602,7 @@ header {
 /* Modal poster: fixed column width with stable aspect */
 .modal-left{ overflow:auto; }
 .modal-poster{
-  width: 100%;
+  width: 30%;
   aspect-ratio: 2 / 3;
   height: auto;
   object-fit: cover;
