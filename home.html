@@ -170,10 +170,34 @@ h1 {
   color: #90caf9;
   text-decoration: underline;
 }
+
+
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 120;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 75%;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.09) translateY(-6px);
+  z-index: 3;
+}
+
 </style>
 </head>
 
-<body>
+<body style="overflow-x: hidden;">
+  <a href="index.html" class="index-logo-link" aria-label="Back to Index">
+    <img src="image/back.svg" class="main-logo" alt="Website Logo">
+  </a>
+
 <div class="author-inline" aria-labelledby="authorName">
   <img src="./image/theo.jpg" alt="Theo Jan Joseph" class="author-photo" />
   <div class="author-info">
