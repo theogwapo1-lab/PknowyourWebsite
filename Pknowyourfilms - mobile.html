@@ -1555,9 +1555,7 @@ function renderFilms() {
         <div class="rating">${stars}${scoreLabel}</div>
         <div class="poster-synopsis"><p>${f.synopsis}</p></div>
         <div class="card-actions">
-          <button class="like-btn" data-action="like">👍 <span class="count">${f.likes||0}</span></button>
-          <button class="dislike-btn" data-action="dislike">👎 <span class="count">${f.dislikes||0}</span></button>
-        </div>
+         </div>
       `;
     } else {
       card.className = 'film-card';
