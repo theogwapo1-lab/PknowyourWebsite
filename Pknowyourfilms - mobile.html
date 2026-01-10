@@ -13,7 +13,7 @@
   min-height: 800px;         /* was 800px */
   margin: 0 auto;
   box-sizing: border-box;
-  margin-bottom: 0;  
+  margin-bottom: -300px;  /* adjust based on footer height */
 }
 
 :root {
@@ -5064,7 +5064,7 @@ function renderFilms() {
     
     // Attach poster hover preview (desktop + touch fallback)
     (function attachPreview(){
-      const preview = document.getElementById('imagePreview');
+      const preview = document.getElementById('');
       if (!preview) return;
       const img = card.querySelector('.film-poster img');
       if (!img) return;
