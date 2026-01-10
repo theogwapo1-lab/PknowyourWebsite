@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7972235990531363"
      crossorigin="anonymous"></script>
   <title>Pknow Your Films</title>
@@ -23,7 +22,6 @@
   --accent: #76b5ff;
   --card-bg: #f4f4f4;
   --radius: 14px;
-  --space-md: 16px; /* added */
   font-family: "Inter", sans-serif;
 }
 
@@ -34,39 +32,15 @@
   --accent: #8bc2ff;
 }
 
-#darkToggle {
-  padding: 8px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  flex-shrink: 0;
-  white-space: nowrap;
-  position: fixed;
-  right: 20px;
-  top: 20px;
-
-}
-
-/* Fixed background layer to avoid scroll adjustment */
-.page-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+body, html {
+  margin: 0;
   background: var(--bg);
+  color: var(--text);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: translateZ(0);           /* improves stability on mobile */
-  -webkit-transform: translateZ(0);
-  transition: background 0.4s cubic-bezier(.4,1.6,.6,1);
-}
-
-/* Remove background from body/html to prevent repositioning */
-body, html {
-  margin: 0;
-  background: none;
-  color: var(--text);
-  transition: color 0.4s cubic-bezier(.4,1.6,.6,1);
+  background-attachment: fixed;
+  transition: background 0.4s cubic-bezier(.4,1.6,.6,1), color 0.4s cubic-bezier(.4,1.6,.6,1);
 }
 
 header {
@@ -142,15 +116,13 @@ header {
    FILTERS
    =========================== */
 
- #filters{
+  #filters{
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;          /* wrap on small screens */
+  padding-left: -200px; /* safer for inner spacing */
   width: 100%;
-  margin: 8px 0;            /* remove negative margin */
-  padding-left: 0;
 }
 
 
@@ -158,7 +130,6 @@ header {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #ffffff;
-  
 }
 
 .control-btn {
@@ -399,44 +370,13 @@ header {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 12px;
+  padding: 20px;
   gap: var(--space-md);
 }
 
 /* Make cards narrower on small screens for better fit */
 @media (max-width: 600px) {
-  .film-card {
-    max-width: 100%;
-    height: auto;           /* allow height to adjust */
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-
-  .film-poster {
-    width: 80%;
-    max-width: 320px;
-    height: auto;
-  }
-
-  .film-info {
-    align-items: center;
-  }
- .film-card {
-  background: #0000007a;
-  color: #fff;
-  border-radius: 16px;
-  padding: 18px;
-  display: flex;
-  gap: 20px;
-  width: 100%;
-  max-width: 820px;
-  height: auto;             /* was fixed 230px */
-  align-items: flex-start;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
-  transition: transform .2s ease, box-shadow .2s ease;
-  overflow: hidden;
-  position:relative;  
+  .film-card { max-width: 92%; }
 }
 
 /* Header controls: search + toggle */
@@ -448,7 +388,7 @@ header {
   width:100%;
   flex-wrap: wrap;
   max-width: 900px;
-  margin-bottom: 12px;  
+  margin: 0 auto;
 }
 
 #darkToggle{
@@ -472,13 +412,13 @@ header {
 
 #filmGrid.poster-view {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* fluid grid */
+  grid-template-columns: repeat(auto-fit, minmax(160px, 160px));
   gap: 12px;
-  justify-content: center;
-  justify-items: center;
+  justify-content: center;     /* CENTER align columns */
+  justify-items: center;       /* CENTER align cards */
   padding: 12px;
-  margin: 0 auto;
-  max-width: 1100px;
+  margin: 0 auto;              /* center the grid */
+  max-width: 1100px;           /* match the .wrap max-width */
 }
 
 
@@ -487,12 +427,12 @@ header {
   border: none;
   box-shadow: none;
   padding: 8px;
-  width: 100%;              /* fill grid cell */
+  width: 160px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  margin: 0;
+  margin: 0 auto;  /* center each card within its grid cell */
 }
 
 .poster-card .film-poster{ width:100%; padding:0; border:none; background:transparent }
@@ -541,10 +481,9 @@ header {
 
 @media (max-width: 600px){
   .film-card{flex-direction:column; align-items:center; text-align:center}
-  .film-poster img{width:100%; max-width:320px}
+  .film-poster img{width:80%; max-width:320px}
   .film-info{align-items:center}
   .header-controls{flex-direction:column; gap:8px}
-  #filmGrid.poster-view{ grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 2-up */
 }
 
 /* ===========================
@@ -570,7 +509,7 @@ header {
   border-radius: 14px;
 
   width: 95%;
-  max-width: 350px;
+  max-width: 920px;
 
   height: 580px;
   max-height: 565px;
@@ -602,7 +541,7 @@ header {
 /* Modal poster: fixed column width with stable aspect */
 .modal-left{ overflow:auto; }
 .modal-poster{
-  width: 30%;
+  width: 100%;
   aspect-ratio: 2 / 3;
   height: auto;
   object-fit: cover;
@@ -1032,8 +971,7 @@ header {
 </head>
 
 <body style="overflow-x: hidden;">
-  <div class="page-bg" aria-hidden="true"></div>
-  <a href="home - mobile.html" class="index-logo-link" aria-label="Back to Index">
+  <a href="index.html" class="index-logo-link" aria-label="Back to Index">
     <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
   </a>
 
@@ -1062,6 +1000,7 @@ header {
                 <button id="clearFiltersBtn" class="control-btn">Clear</button>
 
         <button id="shuffleBtn" class="control-btn">Shuffle</button>
+        <button id="toggleViewBtn" class="control-btn" aria-label="Switch view" title="Switch view">☰</button>
       </div>
     </div>
   </div>
@@ -1246,6 +1185,3470 @@ header {
 
   ]
 },
+{
+       title: "Masahista",
+  year: 2005,
+  poster: "./image3/masahista.jpg",
+  genre: [ "Bold"],
+  director: {
+    name: "Brillante Mendoza",
+    link: "https://en.wikipedia.org/wiki/Brillante_Mendoza"
+  },
+  details: "Masahista (The Masseur) is a 2005 Filipino independent drama directed by Brillante Mendoza that presents an unflinching look at urban survival and masculinity. The film centers on a young man working in a massage parlor where sexual services are part of the trade. It examines the intersections of poverty, sexuality, and familial obligation in contemporary Manila. Known for its raw realism, the film avoids moral judgment and instead focuses on emotional consequence.", 
+  synopsis: "Iliac works as a masseur in a Manila massage parlor, providing sexual services to clients as a means of earning money. His routine life is disrupted when he learns that his father has died, forcing him to confront both grief and responsibility. While continuing his work, Iliac prepares for his father’s wake and burial, navigating family expectations and financial pressures. He struggles with the emotional distance between his professional life and his role as a son. The film quietly follows his daily movements between the massage parlor, public spaces, and his family home. Through these moments, Iliac reflects on shame, duty, and survival. His profession becomes a lens through which the film explores social invisibility and moral complexity. Rather than offering redemption or punishment, the story emphasizes endurance and emotional restraint.",
+  trailer: "https://www.youtube.com/watch?v=LsUAqfazF6Q&rco=1",
+  movie: "https://drive.google.com/file/d/1-H89CEQSDtM6mbRUwawZeX7hefs2hFBk/preview",
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.9",
+      link: "https://www.imdb.com/title/tt0477999/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/celebrity/1191770-coco_martin",
+    },
+    letterboxd: {
+      score: "3.1",
+      link: "https://letterboxd.com/film/the-masseur/",
+    }
+  },
+  cast: [
+    { name: "Brillante Mendoza", role: "Director", photo: "./image3/mendoza.jpg", link: "https://en.wikipedia.org/wiki/Brillante_Mendoza" },
+    { name: "Coco Martin", role: "Illiac", photo: "./image3/coco.jpg", link: "" },
+        { name: "Alan Paule", role: "Marina", photo: "./image3/alan.jpg", link: "" },
+
+  ]
+},
+{
+    title: "Live Show",
+  year: 2000,
+  poster: "./image3/live.jpg",
+  genre: [ "Bold"],
+  director: {
+    name: "Jose Javier Reyes",
+    link: ""
+  },
+  details: "Live Show (also known as Toro) is a 2000 Filipino drama directed by Jose Javier Reyes that explores exploitation and poverty within Manila’s underground sex industry. The film portrays young performers who engage in live sexual acts on stage to earn money. It presents a stark depiction of desperation driven by economic inequality. The film is noted for its confrontational realism and social critique.", 
+  synopsis: "Set in Manila’s nightlife scene, the film follows several young men and women who work as live sex performers in nightclubs. Known as torero and torera, they perform explicit acts in front of paying audiences to survive financially. Each character enters the industry for different reasons, including poverty, broken families, and lack of opportunity. The film explores their daily struggles, emotional detachment, and moral compromises. As relationships form and dissolve among the performers, the line between performance and personal life becomes increasingly blurred. The nightclub owners and patrons are portrayed as symbols of systemic exploitation. Despite moments of camaraderie, the performers remain trapped in cycles of objectification. The film ultimately presents a bleak portrait of survival in a society that offers few alternatives.",
+  trailer: "https://www.youtube.com/watch?v=cPr4Er4olh8",
+  movie:'https://m.ok.ru/video/5280785042109',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0275735/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/live_show",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/live-show/",
+    }
+},
+  cast: [
+    { name: "Jose Javier Reyes", role: "Director", photo: "./image3/javier.png", link: "https://en.wikipedia.org/wiki/Jose_Javier_Reyes" },
+    { name: "Paolo Rivero", role: "Rolly", photo: "", link: "" },
+    { name: "Ana Capri", role: "Rosita", photo: "", link: "" },
+    { name: "Klaudia Kornel", role: "Gigi", photo: "", link: "" },
+    { name: "Hazel Espinosa", role: "Sandra", photo: "", link: "" },
+  ]
+},
+{
+    title: "Himala",
+  year: 1982,
+  poster: "./image3/himala.jpg",
+  genre: [ "Drama",'Religious'],
+  director: {
+    name: "Ishmael Bernal",
+    link: "https://en.wikipedia.org/wiki/Ishmael_Bernal"
+  },
+  details: "Himala is a 1982 Filipino drama directed by Ishmael Bernal and written by Ricky Lee, widely regarded as one of the greatest Philippine films. The story centers on faith, belief, and mass hysteria in a rural village. It critically examines religion’s influence on vulnerable communities. The film is known for its powerful social commentary and iconic final monologue.", 
+  synopsis: "In a drought-stricken village plagued by poverty and suffering, a young woman named Elsa claims to have witnessed an apparition of the Virgin Mary. Her declaration sparks widespread religious fervor among the villagers, who see her as a divine messenger. Pilgrims flock to the village, hoping for miracles, healing, and salvation. As Elsa’s influence grows, so does the commercialization of faith through donations and religious tourism. The community becomes divided between believers and skeptics. Elsa herself grows increasingly isolated as expectations and pressure mount. Tragedy unfolds as blind faith leads to violence and moral collapse. In the end, Elsa delivers a powerful speech questioning the existence of miracles and exposing the dangers of unquestioned belief.",
+  trailer: "https://www.youtube.com/watch?v=3MASgwPvzcQ",
+  movie:'https://www.youtube.com/watch?v=4OxDab9IBF4',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "7.9/10",
+      link: "https://www.imdb.com/title/tt0125144/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "97%",
+      link: "https://www.rottentomatoes.com/m/himala",
+    },
+    letterboxd: {
+      score: "4.1",
+      link: "https://letterboxd.com/film/miracle-1982/",
+    }
+  },
+  cast: [
+   { name: "Ishmael Bernal", role: "Director", photo: "./image3/ishmael.jpg", link: "https://www.imdb.com/name/nm0079273/" },
+    { name: "Ricky Lee", role: "Writer", photo: "./image3/ricky.jpg", link: "https://en.wikipedia.org/wiki/Ricky_Lee" },
+    { name: "Nora Aunor", role: "Elsa", photo: "./image3/nora.jpg", link: "https://en.wikipedia.org/wiki/Nora_Aunor" },
+  ]
+},
+{
+    title: "Maynila sa mga Kuko ng Liwanag",
+  year: 1975,
+  poster: "./image3/maynila.webp",
+  genre: [ "Drama"],
+  director: {
+    name: "Lino Brocka",
+    link: "https://en.wikipedia.org/wiki/Lino_Brocka"
+  },
+  details: "Maynila sa mga Kuko ng Liwanag (Manila in the Claws of Light) is a 1975 Filipino drama directed by Lino Brocka. The film portrays urban alienation and labor exploitation in Manila. It is a defining work of Philippine social realism. The story reflects the brutal realities faced by rural migrants.", 
+  synopsis: "Julio Madiaga travels from the province to Manila in search of his missing lover, Ligaya. The city quickly exposes him to poverty and exploitation. To survive, he works as a construction laborer under harsh conditions. Julio witnesses injustice and corruption in urban life. His search for Ligaya sustains his hope. When he learns the truth about her fate, his innocence collapses. His despair mirrors the cruelty of the city. The film ends tragically, underscoring systemic social inequality.",
+  trailer: "https://www.youtube.com/watch?v=DpCCHbWEDz4",
+  movie:"https://drive.google.com/file/d/1wgYxD_e0-sI0dXk2gevTe1AcSK_YLhQ3/preview",
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.8/10",
+      link: "https://www.imdb.com/title/tt0073363/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "100%",
+      popcornmeter: "87%",
+      link: "https://www.rottentomatoes.com/m/manila_in_the_claws_of_light",
+    },
+    letterboxd: {
+      score: "4.2",
+      link: "https://letterboxd.com/film/manila-in-the-claws-of-light/",
+    }
+ },
+  cast: [
+    { name: "Lino Brocka", role: "Director", photo: "./image3/lino.jpg", link: "https://en.wikipedia.org/wiki/Lino_Brocka" },
+    { name: "Hilda Koronel", role: "Ligaya", photo: "./image3/hilda.webp", link: "https://www.google.com/search?q=hilda+koronel&rlz=1C1RINU_enPH1192PH1192&oq=hilda+&gs_lcrp=EgZjaHJvbWUqFggAEAAYgwEYkQIY4wIYsQMYgAQYigUyFggAEAAYgwEYkQIY4wIYsQMYgAQYigUyEwgBEC4YgwEYkQIYsQMYgAQYigUyDwgCEC4YQxixAxiABBiKBTINCAMQABiRAhiABBiKBTIMCAQQLhhDGIAEGIoFMgcIBRAAGIAEMgcIBhAuGIAEMgcIBxAuGIAEMgoICBAuGLEDGIAEMgcICRAAGI8C0gEIMTE3OWowajmoAgawAgHxBQK7lQ1Y1ZcL&sourceid=chrome&ie=UTF-8" },
+    { name: "Bembol Roco", role: "Julio", photo: "./image3/bembol.webp", link: "https://en.wikipedia.org/wiki/Bembol_Roco" },
+  ]
+},
+{
+    title: "Bayaning 3rd World",
+  year: 2000,
+  poster: "./image3/bayani.jpg",
+  genre: [ "Comedy","Satire"],
+  director: {
+    name: "Mike de Leon",
+    link: "https://en.wikipedia.org/wiki/Mike_de_Leon"
+  },
+  details: "Bayaning 3rd World (Third World Hero) is a 2000 Filipino satirical drama directed by Mike de Leon. The film blends fiction, documentary, and historical speculation. It interrogates the construction of national heroes. The narrative focuses on José Rizal and historical myth-making.", 
+  synopsis: "Two filmmakers set out to make a movie about José Rizal. They become obsessed with whether Rizal retracted his criticisms of the Catholic Church before his execution. Through reenactments and imagined interviews, they explore conflicting historical accounts. The filmmakers debate how Rizal should be portrayed—as a flawless hero or a complex human being. Their discussions reveal how history is shaped by ideology. Certainty becomes increasingly elusive. Fact and myth blur together. The film ultimately questions whether historical truth can ever be fully known.",
+  trailer: "https://www.youtube.com/watch?v=6_lXG_Zn_5g",
+  movie:'https://www.youtube.com/watch?v=DURT3VslXp4',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "7.2/10",
+      link: "https://www.imdb.com/title/tt0260731/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/bayaning_3rd_world",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/bayaning-3rd-world/",
+    }
+ },
+  cast: [
+    { name: "Mike de Leon", role: "Director", photo: "./image3/mike.jpg", link: "https://en.wikipedia.org/wiki/Mike_de_Leon" },
+    { name: "Ricky Davao", role: "Lead", photo: "./image3/davao.webp", link: "https://en.wikipedia.org/wiki/Ricky_Davao" },
+    { name: "Joel Torre", role: "Jose Rizal", photo: "./image3/joel.jpg", link: "https://en.wikipedia.org/wiki/Joel_Torre" },
+  ]
+},
+{
+    title: "Alagwa",
+  year: 2012,
+  poster: "./image3/alagwa.jpg",
+  genre: [ "Drama","Horror",'Thriller'],
+  director: {
+    name: "Ian Loreños",
+    link: "https://www.imdb.com/name/nm3621730/?ref_=tt_ov_1_1"
+  },
+  details: "Alagwa (English: Breakaway) is a 2012 Filipino drama‑horror film written and directed by Ian Loreños that blends emotional family drama with social commentary. The story focuses on the harrowing search of a father for his missing son amid the dark realities of urban life. The film is inspired by popular urban legends about child disappearances in Manila. It examines themes of parental love, fear, and the dangers posed by human trafficking and exploitation. The narrative highlights the emotional toll that loss and uncertainty take on a family.", 
+  synopsis: "Robert Lim is a devoted father whose life is shattered when his young son Brian suddenly disappears in the city. Desperate to find him, Robert plunges into the urban underbelly of Manila, unraveling clues that suggest his son may have been taken by traffickers. As fear and desperation grow, Robert’s search reveals a web of dark, illegal activities hidden beneath the city’s everyday bustle. His pursuit leads him from one threatening place to another, confronting shady individuals and violent encounters. Family and friends try to support him, but his obsession with finding Brian isolates him further. Flashbacks of happier moments with his son heighten the emotional stakes. Along the way, the film highlights broader social issues affecting vulnerable children and families. Ultimately, Alagwa portrays a father’s undying hope against overwhelming odds in a world where innocence can disappear without warning.",
+  trailer: "https://www.youtube.com/watch?v=aPv9dy9ijq0",
+  movie:'https://www.youtube.com/watch?v=brkVnE04SFU&rco=1',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5/10",
+      link: "https://www.imdb.com/title/tt2417490/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/alagwa",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/alagwa/",
+    }
+ },
+  cast: [
+    { name: "Ian Loreños", role: "Director", photo: "./image3/ian.jpg", link: "https://www.imdb.com/name/nm3621730/?ref_=tt_ov_1_1" },
+    { name: "Jericho Rosales", role: "Lead", photo: "./image3/jericho.webp", link: "https://en.wikipedia.org/wiki/Jericho_Rosales" },
+    { name: "Bugoy Cariño", role: "Supporting", photo: "./image3/bugoy.jpg", link: "https://en.wikipedia.org/wiki/Bugoy_Cari%C3%B1o" },
+  ]
+},
+{
+    title: "Brutal",
+  year: 1980,
+  poster: "./image3/brutal.jpg",
+  genre: [ ""],
+  director: {
+    name: "Marilou Diaz‑Abaya",
+    link: "https://en.wikipedia.org/wiki/Marilou_Diaz-Abaya"
+  },
+  details: "Brutal is a 1980 Filipino drama directed by Marilou Diaz‑Abaya with a screenplay by Ricky Lee. It is considered one of the first major Philippine films to address rape from a feminist perspective. The film forms part of a thematic trilogy that explores women’s experiences and societal pressures. Its raw portrayal of trauma and justice set it apart in Philippine cinema of the era", 
+  synopsis: "Monica Real, a housewife, is arrested for killing three men, including her husband Tato, under mysterious circumstances. Refusing to explain her motives, she remains silent before her family and her lawyer, deepening the mystery surrounding her actions. Clara Valdez, a journalist, becomes determined to uncover the truth behind Monica’s violent act. With the support of her boyfriend Jake, Clara begins interviewing Monica’s mother and best friend Cynthia to piece together the events that led to the killings. As the investigation unfolds, Clara learns about the abuse and suffering Monica endured, which may have driven her to the breaking point. Through interviews and flashbacks, the film exposes the emotional and social forces that shaped Monica’s life. Clara’s pursuit of the truth becomes a broader examination of how society treats women who are victims of violence. Brutal ultimately challenges viewers to confront uncomfortable realities about gender, power, and justice.",
+  trailer: "https://www.youtube.com/watch?v=iSgzlGT_WaE",
+  movie:'https://m.ok.ru/video/7465540127384',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.4",
+      link: "https://www.imdb.com/title/tt0278989/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/brutal_1980",
+    },
+    letterboxd: {
+      score: "3.7",
+      link: "https://letterboxd.com/film/brutal-1980/",
+    }
+ },
+  cast: [
+    { name: "Marilou Diaz‑Abaya", role: "Director", photo: "./image3/marilou.jpeg", link: "https://en.wikipedia.org/wiki/Marilou_Diaz-Abaya" },
+    { name: "Ricky Lee", role: "Writer", photo: "./image3/ricky.jpg", link: "https://en.wikipedia.org/wiki/Ricky_Lee" },   
+ { name: "Amy Austria", role: "Monica", photo: "./image3/amy.jpg", link: "https://en.wikipedia.org/wiki/Amy_Austria" },
+     { name: "Charo Santos-Concio", role: "Clara Valdez", photo: "./image3/charo.jpg", link: "https://en.wikipedia.org/wiki/Charo_Santos-Concio" },
+    { name: "Gina Alajar", role: "Cynthia", photo: "./image3/gina.jpg", link: "https://en.wikipedia.org/wiki/Gina_Alajar" },
+
+  ]
+},
+{
+    title: "Iginuhit ng Tadhana (The Ferdinand E. Marcos Story)",
+  year: 1965,
+  poster: "./image3/tad.jpg",
+  genre: [ "Biography"],
+  director: {
+    name: "Conrado Conde",
+    link: "https://tl.wikipedia.org/wiki/Conrado_Conde"
+  },
+  details: "Iginuhit ng Tadhana: The Ferdinand E. Marcos Story is a 1965 Filipino biographical drama produced during the presidential campaign of Ferdinand E. Marcos. The film was created as political propaganda to present Marcos’s life and accomplishments in a favorable light. It chronicles his rise from a provincial youth to a national political figure. Made with major stars of the time, it played a role in shaping public perception ahead of the 1965 election.", 
+  synopsis: "The film follows Ferdinand E. Marcos from his early childhood in a political family through his turbulent youth and academic pursuits. Viewers see his rise as a brilliant student, his controversial involvement in the Nalundasan murder case and subsequent acquittal, and his growing influence in Philippine politics. As a congressman and then senator, Marcos is portrayed as a principled leader driven by destiny and public service. The narrative emphasizes his courtroom eloquence, leadership qualities, and personal determination. The film also depicts his courtship and marriage to Imelda Romualdez, highlighting their partnership as both personal and political. Soldiers of cinema and political drama alike feature in dramatized scenes that blend fact and myth. By the film’s end, Marcos’s transition from rising politician to presidential contender is complete, casting him as a destined leader. Throughout, the movie combines historical episodes with idealized portrayals to influence public sentiment during an election period. ",
+  trailer: "https://www.youtube.com/watch?v=aiytHwdy_T4",
+  movie:'https://www.youtube.com/watch?v=jMFtjQhRSE4',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "8.7/10",
+      link: "https://www.imdb.com/title/tt0371738/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/written-in-our-destiny/",
+    }
+  },
+  cast: [
+     { name: "Conrado Conde", role: "Director", photo: "./image3/conrado.jpg", link: "https://tl.wikipedia.org/wiki/Conrado_Conde" },
+        { name: "Jose De Villa", role: "Director", photo: "./image3/.jpg", link: "https://www.imdb.com/name/nm1042050/?ref_=tt_ov_1_2" },
+    { name: "Mar S. Torres", role: "Director", photo: "./image3/.jpg", link: "https://www.imdb.com/name/nm1048574/?ref_=tt_ov_1_3" },
+    { name: "Luis Gonzales", role: "Ferdinand Marcos", photo: "./image3/luis.webp", link: "https://en.wikipedia.org/wiki/Luis_Gonzales" },
+    { name: "Gloria Romero", role: "Imelda Marcos", photo: "./image3/gloria.webp", link: "https://en.wikipedia.org/wiki/Gloria_Romero" },
+  ]
+},
+{
+    title: "Imelda",
+  year: 2003,
+  poster: "./image3/imelda.jpg",
+  genre: [ "Documentary", "Biography",'History'],
+  director: {
+    name: "Ramona S. Diaz",
+    link: "https://en.wikipedia.org/wiki/Ramona_Diaz"
+  },
+  details: "Imelda is a 2003 documentary directed by Ramona S. Diaz that examines the life of Imelda Marcos, the former First Lady of the Philippines. The film traces her journey from humble beginnings through her marriage to Ferdinand Marcos and her role during his administration. It highlights her controversial tenure marked by political influence, opulence, and later exile. The documentary uses interviews and archival footage to explore both her public persona and private reflections.", 
+  synopsis: "The film opens with Imelda Marcos’s early life and background before she met Ferdinand Marcos. Through interviews with Imelda herself and her children, as well as archival material, the documentary recounts her rise to national prominence as the wife of a young senator and eventual president. It reviews her time as First Lady during a period of political turmoil and martial law in the Philippines, showcasing her influence on culture, infrastructure, and society. Imelda recalls her perspective on power, wealth, and national development, often justifying her extravagant lifestyle with statements about inspiring Filipinos. The documentary also addresses her controversial legacy, including accusations of corruption and denial of human rights abuses. Imelda’s reflections on her roles and actions reveal a mix of charm and deflection. The film juxtaposes her personal memories with broader historical context, including key events such as the assassination of Benigno Aquino Jr. and the Marcos family’s exile to Hawaii. Imelda offers a nuanced portrait of a figure both admired and reviled, allowing audiences to form their own conclusions about her life and influence.",
+  trailer: "https://www.youtube.com/watch?v=AAUhb2sfoow",
+  movie:'https://www.youtube.com/watch?v=O7MWYDM-MYc',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.3/10",
+      link: "https://www.imdb.com/title/tt9428860/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "94%",
+      popcornmeter: "64%",
+      link: "https://www.rottentomatoes.com/m/imelda",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/imelda/",
+    }
+  },
+  cast: [
+     { name: "Ramona S. Diaz", role: "Director", photo: "./image3/ramona.jpg", link: "https://en.wikipedia.org/wiki/Ramona_Diaz" },
+    
+  ]
+},
+{
+    title: "Serbis",
+  year: 2008,
+  poster: "./image3/serbis.jpg",
+  genre: [ ""],
+  director: {
+    name: "Brillante Mendoza",
+    link: "https://en.wikipedia.org/wiki/Brillante_Mendoza"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=xUU91XmNx0Q",
+  movie:'https://m.ok.ru/video/4537052957227',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "6.1/10",
+      link: "https://www.imdb.com/title/tt1225296/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "79%",
+      popcornmeter: "52%",
+      link: "https://www.rottentomatoes.com/m/serbis",
+    },
+    letterboxd: {
+      score: "3.2",
+      link: "https://letterboxd.com/film/service/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Kisapmata",
+  year: 1981,
+  poster: "./image3/kisap.jpeg",
+  genre: [ ""],
+  director: {
+    name: "Mike de Leon",
+    link: "https://en.wikipedia.org/wiki/Mike_de_Leon"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=-rFHFUUYKtE",
+  movie:'https://www.youtube.com/watch?v=bzFQtB6fVT8',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7/10",
+      link: "https://www.imdb.com/title/tt0221322/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "100",
+      link: "https://www.rottentomatoes.com/m/kisapmata-in-just-the-wink-of-an-eye",
+    },
+    letterboxd: {
+      score: "4.0",
+      link: "https://letterboxd.com/film/kisapmata/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Tuhog/Larger than Life",
+  year: 2001,
+  poster: "./image3/tuhog2.jpg",
+  genre: [ ""],
+  director: {
+    name: "Jeffrey Jeturian",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=mBXHP3sQxbg",
+  movie:'https://m.ok.ru/video/5022102129341',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.4",
+      link: "https://www.imdb.com/title/tt0291530/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/tuhog",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/tuhog-2001/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Tuhog",
+  year: 2013,
+  poster: "./image3/tuhog.jpg",
+  genre: [ ""],
+  director: {
+    name: "Veronica Velasco",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=C0BvkC3fQUo",
+  movie:'https://www.youtube.com/watch?v=y1UzPhq4ESk',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1 ",
+      link: "https://www.imdb.com/title/tt3044782/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/tuhog/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bayan ko : Kapit sa Patalim",
+  year: 1984,
+  poster: "./image3/bayanko.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: "https://en.wikipedia.org/wiki/Lino_Brocka"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=JicO63y4GEM",
+  movie:'https://m.ok.ru/video/2920903674521',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt0086943/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "100%",
+      link: "https://www.rottentomatoes.com/m/bayan-ko-my-own-country",
+    },
+    letterboxd: {
+      score: "3.9",
+      link: "https://letterboxd.com/film/this-is-my-country/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Virgin People",
+  year: 1984,
+  poster: "./image3/virgin.jpg",
+  genre: [ ""],
+  director: {
+    name: "Celso Ad. Castillo",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=HhN7uyt4SBU",
+  movie:'https://www.youtube.com/watch?v=Ky1phhHrntA',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "6.4",
+      link: "https://www.imdb.com/title/tt0292337/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/virgin_people",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/virgin-people/",
+    }
+ },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Silip",
+  year: 1985,
+  poster: "./image3/silip.jpg",
+  genre: [ ""],
+  director: {
+    name: "Elwood Perez",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=IugG2rouzKg",
+  movie:'https://www.dailymotion.com/video/x9t53wu',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.9",
+      link: "https://www.imdb.com/title/tt0292236/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/daughters-of-eve/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Manila by Night",
+  year: 1980,
+  poster: "./image3/manila.jpg",
+  genre: [ ""],
+  director: {
+    name: "Ishmael Bernal",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=6hr45atjMBM",
+  movie:'https://www.youtube.com/watch?v=XIj-6IfZtSM&rco=1',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.2",
+      link: "https://www.imdb.com/title/tt0081115/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "71%",
+      link: "https://www.rottentomatoes.com/m/city_after_dark",
+    },
+    letterboxd: {
+      score: "3.8",
+      link: "https://letterboxd.com/film/manila-by-night/",
+    }
+ },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Andres Manambit: Angkan ng Matatapang",
+  year: 1992,
+  poster: "./image3/andres.jpg",
+  genre: [ ""],
+  director: {
+    name: "Ike Jarlego Jr.",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=5lXv4MR-aJg",
+  movie:'https://www.youtube.com/watch?v=fafqnAykJEE',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.6",
+      link: "https://www.imdb.com/title/tt0437814/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/andres_manambit",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/andres-manambit-angkan-ng-matatapang/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Ang Huling Cha-Cha ni Anita",
+  year: 2013,
+  poster: "./image3/chcha.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Cf57Y2nbl4U",
+  movie:'https://www.bilibili.tv/en/video/2046507582',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.6",
+      link: "https://www.imdb.com/title/tt3204904/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/ang_huling_cha_cha_ni_anita",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/ang-huling-cha-cha-ni-anita/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Alyas Batman en Robin",
+  year: 1991,
+  poster: "./image3/alyas.jpg",
+  genre: [ ""],
+  director: {
+    name: "Tony Y. Reyes",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=wygrQ1rYeAQ",
+  movie:'https://www.bilibili.tv/en/video/2044342815?bstar_from=bstar-web.homepage.recommend.all',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.1",
+      link: "https://www.imdb.com/title/tt0121067/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/alyas_batman_en_robin_1991",
+    },
+    letterboxd: {
+      score: "3.2",
+      link: "https://letterboxd.com/film/alias-batman-and-robin/",
+    }
+},
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Sakada",
+  year: 1976,
+  poster: "./image3/sakada.jpg",
+  genre: [ ""],
+  director: {
+    name: "Behn Cervantes",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=vonVjLlfYXA",
+  movie:'https://www.youtube.com/watch?v=Yhp1-8xQRXQ',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.2",
+      link: "https://www.imdb.com/title/tt0310104/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/sakada",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/the-tenants-1976/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Insiang",
+  year: 1976,
+  poster: "./image3/insiang.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=takNiNdS2Ms",
+  movie:'https://archive.org/details/1976-insiang-dir.-lino-brocka',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.5",
+      link: "https://www.imdb.com/title/tt0077740/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "100%",
+      popcornmeter: "96%",
+      link: "https://www.rottentomatoes.com/m/insiang_2007",
+    },
+    letterboxd: {
+      score: "4",
+      link: "https://letterboxd.com/film/insiang/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bona",
+  year: 1980,
+  poster: "./image3/bona.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=-ZUsrMHlrC4",
+  movie:'https://www.youtube.com/watch?v=ty6mRKXMIN4&t=947s',
+  mpa_rating: "SPG",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt0082093/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "92",
+      link: "https://www.rottentomatoes.com/m/bona",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/bona/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Jaguar",
+  year: 1979,
+  poster: "./image3/jaguar.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: "https://en.wikipedia.org/wiki/Lino_Brocka"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.facebook.com/share/v/1PuLaocMr4/",
+  movie:'https://m.ok.ru/video/6638519716435',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.6/10",
+      link: "https://www.imdb.com/title/tt0079361/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/jaguar",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/jaguar/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+    {
+    title: "Ina kapatid Anak",
+  year: 1979,
+  poster: "./image3/ina.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=DQ5MtyfM6G0",
+  movie:'https://www.youtube.com/watch?v=jAi9TqDYMvs',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.8",
+      link: "https://www.imdb.com/title/tt0079337/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/ina_kapatid_anak_1979",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/ina-kapatid-anak/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Kinatay",
+  year: 2009,
+  poster: "./image3/kinatay.webp",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=eZypv60Syo0",
+  movie:'https://archive.org/details/kinatay',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5",
+      link: "https://www.imdb.com/title/tt1423592/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "75%",
+      popcornmeter: "65%",
+      link: "https://www.rottentomatoes.com/m/kinatay",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/kinatay/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bar Boys",
+  year: 2017,
+  poster: "./image3/bar.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=YoIZu4MsUoU",
+  movie:'https://www.youtube.com/watch?v=UzvAKY6Xbno',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt6900584/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/bar-boys/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Oro Plata Mata",
+  year: 1982,
+  poster: "./image3/oro.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=g7Pl_4M-6aI",
+  movie:'https://www.youtube.com/watch?v=2nfCF0hK5B8',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt0086056/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "94%",
+      link: "https://www.rottentomatoes.com/m/oro-plata-mata",
+    },
+    letterboxd: {
+      score: "3.9",
+      link: "https://letterboxd.com/film/oro-plata-mata/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "RPG Metanoia",
+  year: 2010,
+  poster: "./image3/meta.jpg",
+  genre: [ "Animation"],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=bzIDObRbsQQ",
+  movie:'https://www.youtube.com/watch?v=0NPDhB_ptVE',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.4",
+      link: "https://www.imdb.com/title/tt1735221/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "86%",
+      link: "https://www.rottentomatoes.com/m/rpg_metanoia",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/rpg-metanoia/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Dayo: Sa Mundo ng Elementalia",
+  year: 2008,
+  poster: "./image3/dayo.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=OjYc9ffj2zE",
+  movie:'https://www.bilibili.tv/en/video/2006283012',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt1245468/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/the-wanderer-2008/watch/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Urduja",
+  year: 2008,
+  poster: "./image3/urduja.jpg",
+  genre: [ ""],
+  director: {
+    name: "Reggie Atienza",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=R_pC7xS1hfg",
+  movie:'https://www.youtube.com/watch?v=m2OcXOmPoWs',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.4",
+      link: "https://www.imdb.com/title/tt1168764/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/urduja",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/urduja/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Saving Sally",
+  year: 2016,
+  poster: "./image3/sally.jpg",
+  genre: [ "Fantasy","Romance"],
+  director: {
+    name: "Avid Liongoren",
+    link: "https://en.wikipedia.org/wiki/Avid_Liongoren"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=n_jMCYdnOYA",
+  movie:'https://www.youtube.com/watch?v=l3SMrKML5Zo',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt5569560/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/saving_sally",
+    },
+    letterboxd: {
+      score: "3.2",
+      link: "https://letterboxd.com/film/saving-sally/",
+    }
+  },
+  cast: [
+    { name: "Avid Liongoren", role: "Director", photo: "./image3/jose.jpg", link: "https://en.wikipedia.org/wiki/Avid_Liongoren" },
+    { name: "Rhian Ramos", role: "Sally", photo: "", link: "https://en.wikipedia.org/wiki/Rhian_Ramos" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Hayop ka!",
+  year: 2020,
+  poster: "./image3/hayop.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=k2EDRB7U6_I",
+  movie:'https://www.bilibili.tv/en/video/2001696890',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.4",
+      link: "https://www.imdb.com/title/tt11102242/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "88%",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/you_animal",
+    },
+    letterboxd: {
+      score: "2.9",
+      link: "https://letterboxd.com/film/you-animal-the-nimfa-dimaano-story/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Manang Biring",
+  year: 2015,
+  poster: "./image3/biring.jpg",
+  genre: [ "Animated"],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=wBxwGomdOm8",
+  movie:'https://www.bilibili.tv/en/video/4796069892331520',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5",
+      link: "https://www.imdb.com/title/tt5232230/?ref_=mv_close",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/manang_biring",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/manang-biring/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Macho Dancer",
+  year: 1988,
+  poster: "./image3/macho.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=eG9cKjUursQ",
+  movie:'https://m.ok.ru/video/152950039718726-0',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0095562/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "70%",
+      link: "https://www.rottentomatoes.com/m/macho_dancer",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/macho-dancer/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Adarna: The Mythical Bird",
+  year: 1997,
+  poster: "./image3/adarna.jpg",
+  genre: [ ""],
+  director: {
+    name: "Gerry A. Garcia  ",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=AjBGmtNejU8",
+  movie:'https://www.youtube.com/watch?v=tmTeZrQbUCA',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.6",
+      link: "https://www.imdb.com/title/tt1245450/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/adarna/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Scorpio Nights",
+  year: 1985,
+  poster: "./image3/scorp.jpg",
+  genre: [ "Bold"],
+  director: {
+    name: "Peque Gallaga",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Jm7BYQfABqI",
+  movie:'https://m.ok.ru/video/6259317541629',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5",
+      link: "https://www.imdb.com/title/tt0117568/?ref_=mv_desc",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "90%",
+      link: "https://www.rottentomatoes.com/m/scorpio_nights",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/scorpio-nights/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Hinugot sa Langit",
+  year: 1985,
+  poster: "./image3/hugot.jpg",
+  genre: [ ""],
+  director: {
+    name: "Ishmael Bernal",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=0ZjsMrYcVS4",
+  movie:'https://www.youtube.com/watch?v=DAI4vMjV76I',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt0301405/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/hinugot_sa_langit",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/hinugot-sa-langit/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Ang Lalaki sa Bahay ni Selya",
+  year: 1997,
+  poster: "./image3/selya.jpg",
+  genre: [ ""],
+  director: {
+    name: "Carlos Siguion-Reyna",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=km6OeNXxumc",
+  movie:'https://www.youtube.com/watch?v=h10w4HXp8uA',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0124282/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/ang_lalaki_sa_buhay_ni_selya",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/the-man-in-selyas-life/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Twilight Dancers",
+  year: 2006,
+  poster: "./image3/dance.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=yUzl-iq2tb0",
+  movie:'https://m.ok.ru/video/3614447045339',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.2",
+      link: "https://www.imdb.com/title/tt0843383/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/twilight_dancers",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/twilight-dancers/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "La Vida Rosa",
+  year: 2001,
+  poster: "./image3/La.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Nx1XEERE-pY",
+  movie:'https://www.youtube.com/watch?v=tntiwp1C9BQ',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.6",
+      link: "https://www.imdb.com/title/tt0298207/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/la_vida_rosa",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/la-vida-rosa/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Hubad na Bayani",
+  year: 1977,
+  poster: "./image3/hubda.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "0",
+      link: "https://www.imdb.com/title/tt0301424/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/hubad-na-bayani/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Purgatoryo",
+  year: 2016,
+  poster: "./image3/purga.jpg",
+  genre: [ ""],
+  director: {
+    name: "Roderick Cabrido",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=RZvJwyEILe0&rco=1",
+  movie:'https://m.ok.ru/video/6788931521054',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.4",
+      link: "https://www.imdb.com/title/tt6005632/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/purgatoryo",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/purgatoryo/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Chassis",
+  year: 2010,
+  poster: "./image3/chassis.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=8QA4aOQHVQ4",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.6",
+      link: "https://www.imdb.com/title/tt1740001/?ref_=mv_close",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Mga Bilanggong Birhen",
+  year: 1977,
+  poster: "./image3/birhen.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.facebook.com/watch/?v=1591662155350054",
+  movie:'https://www.youtube.com/watch?v=Pj690GbyCns',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt0292105/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/the-captive-virgins/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Tubog sa Ginto",
+  year: 1971,
+  poster: "./image3/tubog.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.facebook.com/watch/?v=1136366398306604",
+  movie:'https://www.youtube.com/watch?v=AJ3E3yA4bFE&rco=1',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "8.1",
+      link: "https://www.imdb.com/title/tt0067887/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/dipped-in-gold/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bliss",
+  year: 2017,
+  poster: "./image3/bliss.jpg",
+  genre: [ "Horror"],
+  director: {
+    name: "Jerrold Tarog",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=vghZuCVRPyA",
+  movie:'https://www.youtube.com/watch?v=WROw8VLGPbM',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.0",
+      link: "https://www.imdb.com/title/tt6608136/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.2",
+      link: "https://letterboxd.com/film/bliss-2017/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "My Father, Myself",
+  year: 2023,
+  poster: "./image3/father.webp",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=TyDpsaWsF58",
+  movie:'https://vk.com/video690916702_456239742',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "‘Ganito Kami Noon... Paano Kayo Ngayon",
+  year: 1976,
+  poster: "./image3/ganito.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=4YAN-X9mvr4",
+  movie:'https://www.youtube.com/watch?v=LT9FJ91w4pk',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.4",
+      link: "https://www.imdb.com/title/tt0159456/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "85%",
+      link: "https://www.rottentomatoes.com/m/ganito_kami_noon_paano_kayo_ngayon",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/as-we-were/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Itim",
+  year: 1976,
+  poster: "./image3/itim.jpg",
+  genre: [ "Horror"],
+  director: {
+    name: "Mike de Leon",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Cez132WTIZI",
+  movie:'https://m.ok.ru/video/7092812319430',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0256106/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/the-rites-of-may/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Batch 81",
+  year: 1982,
+  poster: "./image3/batch.jpg",
+  genre: [ ""],
+  director: {
+    name: "Mike de Leon",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=SOxOlOzyWSk",
+  movie:'https://www.bilibili.tv/en/video/2017559393',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt0138317/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/batch_81",
+    },
+    letterboxd: {
+      score: "3.8",
+      link: "https://letterboxd.com/film/batch-81/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Relasyon",
+  year: 1972,
+  poster: "./image3/relasyon.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=bGVRjOi908E",
+  movie:'https://www.youtube.com/watch?v=VekgiRRVhnc',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "8",
+      link: "https://www.imdb.com/title/tt0186488/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Boatman",
+  year: 2000,
+  poster: "./image3/boatman.jpg",
+  genre: [ ""],
+  director: {
+    name: "Tikoy Aguiluz",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: '',
+  movie:'https://www.bilibili.tv/en/video/2041255012',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt0159248/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/boatman/crew/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Cait at Abel",
+  year: 2000,
+  poster: "./image3/cain.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=dmM0gMkkkHI",
+  movie:'https://www.youtube.com/watch?v=wOiC08BG4Zo',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt0317210/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/cain-abel",
+    },
+    letterboxd: {
+      score: "3.7",
+      link: "https://letterboxd.com/film/cain-and-abel-1982/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Working Girls",
+  year: 1984,
+  poster: "./image3/working.jpg",
+  genre: [ ""],
+  director: {
+    name: "Ishamel Bernal",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Wm9xeXI83T4",
+  movie:'https://vk.com/video-136471876_456241227',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.7",
+      link: "https://www.imdb.com/title/tt0302045/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.4",
+      link: "https://letterboxd.com/film/working-girls/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Salome",
+  year: 1981,
+  poster: "./image3/salome.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.dailymotion.com/video/x8hzwih",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.5",
+      link: "https://www.imdb.com/title/tt0257084/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/salome-1981/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Karnal",
+  year: 1983,
+  poster: "./image3/karnal.jpg",
+  genre: [ ""],
+  director: {
+    name: "Marilou Diaz-Abaya",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Su_8serJnO0",
+  movie:'https://www.youtube.com/watch?v=nHMxOMXkQsE',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt0312863/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "100%",
+      link: "https://www.rottentomatoes.com/m/karnal",
+    },
+    letterboxd: {
+      score: "3.7",
+      link: "https://letterboxd.com/film/of-the-flesh/",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Burslek Queen",
+  year: 1977,
+  poster: "./image3/burslek.jpg",
+  genre: [ ""],
+  director: {
+    name: "Celso Ad Castillo",
+    link: "https://en.wikipedia.org/wiki/Celso_Ad._Castillo"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=2Q1lOs3hebI",
+  movie:'https://www.youtube.com/watch?v=V6U-JQzr8NI',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt0185968/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/burlesk_queen",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/burlesk-queen/",
+    }
+  },
+  cast: [
+    { name: "Celso Ad Castillo", role: "Director", photo: "./image3/celso.png", link: "https://en.wikipedia.org/wiki/Celso_Ad._Castillo" },
+    { name: "Vilma Santos", role: "Lead", photo: "./image3/vilma.jpg", link: "https://en.wikipedia.org/wiki/Vilma_Santos" },
+    { name: "Rosemarie Gil", role: "Supporting", photo: "./image3/rosemarie.jpg", link: "https://en.wikipedia.org/wiki/Rosemarie_Gil" },
+        { name: "Rolly Quizon", role: "Supporting", photo: "./image3/rolly.jpg", link: "https://en.wikipedia.org/wiki/Rolly_Quizon" },
+  ]
+},
+{
+    title: "Dekada '70",
+  year: 2002,
+  poster: "./image3/dekada.jpg",
+  genre: [ ""],
+  director: {
+    name: "Chito S. Roño",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=jY6P6mDKPNo",
+  movie:'https://www.youtube.com/watch?v=BXQSkrLL5jA',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.6",
+      link: "https://www.imdb.com/title/tt0325233/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/dekada-70",
+    },
+    letterboxd: {
+      score: "3.8",
+      link: "https://letterboxd.com/film/the-70s-2002/",
+    }
+  },
+  cast: [
+    { name: "Chito S. Roño", role: "Director", photo: "./image3/chito.jpg", link: "https://en.wikipedia.org/wiki/Chito_S._Ro%C3%B1o" },
+    { name: "Lualhati Bautista", role: "Writer", photo: "./image3/lualhati.webp", link: "https://en.wikipedia.org/wiki/Lualhati_Bautista" },
+    { name: "Vilma Santos", role: "Lead", photo: "./image3/vilma.jpg", link: "https://en.wikipedia.org/wiki/Vilma_Santos" },
+        { name: "Christoper De Leon", role: "Supporting", photo: "./image3/christoper.jpg", link: "https://en.wikipedia.org/wiki/Christopher_de_Leon" },
+    { name: "Piolo Pascual", role: "Supporting", photo: "./image3/piolo.jpg", link: "https://en.wikipedia.org/wiki/Piolo_Pascual" },
+    { name: "Marvin Agustin", role: "Supporting", photo: "./image3/mavin.webp", link: "https://en.wikipedia.org/wiki/Marvin_Agustin" },
+
+  ]
+},
+{
+    title: "Segurista",
+  year: 1996,
+  poster: "./image3/segurista.jpg",
+  genre: [ ""],
+  director: {
+    name: "Tikoy Aguiluz",
+    link: "https://en.wikipedia.org/wiki/Tikoy_Aguiluz"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.dailymotion.com/video/x8hqmlh",
+  movie:'https://m.ok.ru/video/6126171458200',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.3",
+      link: "https://www.imdb.com/title/tt0117594/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "'",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/segurista/watch/",
+    }
+  },
+  cast: [
+    { name: "Tikoy Aguiluz", role: "Director", photo: "./image3/tikoy.webp", link: "https://en.wikipedia.org/wiki/Tikoy_Aguiluz" },
+    { name: "Michelle Aldana", role: "Lead", photo: "./image3/michelle.webp", link: "https://www.imdb.com/name/nm0017400/" },
+    { name: "Gary Estrada", role: "Supporting", photo: "./image3/gary.jpg", link: "https://en.wikipedia.org/wiki/Gary_Estrada" },
+        { name: "Ruby Moreno", role: "Supporting", photo: "./image3/", link: "https://www.imdb.com/name/nm0604176/?ref_=tt_ov_3_3" },
+
+  ]
+},
+{
+    title: "Laman",
+  year: 2002,
+  poster: "./image3/laman.jpg",
+  genre: [ ""],
+  director: {
+    name: "Marjo J. de los Reys",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=Jl7q3bhKpqY&rco=1",
+  movie:'https://www.dailymotion.com/video/x90gykc',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6",
+      link: "https://www.imdb.com/title/tt0343956/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "57%",
+      link: "https://www.rottentomatoes.com/m/laman",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/laman-2002/",
+    }
+  },
+  cast: [
+    { name: "Marjo J. de los Reys", role: "Director", photo: "./image3/marjo.jpg", link: "https://en.wikipedia.org/wiki/Maryo_J._de_los_Reyes" },
+    { name: "Albert Martinez", role: "Lead", photo: "./image3/albert.webp", link: "https://en.wikipedia.org/wiki/Albert_Martinez" },
+    { name: "Elizabeth Oropesa", role: "Lead", photo: "./image3/elizabeth.webp", link: "https://en.wikipedia.org/wiki/Elizabeth_Oropesa" },
+  ]
+},
+{
+    title: "Ekis: Walang tatakas",
+  year: 1999,
+  poster: "./image3/ekis.jpg",
+  genre: [ ""],
+  director: {
+    name: "Eric Matti",
+    link: "https://en.wikipedia.org/wiki/Erik_Matti"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=TWdkrhbTLUk",
+  movie:'https://m.ok.ru/video/2406324570766',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.8",
+      link: "https://www.imdb.com/title/tt0291884/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/ekis-1999/",
+    }
+  },
+  cast: [
+    { name: "Erik Matti", role: "Director", photo: "./image3/erik.jpg", link: "https://en.wikipedia.org/wiki/Erik_Matti" },
+    { name: "Albert Martinez", role: "Gene", photo: "./image3/albert.webp", link: "https://en.wikipedia.org/wiki/Albert_Martinez" },
+    { name: "Sunshine Cruz", role: "Dolor", photo: "./image3/sunshine.jpg", link: "https://en.wikipedia.org/wiki/Sunshine_Cruz" },
+  ]
+},
+{
+    title: "Ang lihim ni Antonio",
+  year: 2008,
+  poster: "./image3/antonio.jpg",
+  genre: [ ""],
+  director: {
+    name: "Joselito Altarejos",
+    link: "https://www.imdb.com/name/nm2356856/?ref_=tt_ov_1_1"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.dailymotion.com/video/x8hs1r1",
+  movie:'https://m.ok.ru/video/6089247820530',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5",
+      link: "https://www.imdb.com/title/tt1172186/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.3",
+      link: "https://letterboxd.com/film/antonios-secret/",
+    }
+  },
+  cast: [
+    { name: "Joselito Altarejos", role: "Director", photo: "./image3/lito.webp", link: "https://www.imdb.com/name/nm2356856/?ref_=tt_ov_1_1" },
+    { name: "Kenjie Garcia", role: "Lead", photo: "./image3/kenjie.jpg", link: "https://www.imdb.com/name/nm2894797/" },
+    { name: "Jiro Manio", role: "Supporting", photo: "./image3/jiro.webp", link: "https://www.imdb.com/name/nm1205018/?ref_=tt_cst_t_2" },
+  ]
+},
+{
+    title: "Ang Babae sa Septic Tank",
+  year: 2011,
+  poster: "./image3/septic.jpg",
+  genre: [ ""],
+  director: {
+    name: "Marlon Rivera",
+    link: "https://www.imdb.com/name/nm2842515/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=fqDG_P96Rb0",
+  movie:'https://www.bilibili.tv/en/video/2043536601',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.2",
+      link: "https://www.imdb.com/title/tt1961179/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "75%",
+      link: "https://www.rottentomatoes.com/m/the_woman_in_the_septic_tank",
+    },
+    letterboxd: {
+      score: "3.5",
+      link: "https://letterboxd.com/film/ang-babae-sa-septic-tank/",
+    }
+  },
+  cast: [
+    { name: "Marlon Rivera", role: "Director", photo: "./image3/marlon.jpg", link: "https://www.imdb.com/name/nm2842515/" },
+    { name: "Chris Martinez", role: "Writer", photo: "./image3/chris.jpg", link: "https://en.wikipedia.org/wiki/Chris_Martinez_(director)" },
+    { name: "Eugene Domingo", role: "Mila", photo: "./image3/eugene.webp", link: "https://en.wikipedia.org/wiki/Eugene_Domingo" },
+        { name: "JM De Guzman", role: "Bingbong", photo: "./image3/Jm.jpg", link: "https://en.wikipedia.org/wiki/JM_de_Guzman" },
+    { name: "Kean Cipriano", role: "Ranier", photo: "./image3/kean.jpg", link: "https://en.wikipedia.org/wiki/Kean_Cipriano" },
+
+  ]
+},
+{
+    title: "Norte, Hangganan ng Kasaysayan",
+  year: 2013,
+  poster: "./image3/norte.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lav Diaz",
+    link: "https://en.wikipedia.org/wiki/Lav_Diaz"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=h_ouAyOMiRY",
+  movie:'https://www.bilibili.tv/en/video/4788712344918528',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.5",
+      link: "https://www.imdb.com/title/tt2852432/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "93%",
+      popcornmeter: "79%",
+      link: "https://www.rottentomatoes.com/m/norte_the_end_of_history",
+    },
+    letterboxd: {
+      score: "4.0",
+      link: "https://letterboxd.com/film/norte-the-end-of-history/",
+    }
+  },
+  cast: [
+    { name: "Lav Diaz", role: "Director", photo: "./image3/lav.jpg", link: "https://en.wikipedia.org/wiki/Lav_Diaz" },
+    { name: "Sid Lucero", role: "Fabian", photo: "./image3/sid.jpg", link: "https://en.wikipedia.org/wiki/Sid_Lucero" },
+    { name: "Angelina bayani", role: "Eliza", photo: "./image3/angeli.webp", link: "https://en.wikipedia.org/wiki/Angeli_Bayani" },
+    { name: "Archie Alemania", role: "Joaquin", photo: "./image3/archie.jpg", link: "https://en.wikipedia.org/wiki/Archie_Alemania" },
+
+  ]
+},
+{
+    title: "Honor thy Father",
+  year: 2015,
+  poster: "./image3/honor.jpg",
+  genre: [ ""],
+  director: {
+    name: "Erik Matti",
+    link: "https://www.imdb.com/name/nm0559277/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=4DCCw9Qs1fc",
+  movie:'https://www.bilibili.tv/en/video/2043298149',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.5",
+      link: "https://www.imdb.com/title/tt4498800/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "91%",
+      link: "https://www.rottentomatoes.com/m/honor_thy_father_2015",
+    },
+    letterboxd: {
+      score: "3.7",
+      link: "https://letterboxd.com/film/honor-thy-father-2015/",
+    }
+  },
+  cast: [
+    { name: "Erik Matti", role: "Director", photo: "./image3/erik.jpg", link: "https://en.wikipedia.org/wiki/Erik_Matti" },
+    { name: "Michiko Yamamoto", role: "Writer", photo: "./image3/michiko.jpg", link: "https://en.wikipedia.org/wiki/Michiko_Yamamoto_(screenwriter)" },
+    { name: "John Lloyd Cruz", role: "Edgar", photo: "./image3/john.png", link: "https://en.wikipedia.org/wiki/John_Lloyd_Cruz" },
+        { name: "Meryll Soriano", role: "Kaye", photo: "./image3/meryll.webp", link: "https://en.wikipedia.org/wiki/Meryll_Soriano" },
+    { name: "Tirso Cruz III", role: "Bishop Tony", photo: "./image3/tirso.jpg", link: "https://en.wikipedia.org/wiki/Tirso_Cruz_III" },
+
+  ]
+},
+{
+    title: "Seklusyon",
+  year: 2016,
+  poster: "./image3/seklusyon.jpg",
+  genre: [ ""],
+  director: {
+    name: "Erik Matti",
+    link: "https://en.wikipedia.org/wiki/Erik_Matti"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=pvBZDt1zTow",
+  movie:'https://www.bilibili.tv/en/video/2001140130',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.1",
+      link: "https://www.imdb.com/title/tt6271180/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/seklusyon",
+    },
+    letterboxd: {
+      score: "3.1",
+      link: "https://letterboxd.com/film/seklusyon/",
+    }
+  },
+  cast: [
+    { name: "Erik Matti", role: "Director", photo: "./image3/erik.jpg", link: "https://en.wikipedia.org/wiki/Erik_Matti" },
+    { name: "Phoebe Walker", role: "Sister Cecilia", photo: "./image3/phoebe.webp", link: "https://www.imdb.com/name/nm6669844/" },
+    { name: "Rhed Bustamante", role: "Anghela", photo: "./image3/rhed.webp", link: "https://www.imdb.com/name/nm6520391/" },
+        { name: "Ronnie Alonte", role: "Miguel", photo: "./image3/ronnie.webp", link: "https://www.imdb.com/name/nm7448924/" },
+    { name: "Dominic Roque", role: "Fabian", photo: "./image3/dominique.jpg", link: "https://en.wikipedia.org/wiki/Dominic_Roque" },
+  ]
+},
+{
+    title: "Brown Emmanuel",
+  year: 1982,
+  poster: "./image3/brown.jpg",
+  genre: [ ""],
+  director: {
+    name: "Celso Ad Castillo",
+    link: "https://en.wikipedia.org/wiki/Celso_Ad_Castillo"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0370373/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/brown-emmanuelle/details/",
+    }
+  },
+  cast: [
+    { name: "Celso Ad Castillo", role: "Director", photo: "./image3/celso.png", link: "https://en.wikipedia.org/wiki/Celso_Ad._Castillo" },
+    { name: "Myrna Castillo", role: "Emma", photo: "", link: "https://www.imdb.com/name/nm1036385/?ref_=tt_cst_t_1" },
+    { name: "Pepsi Paloma", role: "Supporting", photo: "./image3/pepsi.webp", link: "https://en.wikipedia.org/wiki/Pepsi_Paloma" },
+  ]
+},
+{
+    title: "Father Jejemon",
+  year: 2010,
+  poster: "./image3/jejemon.jpg",
+  genre: [ ""],
+  director: {
+    name: "Frank Gray Jr.",
+    link: "https://www.imdb.com/name/nm1664669/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=jVlUeywsHkk",
+  movie:'https://www.youtube.com/watch?v=VEQvErO3Vbw',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.0",
+      link: "https://www.imdb.com/title/tt1789759/?ref_=mv_close",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/father_jejemon",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/father-jejemon/",
+    }
+  },
+  cast: [
+    { name: "Frank Gray Jr.", role: "Director", photo: "./image3/frank.jpg", link: "https://www.imdb.com/name/nm1664669/" },
+    { name: "Dolphy", role: "Father Jejemon", photo: "./image3/dolphy.webp", link: "https://en.wikipedia.org/wiki/Dolphy" },
+    { name: "Cherie Gil", role: "Violeta", photo: "./image3/cherie.webp", link: "https://www.google.com/search?sca_esv=13d5be0ef7350a07&rlz=1C1RINU_enPH1192PH1192&q=Cherie+Gil&stick=H4sIAAAAAAAAAONgFuLSz9U3SDc0zk7LUgKzTTOM04oKtYSyk6300zJzcsGEVXJicckiVi7njNSizFQF98wcALKKnt07AAAA&sa=X&ved=2ahUKEwjNiLryg_2RAxUOxzgGHd72GEYQgOQBegQIMRAS" },
+        { name: "Nash Aguas", role: "Carlo", photo: "./image3/nash.jpg", link: "https://en.wikipedia.org/wiki/Nash_Aguas" },
+
+  ]
+},
+{
+    title: "Init ng laman",
+  year: 1998,
+  poster: "./image3/init.webp",
+  genre: [ ""],
+  director: {
+    name: "Tata Esteban",
+    link: "https://en.wikipedia.org/wiki/Tata_Esteban"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=hHYkE_U7uuI",
+  movie:'https://www.youtube.com/watch?v=UV-Hl6SUQEU',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "4.8",
+      link: "https://www.imdb.com/title/tt0408914/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/init_ng_laman_1998",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/init-ng-laman/",
+    }
+  },
+  cast: [
+    { name: "Tata Esteban", role: "Director", photo: "./image3/tata.jpg", link: "https://en.wikipedia.org/wiki/Tata_Esteban" },
+    { name: "Sunshine Cruz", role: "Laila", photo: "./image3/sunshine.jpg", link: "https://en.wikipedia.org/wiki/Sunshine_Cruz" },
+    { name: "John Apacible", role: "Allen", photo: "", link: "https://www.imdb.com/name/nm1231383/?ref_=tt_cst_t_3" },
+  ]
+},
+{
+    title: "Kahit sa Bala Kakapit Ako",
+  year: 2000,
+  poster: "./image3/kahit.jpg",
+  genre: [ ""],
+  director: {
+    name: "Willy Milan",
+    link: "https://www.imdb.com/name/nm0586798/?ref_=tt_ov_1_1"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=NKHBjhsl8zY",
+  movie:'https://www.youtube.com/watch?v=Gfi2iSsu91E',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "0",
+      link: "https://www.imdb.com/title/tt0379843/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "https://www.rottentomatoes.com/m/kahit_sa_bala_kakapit_ako",
+    }
+  },
+  cast: [
+    { name: "Willy Milan", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "Ronnie Rickets", role: "Lead", photo: "./image3/rickets.webp", link: "https://en.wikipedia.org/wiki/Ronnie_Ricketts" },
+    { name: "Princess Punzalan", role: "Supporting", photo: "./image3/princess.webp", link: "https://www.imdb.com/name/nm0700630/" },
+        { name: "Gladys Reyes", role: "Supporting", photo: "./image3/gladys.jpg", link: "https://en.wikipedia.org/wiki/Gladys_Reyes" },
+
+  ]
+},
+{
+    title: "White Slavery",
+  year: 1985,
+  poster: "./image3/white.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: "https://en.wikipedia.org/wiki/Lino_Brocka"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://drive.google.com/file/d/1Bgu8Y-HGgbFMSQG0KZIXSHq5bDNw0FBz/view?t=6',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.7",
+      link: "https://www.imdb.com/title/tt0375211/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "3.2",
+      link: "https://letterboxd.com/film/white-slavery/watch/",
+    }
+  },
+  cast: [
+    { name: "Lino Brocka", role: "Director", photo: "./image3/brocka.jpg", link: "https://en.wikipedia.org/wiki/Lino_Brocka" },
+        { name: "Ricky Lee", role: "Writer", photo: "./image3/ricky.jpg", link: "https://en.wikipedia.org/wiki/Ricky_Lee" },
+    { name: "Sarsi Emmanuel", role: "Joy", photo: "./image3/sarsi.webp", link: "https://en.wikipedia.org/wiki/Sarsi_Emmanuelle" },
+    { name: "Emily Loren", role: "Pinang", photo: "./image3/emily.jpg", link: "https://www.imdb.com/name/nm1416212/" },
+        { name: "Jaclyn Jose", role: "Linet", photo: "./image3/jaclyn.webp", link: "https://www.google.com/search?q=jaclyn+jose&rlz=1C1RINU_enPH1192PH1192&oq=jaclyn+jose&gs_lcrp=EgZjaHJvbWUqDQgAEAAY4wIYsQMYgAQyDQgAEAAY4wIYsQMYgAQyCggBEC4YsQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyBwgEEAAYgAQyBggFEEUYQDIGCAYQRRhAMgYIBxBFGEDSAQgxNTYyajBqOagCALACAQ&sourceid=chrome&ie=UTF-8" },
+
+  ]
+},
+{
+    title: "Sa Kabila ng Lahat",
+  year: 1991,
+  poster: "./image3/kabila.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lino Brocka",
+    link: "https://en.wikipedia.org/wiki/Lino_Brocka"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=NS3S5KboKzY',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.6",
+      link: "https://www.imdb.com/title/tt0313547/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/sa_kabila_ng_lahat",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "Lino Brocka", role: "Director", photo: "./image3/lino.jpg", link: "https://en.wikipedia.org/wiki/Lino_Brocka" },
+    { name: "Roy C. Iglesias", role: "Writer", photo: "./image3/roy.jpg", link: "https://en.wikipedia.org/wiki/Roy_C._Iglesias" },
+    { name: "Dina Bonnevie", role: "Maria Robles", photo: "./image3/bon.webp", link: "https://en.wikipedia.org/wiki/Dina_Bonnevie" },
+        { name: "Tonton Gutierrez", role: "Mike Serrano", photo: "./image3/tonton.webp", link: "https://en.wikipedia.org/wiki/Tonton_Gutierrez" },
+    { name: "Ronaldo Valdez", role: "Mayor Velasco", photo: "./image3/ronaldo.jpg", link: "" },
+
+  ]
+},
+{
+    title: "T-Bird at Ako",
+  year: 1992,
+  poster: "./image3/tbird.jpg",
+  genre: [ ""],
+  director: {
+    name: "Danny L. Zialcita",
+    link: "https://en.wikipedia.org/wiki/Danny_Zialcita"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=6uDGtoy8aYQ",
+  movie:'https://www.youtube.com/watch?v=amxgmFCxfS0',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "6.5",
+      link: "https://www.imdb.com/title/tt0125525/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/t_bird_at_ako",
+    },
+    letterboxd: {
+      score: "3.1",
+      link: "https://letterboxd.com/film/t-bird-at-ako/",
+    }
+  },
+  cast: [
+    { name: "Danny L. Zialcita", role: "Director", photo: "./image3/danny.jpg", link: "https://en.wikipedia.org/wiki/Danny_Zialcita" },
+    { name: "Portia Ilagan", role: "Writer", photo: "", link: "https://www.imdb.com/name/nm2390980/?ref_=tt_ov_2_1" },
+    { name: "Nora Aunor", role: "Sylvia", photo: "./image3/nora.jpg", link: "https://en.wikipedia.org/wiki/Nora_Aunor" },
+        { name: "Vilma Santos", role: "Isabel", photo: "./image3/vilma.jpg", link: "https://en.wikipedia.org/wiki/Vilma_Santos" },
+        { name: "Tommy Abuel", role: "Jake", photo: "./image3/tommy.webp", link: "https://en.wikipedia.org/wiki/Tommy_Abuel" },
+
+  ]
+},
+{
+    title: "Dugong Buhay",
+  year: 1983,
+  poster: "./image3/dugo.jpg",
+  genre: [ ""],
+  director: {
+    name: "Carlo J. Caparas",
+    link: "https://en.wikipedia.org/wiki/Carlo_J._Caparas"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=ReED6uOv7SI',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.2",
+      link: "https://www.imdb.com/title/tt0360527/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/dugong_buhay/cast-and-crew",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/dugong-buhay/",
+    }
+  },
+  cast: [
+    { name: "Carlo J. Caparas", role: "Director", photo: "./image3/carlo.webp", link: "https://en.wikipedia.org/wiki/Carlo_J._Caparas" },
+    { name: "Ramon 'Bong' Revilla Jr.", role: "Lead", photo: "./image3/ramon.jpg", link: "https://www.imdb.com/name/nm1142519/?ref_=tt_cst_t_2" },
+    { name: "Maria Isabel Lopez", role: "Supporting", photo: "./image3/isabel.webp", link: "https://en.wikipedia.org/wiki/Maria_Isabel_Lopez" },
+        { name: "Imelda Ilanan", role: "Supporting", photo: "./image3/imelda.webp", link: "https://www.imdb.com/name/nm0407580/?ref_=tt_cst_t_3" },
+
+  ]
+},
+{
+    title: "Hayop sa Sarap",
+  year: 1984,
+  poster: "./image3/sarap.jpg",
+  genre: [ ""],
+  director: {
+    name: "Artemio Marquez",
+    link: "https://www.imdb.com/name/nm0549838/?ref_=tt_ov_1_1"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=RRVV8kpOxlE',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt0374702/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/hayop_sa_sarap",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/hayop-sa-sarap/",
+    }
+  },
+  cast: [
+    { name: "Artemio Marquez", role: "Director", photo: "./image3/artemio.jpg", link: "https://www.imdb.com/name/nm0549838/?ref_=tt_ov_1_1" },
+    { name: "Irma Alegre", role: "Alma", photo: "./image3/irma.jpg", link: "https://www.imdb.com/name/nm0017808/?ref_=tt_cst_t_1" },
+    { name: "Angela Perez", role: "Melody", photo: "./image3/angela.jpg", link: "https://www.imdb.com/name/nm1317103/?ref_=tt_cst_t_2" },
+        { name: "Al Tantay", role: "Luis", photo: "./image3/al.webp", link: "https://en.wikipedia.org/wiki/Al_Tantay" },
+
+  ]
+},
+{
+    title: "Melancholia",
+  year: 2008,
+  poster: "./image3/melan.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lav Diaz",
+    link: "https://en.wikipedia.org/wiki/Lav_Diaz"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=KA8__-kdHzI",
+  movie:'https://vk.com/video-191971349_456239296',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.3",
+      link: "https://www.imdb.com/title/tt1269566/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "80%",
+      link: "https://www.rottentomatoes.com/m/melancholia_2008",
+    },
+    letterboxd: {
+      score: "4.1",
+      link: "https://letterboxd.com/film/melancholia-2008/",
+    }
+  },
+  cast: [
+    { name: "Lav Diaz", role: "Director", photo: "./image3/lav.jpg", link: "https://en.wikipedia.org/wiki/Lav_Diaz" },
+    { name: "Angelina bayani", role: "Eliza", photo: "./image3/angeli.webp", link: "https://en.wikipedia.org/wiki/Angeli_Bayani" },
+        { name: "Perry Dizon", role: "Julian Tomas", photo: "./image3/perry.webp", link: "https://www.imdb.com/name/nm2015658/" },
+    { name: "Roeder Camanag", role: "Renato Munoz", photo: "./image3/roeder.webp", link: "https://www.imdb.com/name/nm1958150/bio/" },
+
+  ]
+},
+{
+    title: "Century of Birthing",
+  year: 2011,
+  poster: "./image3/century.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lav Diaz",
+    link: "https://en.wikipedia.org/wiki/Lav_Diaz"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.dailymotion.com/video/x8i2dru",
+  movie:'https://m.ok.ru/video/3109723769530',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.4",
+      link: "https://www.imdb.com/title/tt2028550/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "60%",
+      link: "https://www.rottentomatoes.com/m/siglo_ng_pagluluwal",
+    },
+    letterboxd: {
+      score: "3.9",
+      link: "https://letterboxd.com/film/century-of-birthing/",
+    }
+  },
+  cast: [
+    { name: "Lav Diaz", role: "Director", photo: "./image3/lav.jpg", link: "https://en.wikipedia.org/wiki/Lav_Diaz" },
+        { name: "Perry Dizon", role: "Homer", photo: "./image3/perry.webp", link: "https://www.imdb.com/name/nm2015658/" },
+      { name: "Angel Aquino", role: "Sister Angela", photo: "./image3/perry.webp", link: "https://en.wikipedia.org/wiki/Angel_Aquino" },
+            { name: "Bart Guingona", role: "Dindo", photo: "./image3/bart.jpg", link: "https://www.imdb.com/name/nm1085515/" },
+
+  ]
+},
+{
+    title: "From What Is Before",
+  year: 2014,
+  poster: "./image3/mula.jpg",
+  genre: [ ""],
+  director: {
+    name: "Lav Diaz",
+    link: "https://en.wikipedia.org/wiki/Lav_Diaz"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=79EtADrXuvk",
+  movie:'https://vk.com/video-197265731_456240234',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.7",
+      link: "https://www.imdb.com/title/tt3303310/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "89%",
+      popcornmeter: "94%",
+      link: "https://www.rottentomatoes.com/m/mula_sa_kung_ano_ang_noon",
+    },
+    letterboxd: {
+      score: "4.2",
+      link: "https://letterboxd.com/film/from-what-is-before/",
+    }
+  },
+  cast: [
+    { name: "Lav Diaz", role: "Director", photo: "./image3/lav.jpg", link: "https://en.wikipedia.org/wiki/Lav_Diaz" },
+        { name: "Perry Dizon", role: "Homer", photo: "./image3/perry.webp", link: "https://www.imdb.com/name/nm2015658/" },
+    { name: "Roeder Camanag", role: "Renato Munoz", photo: "./image3/roeder.webp", link: "https://www.imdb.com/name/nm1958150/bio/" },
+  ]
+},
+{
+    title: "Aswang",
+  year: 2019,
+  poster: "./image3/aswang.jpg",
+  genre: [ ""],
+  director: {
+    name: "Alyx Ayn Arumpac",
+    link: "https://www.imdb.com/name/nm4782940/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=qbY_eyMcZzg",
+  movie:'https://vk.com/video-136471876_456241823',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.6",
+      link: "https://www.imdb.com/title/tt11131896/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/aswang_2019_2",
+    },
+    letterboxd: {
+      score: "3.9",
+      link: "https://letterboxd.com/film/aswang-2019/",
+    }
+  },
+  cast: [
+    { name: "Alyx Ayn Arumpac", role: "Director", photo: "./image3/alyx.webp", link: "https://www.imdb.com/name/nm4782940/" },
+    { name: "Ciriaco Santiago III", role: "self", photo: "", link: "https://www.imdb.com/name/nm10888726/?ref_=tt_cst_t_1" },
+    { name: "Jomari", role: "self", photo: "", link: "https://www.imdb.com/name/nm12114186/?ref_=tt_cst_t_2" },
+        { name: "Orly Fernandez", role: "self", photo: "", link: "https://www.imdb.com/name/nm12114185/?ref_=tt_cst_t_3" },
+
+  ]
+},
+{
+    title: "Tatlong Taon Walang Diyos",
+  year: 1976,
+  poster: "./image3/tatlo.jpg",
+  genre: [ ""],
+  director: {
+    name: "Mari0 O'Hara",
+    link: "https://www.imdb.com/name/nm0641300/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=BJ_eD2qGn1Y",
+  movie:'https://www.youtube.com/watch?v=9NleBx4-iIU',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.5",
+      link: "https://www.imdb.com/title/tt0125537/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/tatlong_taong_walang_diyos",
+    },
+    letterboxd: {
+      score: "3.7",
+      link: "https://letterboxd.com/film/three-years-without-god/",
+    }
+  },
+  cast: [
+    { name: "Mario O'Hara", role: "Director", photo: "./image3/mario.jpg", link: "https://www.imdb.com/name/nm0641300/" },
+    { name: "Nora Aunor", role: "Elsa", photo: "./image3/nora.jpg", link: "https://en.wikipedia.org/wiki/Nora_Aunor" },
+    { name: "Bembol Roco", role: "Julio", photo: "./image3/bembol.webp", link: "https://en.wikipedia.org/wiki/Bembol_Roco" },
+            { name: "Christoper De Leon", role: "Supporting", photo: "./image3/christoper.jpg", link: "https://en.wikipedia.org/wiki/Christopher_de_Leon" },
+
+  ]
+},
+{
+    title: "Tisoy",
+  year: 1991,
+  poster: "./image3/tisoy.jpg",
+  genre: [ ""],
+  director: {
+    name: "Ishmael Bernal",
+    link: "https://www.imdb.com/name/nm0079273/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=NONa-PPGi7o",
+  movie:'https://www.youtube.com/watch?v=LWe5ceI4rpQ',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.9",
+      link: "https://www.imdb.com/title/tt0301938/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/tisoy",
+    },
+    letterboxd: {
+      score: "3.6",
+      link: "https://letterboxd.com/film/tisoy/",
+    }
+  },
+  cast: [
+   { name: "Ishmael Bernal", role: "Director", photo: "./image3/ishmael.jpg", link: "https://en.wikipedia.org/wiki/Ishmael_Bernal" },
+       { name: "Nonoy Marcelo", role: "Writer", photo: "./image3/nonoy.jpg", link: "https://en.wikipedia.org/wiki/Nonoy_Marcelo" },
+         { name: "Christoper De Leon", role: "Tisoy", photo: "./image3/christoper.jpg", link: "https://en.wikipedia.org/wiki/Christopher_de_Leon" },
+       { name: "Charo Santos-Concio", role: "Maribubut", photo: "./image3/charo.jpg", link: "https://en.wikipedia.org/wiki/Charo_Santos-Concio" },
+        { name: "Jay Ilagan", role: "Boy", photo: "./image3/jay.jpg", link: "https://en.wikipedia.org/wiki/Jay_Ilagan" },
+        { name: "Lorli Villanueva", role: "Pomposa", photo: "./image3/lorli.jpg", link: "https://www.imdb.com/name/nm0897927/?ref_=tt_cst_t_4" },
+
+  ]
+},
+{
+    title: "Sariwa",
+  year: 1996,
+  poster: "./image3/sariwa.jpg",
+  genre: [ ""],
+  director: {
+    name: "Abbo Dela Cruz",
+    link: "https://www.imdb.com/name/nm1076348/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.dailymotion.com/video/x9kq3yg',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.1",
+      link: "https://www.imdb.com/title/tt0378708/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/sariwa",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/sariwa/",
+    }
+  },
+  cast: [
+    { name: "Abbo Dela Cruz", role: "Director", photo: "./image3/abbo.jpg", link: "https://www.imdb.com/name/nm1076348/" },
+    { name: "Genaro 'Nerdie' Cruz", role: "Writer", photo: "./image3/genaro.jpg", link: "https://www.imdb.com/name/nm2016647/" },
+    { name: "Gina Pareno", role: "Christie", photo: "./image3/pareno.jpg", link: "https://en.wikipedia.org/wiki/Gina_Pare%C3%B1o" },
+        { name: "Abby Viduya", role: "Susie", photo: "./image3/abby.webp", link: "https://www.imdb.com/name/nm0896568/?ref_=tt_cst_t_1" },
+    { name: "Romnick Sarmenta", role: "Supporting", photo: "./image3/romnick.jpg", link: "https://en.wikipedia.org/wiki/Romnick_Sarmenta" },
+        { name: "Luz Valdez", role: "Supporting", photo: "./image3/luz.webp", link: "https://en.wikipedia.org/wiki/Luz_Valdez" },
+        { name: "Jamie Fabregas", role: "Facundo", photo: "./image3/jaime.webp", link: "https://en.wikipedia.org/wiki/Jaime_Fabregas" },
+    
+  ]
+},
+{
+    title: "Patikim ng Pinya",
+  year: 1996,
+  poster: "./image3/pinya.jpg",
+  genre: [ ""],
+  director: {
+    name: "Abbo Q. Dela Cruz",
+    link: "https://www.imdb.com/name/nm1076348/"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=YVznazYByhs",
+  movie:'https://www.youtube.com/watch?v=00ak-oNQ61U',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "7.9",
+      link: "https://www.imdb.com/title/tt0378540/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/patikim_ng_pinya",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/patikim-ng-pinya/",
+    }
+  },
+  cast: [
+    { name: "Abbo Dela Cruz", role: "Director", photo: "./image3/abbo.jpg", link: "https://www.imdb.com/name/nm1076348/" },
+    { name: "Rossana Roces", role: "Myra", photo: "./image3/rossana.png", link: "https://www.imdb.com/name/nm0733726/?ref_=tt_cst_t_1" },
+    { name: "Leandro Baldemor", role: "Juanito", photo: "./image3/leandro.webp", link: "https://www.imdb.com/name/nm1104624/?ref_=tt_cst_t_2" },
+        { name: "Natasha Ledesma", role: "Lorreta", photo: "./image3/natasaha.jpg", link: "https://www.imdb.com/name/nm1233192/?ref_=tt_cst_t_3" },
+  ]
+},
+{
+    title: "Burslesk King",
+  year: 1999,
+  poster: "./image3/king.jpg",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.dailymotion.com/video/x8hru8x",
+  movie:'https://vk.com/video690916702_456239968',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.8",
+      link: "https://www.imdb.com/title/tt0214557/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/burlesk_king",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/burlesk-king/watch/",
+    }
+  },
+  cast: [
+    { name: "Mel Chionglo", role: "Director", photo: "./image3/mel.webp", link: "https://en.wikipedia.org/wiki/Mel_Chionglo" },
+        { name: "Ricky Lee", role: "Writer", photo: "./image3/ricky.jpg", link: "https://en.wikipedia.org/wiki/Ricky_Lee" },
+    { name: "Elizabeth Oropesa", role: "Betty", photo: "./image3/elizabeth.webp", link: "https://en.wikipedia.org/wiki/Elizabeth_Oropesa" },
+    { name: "Rodel Helayo", role: "Harry", photo: "./image3/.jpg", link: "https://www.imdb.com/name/nm0892360/" },
+        { name: "Leonardo Litton", role: "James", photo: "./image3/leon.jpg", link: "https://www.imdb.com/name/nm0514802/?ref_=tt_cst_t_2" },
+    { name: "Raymond Bagatsing", role: "Mario", photo: "./image3/raymond.webp", link: "https://en.wikipedia.org/wiki/Raymond_Bagatsing" },
+
+  ]
+},
+{
+    title: "Midnight Dancers",
+  year: 1991,
+  poster: "./image3/dancers.jpg",
+  genre: [ ""],
+  director: {
+    name: "Mel Chionglo",
+    link: "https://en.wikipedia.org/wiki/Mel_Chionglo"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://vk.com/video833274502_456239671',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "5.6",
+      link: "https://www.imdb.com/title/tt0111180/",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "https://www.rottentomatoes.com/m/midnight_dancers",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/sibak-midnight-dancers/watch/",
+    }
+  },
+  cast: [
+     { name: "Mel Chionglo", role: "Director", photo: "./image3/mel.webp", link: "https://en.wikipedia.org/wiki/Mel_Chionglo" },
+        { name: "Ricky Lee", role: "Writer", photo: "./image3/ricky.jpg", link: "https://en.wikipedia.org/wiki/Ricky_Lee" },
+    { name: "Alex Del Rosario", role: "Joel", photo: "", link: "https://www.imdb.com/name/nm0215843/?ref_=tt_cst_t_1" },
+        { name: "Lawrence David", role: "Sonny", photo: "", link: "https://www.imdb.com/name/nm0202973/?ref_=tt_cst_t_3" },
+    { name: "Gandong Cervantes", role: "Dennis", photo: "./image3/gandong.jpg", link: "https://www.imdb.com/name/nm0148886/?ref_=tt_cst_t_2" },
+  ]
+},
+{
+    title: "Sukdulan",
+  year: 2003,
+  poster: "./image3/sukdulan.webp",
+  genre: [ ""],
+  director: {
+    name: "Mac Alejandre",
+    link: "https://en.wikipedia.org/wiki/Mac_Alejandre"
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "https://www.youtube.com/watch?v=pgZsT7TQU5I",
+  movie:'https://www.dailymotion.com/video/x9t7jnu',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "92%",
+      link: "https://www.rottentomatoes.com/m/sukdulan",
+    },
+    letterboxd: {
+      score: "0",
+      link: "https://letterboxd.com/film/sukdulan/watch/",
+    }
+  },
+  cast: [
+    { name: "Mac Alejandre", role: "Director", photo: "./image3/mac.webp", link: "https://en.wikipedia.org/wiki/Mac_Alejandre" },
+    { name: "Edgar ilao", role: "Writer", photo: "", link: "https://www.imdb.com/name/nm1856913/" },
+    { name: "Katya Santos", role: "Elaine", photo: "./image3/katya.webp", link: "https://en.wikipedia.org/wiki/Katya_Santos" },
+    { name: "Raymond Bagatsing", role: "Orly", photo: "./image3/raymond.webp", link: "https://en.wikipedia.org/wiki/Raymond_Bagatsing" },
+    { name: "Daria Ramirez", role: "Daria", photo: "./image3/daria.webp", link: "https://www.imdb.com/name/nm0708288/" },
+    { name: "Carlo Maceda", role: "Miguel", photo: "./image3/.webp", link: "https://www.imdb.com/name/nm1296216/?ref_=tt_cst_t_3" },
+
+  ]
+},
+{
+    title: "Ang Gabing Namula si Iba",
+  year: 1992,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=pWQ6HHwERkE',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Foster Child",
+  year: 2007,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bakit ako Mahihiya?",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=uSQY8ZhVWc4',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Big Boy Bato",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=hec6kNpSdTQ',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Sister Stella L.",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=U5fTWpKdvag',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Nympha",
+  year: 1971,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://m.ok.ru/video/2274051689113',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Hayop sa Hayop",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=4hdzDcVpsf4',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Bed Sins",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "Kesong Puti",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'https://www.youtube.com/watch?v=3gS3L09NinY',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
+{
+    title: "",
+  year: 1991,
+  poster: "./image3/",
+  genre: [ ""],
+  director: {
+    name: "",
+    link: ""
+  },
+  details: "", 
+  synopsis: "",
+  trailer: "",
+  movie:'',
+  mpa_rating: "",
+  ratings: {
+    imdb: {
+      score: "",
+      link: "",
+    },
+    rotten_tomatoes: {
+      tomatometer: "",
+      popcornmeter: "",
+      link: "",
+    },
+    letterboxd: {
+      score: "",
+      link: "",
+    }
+  },
+  cast: [
+    { name: "", role: "Director", photo: "./image3/jose.jpg", link: "" },
+    { name: "", role: "Lead", photo: "", link: "" },
+    { name: "", role: "Supporting", photo: "", link: "" },
+  ]
+},
 
 ];
 
@@ -1266,11 +4669,8 @@ let ACTIVE_FILMS = ORIGINAL_FILMS.slice();
   .image-preview img{ display:block; width:360px; max-width:40vw; height:auto; object-fit:cover; }
   .preview-title{ padding: 8px 12px; color: #fff; font-size: 14px; font-weight: 00; text-align: center; background: rgba(105, 102, 102, 0.264); } /*preview title bar */
   .image-preview.show{ display:block; opacity:1 }
-@media (max-width: 700px){
-  .logo{ max-width: 420px; margin-bottom: 6px; margin-top: 8px; }
-  #darkToggle{ position: static; }               /* avoid overlap */
-  .index-logo-link .main-logo{ max-width: 84px; }
-}</style>
+  @media (max-width:700px){ .image-preview{ display:none !important } }
+</style>
 
 <script>
 // In the position() function inside attachPreview(), change the top calculation:
@@ -1567,7 +4967,9 @@ function renderFilms() {
         <div class="rating">${stars}${scoreLabel}</div>
         <div class="poster-synopsis"><p>${f.synopsis}</p></div>
         <div class="card-actions">
-         </div>
+          <button class="like-btn" data-action="like">👍 <span class="count">${f.likes||0}</span></button>
+          <button class="dislike-btn" data-action="dislike">👎 <span class="count">${f.dislikes||0}</span></button>
+        </div>
       `;
     } else {
       card.className = 'film-card';
