@@ -10,11 +10,11 @@
   <style>
 
 .fixed-canvas{
-  width: min(603px, 100%); /* don’t overflow on small screens */
-  min-height: 800px;
-  margin: 0 auto;          /* center */
+  width: min(603px, 100%);
+  min-height: auto;         /* was 800px */
+  margin: 0 auto;
   box-sizing: border-box;
-  margin-bottom: -350px;
+  margin-bottom: 0;  
 }
 
 :root {
@@ -23,6 +23,7 @@
   --accent: #76b5ff;
   --card-bg: #f4f4f4;
   --radius: 14px;
+  --space-md: 16px; /* added */
   font-family: "Inter", sans-serif;
 }
 
@@ -128,14 +129,15 @@ header {
    FILTERS
    =========================== */
 
-  #filters{
+ #filters{
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   gap: 8px;
-  padding-left: -200px; /* safer for inner spacing */
+  flex-wrap: wrap;          /* wrap on small screens */
   width: 100%;
-  margin-bottom: -1000px;
+  margin: 8px 0;            /* remove negative margin */
+  padding-left: 0;
 }
 
 
@@ -384,13 +386,44 @@ header {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 20px;
+  padding: 12px;
   gap: var(--space-md);
 }
 
 /* Make cards narrower on small screens for better fit */
 @media (max-width: 600px) {
-  .film-card { max-width: 92%; }
+  .film-card {
+    max-width: 100%;
+    height: auto;           /* allow height to adjust */
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .film-poster {
+    width: 80%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .film-info {
+    align-items: center;
+  }
+ .film-card {
+  background: #0000007a;
+  color: #fff;
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 820px;
+  height: auto;             /* was fixed 230px */
+  align-items: flex-start;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  transition: transform .2s ease, box-shadow .2s ease;
+  overflow: hidden;
+  position:relative;  
 }
 
 /* Header controls: search + toggle */
@@ -402,7 +435,7 @@ header {
   width:100%;
   flex-wrap: wrap;
   max-width: 900px;
-  margin-bottom: ;
+  margin-bottom: 12px;  
 }
 
 #darkToggle{
@@ -426,13 +459,13 @@ header {
 
 #filmGrid.poster-view {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 160px));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* fluid grid */
   gap: 12px;
-  justify-content: center;     /* CENTER align columns */
-  justify-items: center;       /* CENTER align cards */
+  justify-content: center;
+  justify-items: center;
   padding: 12px;
-  margin: 0 auto;              /* center the grid */
-  max-width: 1100px;           /* match the .wrap max-width */
+  margin: 0 auto;
+  max-width: 1100px;
 }
 
 
@@ -441,12 +474,12 @@ header {
   border: none;
   box-shadow: none;
   padding: 8px;
-  width: 160px;
+  width: 100%;              /* fill grid cell */
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow: hidden;
-  margin: 0 auto;  /* center each card within its grid cell */
+  margin: 0;
 }
 
 .poster-card .film-poster{ width:100%; padding:0; border:none; background:transparent }
@@ -495,9 +528,10 @@ header {
 
 @media (max-width: 600px){
   .film-card{flex-direction:column; align-items:center; text-align:center}
-  .film-poster img{width:80%; max-width:320px}
+  .film-poster img{width:100%; max-width:320px}
   .film-info{align-items:center}
   .header-controls{flex-direction:column; gap:8px}
+  #filmGrid.poster-view{ grid-template-columns: repeat(2, minmax(0, 1fr)); } /* 2-up */
 }
 
 /* ===========================
@@ -1220,8 +1254,11 @@ let ACTIVE_FILMS = ORIGINAL_FILMS.slice();
   .image-preview img{ display:block; width:360px; max-width:40vw; height:auto; object-fit:cover; }
   .preview-title{ padding: 8px 12px; color: #fff; font-size: 14px; font-weight: 00; text-align: center; background: rgba(105, 102, 102, 0.264); } /*preview title bar */
   .image-preview.show{ display:block; opacity:1 }
-  @media (max-width:700px){ .image-preview{ display:none !important } }
-</style>
+@media (max-width: 700px){
+  .logo{ max-width: 420px; margin-bottom: 6px; margin-top: 8px; }
+  #darkToggle{ position: static; }               /* avoid overlap */
+  .index-logo-link .main-logo{ max-width: 84px; }
+}</style>
 
 <script>
 // In the position() function inside attachPreview(), change the top calculation:
