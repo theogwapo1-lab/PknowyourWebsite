@@ -250,8 +250,8 @@ border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);displ
     }
     .modal.open { display:flex; }
     .modal-card {
-      --modal-width: 820px;
-      --modal-max-width: 420px;
+      --modal-width: 500px;
+      --modal-max-width: px;
       --modal-player-height: 250px;
       width: var(--modal-width);
       max-width: var(--modal-max-width);
@@ -305,33 +305,32 @@ border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);displ
       border: none;
       display:block;
       box-sizing: border-box;
-    }
-    .modal-card.portrait {
-      --modal-width: 420px;
-      --modal-player-height: 700px;
-      max-width: 92vw;
-    }
-    .modal-card.landscape {
-      --modal-width: 820px;
-      --modal-player-height: 420px;
-      max-width: 95vw;
-    }
-    .modal-actions {
-      display:flex;
-      gap:12px;
-      padding: 12px 16px;
-      align-items:center;
-      border-top: 1px solid rgba(0,0,0,0.05);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-    }
-    .vote-box { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:10px; background:#d6d6d6; border:1px solid rgba(77, 62, 62, 0.377); right: 90px;}
-    .vote-box .score { min-width:26px; text-align:center; font-weight:600; color:var(--accent); }
+      overflow: scroll;
+   
+    
+.modal-card.landscape{ --modal-player-height: 380px; }
+.modal-card.portrait{
+  width: min(440px, 88vw);
+  --modal-player-height: 620px;
+}
 
-    @media (max-width:780px) {
-      .modal-card { width: calc(100vw - 28px); max-height: 94vh; }
-      .modal-card.portrait { --modal-player-height: 66vh; }
-      .video-player-wrap iframe { max-width: 100%; }
-    }
+/* Mobile: shrink modal and embed heights */
+@media (max-width: 780px){
+  .modal-card{
+    width: 92vw !important;
+    max-width: 92vw !important;
+  }
+  .modal-card.landscape{ --modal-player-height: 44vh; }
+  .modal-card.portrait{ --modal-player-height: 68vh; }
+
+  .video-player-wrap iframe,
+  .video-player-wrap video,
+  .video-player-wrap .embed-photo{
+    width: 100% !important;
+    height: var(--modal-player-height) !important;
+    max-width: 100% !important;
+  }
+}
 
     /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
     .vote-box button:first-child:hover {
@@ -914,6 +913,8 @@ function buildTabsAndPlayer(m, links){
     origin: 'Renie Bhoy Jovellano',
     description: 'Pabili nga po Kapeng Matapang, kapeng matapang, na kaya kang ipaglaban. Aeouaueoueu',
     tags: ['viral', 'urban legend'],
+            styles:{ modal:{ width:'460px', playerHeight:'720px' } }
+
   },
 
 {
