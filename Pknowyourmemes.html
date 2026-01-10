@@ -10,20 +10,31 @@
   <style>
     
   :root {
-    --background: url("image/palaw.jpg") no-repeat center/cover fixed;
-    --card: #000000;
-    --accent: #123f72;
-    --muted: #403c3c;
-    --maxw: 1100px;
-    --radius: 10px;
-    --text: #222;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  body {
-    background: var(--background);
-    color: var(--text);
-    text-align: center;
-  }
+  --background: url("image/palaw.jpg") no-repeat center/cover; /* was .../cover fixed */
+  --card: #000000;
+  --accent: #123f72;
+  --muted: #403c3c;
+  --maxw: 1100px;
+  --radius: 10px;
+  --text: #222;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+:root.dark {
+  --background: url("image/memenight.jpg") no-repeat center/cover; /* was .../cover fixed */
+  --card: #f5945495;
+  --accent: #000000;
+  --muted: #fafafa;
+  --maxw: 1100px;
+  --text: #ffffff;
+  --muted-contrast: #000000;
+}
+html,body{
+  height:100%;
+  margin:0;
+  background: var(--background);
+  background-attachment: scroll; /* ensure it scrolls with content */
+  color:var(--text)
+}
 
   /* Dark mode: solid background color */
   :root.dark {
@@ -722,8 +733,8 @@ html, body {
 </head>
 <body>
   <body>
-  <a href="index.html" class="index-logo-link" aria-label="Back to Index">
-    <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
+  <a href="home.html" class="index-logo-link" aria-label="Back to Index">
+    <img src="image/back.svg" class="main-logo" alt="Website Logo">
   </a>
   <div class="fixed-canvas">
 <div class="wrap" id="app">
