@@ -8,7 +8,7 @@
 <style>
 
 .fixed-canvas{
-  width: min(670px,); 
+  width: min(761px, 100%);
   min-height: 800px;
   margin: 0 auto;          
   box-sizing: border-box;
@@ -30,7 +30,7 @@ body {
 }
 
 .main-logo {
-  max-width: 700px;
+  max-width: 800px;
   width: 100%;
   margin: -30px auto 0;
   transition: transform .2s ease;
@@ -48,7 +48,7 @@ h1 {
   max-width:900px;
   margin-left:auto;
   margin-right:auto;
-  font-size:35px;
+  font-size:15px;
   font-weight:500;
   letter-spacing:0.4px;
   text-transform:uppercase;
@@ -69,7 +69,7 @@ h1 {
 .cards {
   margin-top: 56px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* force 2 columns */
   gap: 32px;
 }
 
@@ -116,7 +116,10 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .cards { gap: 20px; }
+  .cards { 
+    gap: 20px; 
+    grid-template-columns: repeat(2, 1fr); /* keep 2 columns on mobile */
+  }
   .card { aspect-ratio: 3 / 2; }
 }
 
