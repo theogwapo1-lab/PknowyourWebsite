@@ -25,16 +25,85 @@
   --accent: #8bc2ff;
 }
 
-body, html {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  transition: background 0.4s cubic-bezier(.4,1.6,.6,1), color 0.4s cubic-bezier(.4,1.6,.6,1);
-}
+  /* use a fixed layer for the background (iOS-safe) */
+  :root::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--background);
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* body no longer draws the background directly */
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: transparent !important;
+    color: var(--text);
+  }
+
+  :root {
+    /* remove `fixed` to avoid iOS zoom bug */
+    --background: url("image/bolbohol.jpg") no-repeat center/cover;
+    --card: #000000;
+    --accent: #123f72;
+    --muted: #403c3c;
+    --maxw: 1100px;
+    --radius: 10px;
+    --text: #222;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  :root.dark {
+    --background: url("image/night.jpg") no-repeat center/cover;
+    --card: #f5945495;
+    --accent: #000000;
+    --muted: #fafafa;
+    --maxw: 1100px;
+    --text: #ffffff;
+    --muted-contrast: #000000;
+  }
+
+  /* use a fixed layer for the background (iOS-safe) */
+  :root::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--background);
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  /* body no longer draws the background directly */
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: transparent !important;
+    color: var(--text);
+  }
+
+  /* Dark mode: solid background color */
+  :root.dark {
+        --background: url("image/night.jpg") no-repeat center/cover fixed;
+
+    --card: #f5945495;
+    --accent: #000000;
+    --muted: #fafafa;
+    --maxw: 1100px;
+    --text: #ffffff;
+    --muted-contrast: #000000;
+  }
+
+  :root.dark body {
+    --background: url("image/night.jpg") no-repeat center/cover fixed;
+
+  
+        }
+    html,body{height:100%;margin:0;background:var(--background);color:var(--text)}
+    .wrap{max-width:var(--maxw);margin:28px auto;padding:18px}
+    header{display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center}}
 
 header {
   display: flex;
