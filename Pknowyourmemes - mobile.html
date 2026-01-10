@@ -251,12 +251,19 @@ border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);displ
     .modal.open { display:flex; }
     .modal-card {
       --modal-width: 500px;
-      --modal-max-width: 50vw;            /* fix invalid value */
+      --modal-max-width: px;
       --modal-player-height: 250px;
-      width: min(var(--modal-width), 92vw);
+      width: var(--modal-width);
       max-width: var(--modal-max-width);
-      box-sizing: border-box;
-      overflow: hidden;                    /* hide horizontal overflow */
+      max-height: 94vh;
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
     }
     .modal-close {
       position: absolute;
@@ -273,14 +280,15 @@ border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);displ
     }
     .modal-head h2 { margin:0; font-size:20px; }
     .modal-links-row { margin-top:8px; display:flex; gap:8px; flex-wrap:wrap; }
-    .modal-body{
-  padding: 12px 20px 6px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: calc(90vh - 180px);
-  -webkit-overflow-scrolling: touch;   /* smoother iOS scrolling */
-  overscroll-behavior: contain;
-}
+    .modal-body {
+      padding: 12px 20px 6px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: calc(88vh - 180px);
+    }
     .modal-desc { color:#222; font-size: 16px; line-height:1.45; }
     .video-area { display: flex; flex-direction: column; gap: 10px; align-items: center; width:auto%;}
     .video-tabs { display:flex; gap:8px; flex-wrap:wrap; width:auto%; justify-content:flex-start; }
@@ -289,30 +297,42 @@ border-radius:var(--radius);padding:12px;border:1px solid rgba(0,0,0,0.06);displ
     .video-player-wrap { width: 100%; display:flex; justify-content:center; }
     .video-player-wrap iframe,
     .video-player-wrap video,
-    .video-player-wrap .embed-photo{
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: var(--modal-player-height);
-  border-radius: 10px;
-  border: none;
-  box-sizing: border-box;
+    .video-player-wrap .embed-photo {
+      width: 100%;
+      max-width: calc(var(--modal-width) - 40px);
+      height: var(--modal-player-height);
+      border-radius: 10px;
+      border: none;
+      display:block;
+      box-sizing: border-box;
+      
+   
+    
+.modal-card.landscape{ --modal-player-height: 380px; }
+.modal-card.portrait{
+  width: min(440px, 88vw);
+  --modal-player-height: 620px;
 }
 
-/* Mobile: remove 150vw/200vw widths */
+/* Mobile: shrink modal and embed heights */
 @media (max-width: 780px){
   .modal-card{
-     width: 94vw !important;
-    max-width: 94vw !important;
+    width: 92vw !important;
+    max-width: 92vw !important;
   }
   .modal-card.landscape{ --modal-player-height: 44vh; }
   .modal-card.portrait{ --modal-player-height: 68vh; }
+
+  .video-player-wrap iframe,
+  .video-player-wrap video,
+  .video-player-wrap .embed-photo{
+    width: 100% !important;
+    height: var(--modal-player-height) !important;
+    max-width: 100% !important;
+  }
 }
 
-/* Lock page scroll when modal is open */
-body.modal-open { overflow: hidden; }
-
-/* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
+    /* ===== VOTE GLOWS & PORTRAIT LAYOUT (user-provided) ===== */
     .vote-box button:first-child:hover {
       transform: scale(1.12);
       filter: brightness(1.2);
@@ -421,7 +441,7 @@ body.modal-open { overflow: hidden; }
 }
 .video-tabs-fixed button{
   padding:6px 10px; border-radius:8px; background:#222; color:#fff;
-  border:none, cursor:pointer; font-weight:600;
+  border:none; cursor:pointer; font-weight:600;
 }
 .video-tabs-fixed button.active{ background:var(--accent); }
 
@@ -706,56 +726,7 @@ html, body {
   margin: 0 2px;
   padding: 0;
 }
-
-/* === Modal ~40% smaller === */
-.modal-card{
-  --modal-width: 300px;         /* was 500px */
-  --modal-max-width: 55vw;      /* was 92vw */
-  width: min(var(--modal-width), var(--modal-max-width));
-  max-width: var(--modal-max-width);
-}
-
-/* Enable inner scroll in modal */
-.modal { overflow: hidden; }
-.modal-card {
-  max-height: 92vh;
-  display: flex;
-  flex-direction: column;
-}
-.modal-body{
-  flex: 1 1 auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;  /* iOS smooth scroll */
-  max-height: none;                   /* let flex control height */
-  touch-action: pan-y;
-}
-
-/* Mobile: shrink width and player height */
-@media (max-width: 780px){
-  .modal-card{
-    width: 56vw !important;     /* ~40% smaller than 94vw */
-    max-width: 56vw !important;
-  }
-  .modal-card.landscape{ --modal-player-height: 26vh; } /* was 44vh */
-  .modal-card.portrait{ --modal-player-height: 41vh; }  /* was 68vh */
-}
-
-/* Ensure media fits the smaller modal */
-.video-player-wrap iframe,
-.video-player-wrap video,
-.video-player-wrap .embed-photo{
-  width: 100% !important;
-  max-width: 100% !important;
-  height: var(--modal-player-height) !important;
-}
-
-/* Override old mobile full-width rules */
-@media (max-width: 780px){
-  .modal-card.landscape,
-  .modal-card.portrait{ width: 56vw !important; }
-}
-  </style>
+</style>
 </head>
 <body>
   <body>
@@ -1275,7 +1246,6 @@ Diay kadto makahilo... low low low...`,
         modalCard.style.removeProperty('--modal-player-height');
         modalCard.classList.remove('has-portrait-video');
       }
-      document.body.classList.remove('modal-open');     // prevent page scroll after close
     }
     function closeModal(){ clearModalState(); }
 
@@ -1403,7 +1373,7 @@ Diay kadto makahilo... low low low...`,
   for (let i=1;i<=9;i++){ if(m['picture'+i]) links.push(m['picture'+i]); }
   // open modal 
   el.modal.classList.add('open'); el.modal.setAttribute('aria-hidden','false');
-  document.body.classList.add('modal-open');        // lock page scroll while open
+  
   // build player/tabs
   if(links.length>1) buildTabsAndPlayer(m, links);
   else if(links.length===1) buildTabsAndPlayer(m, links);
