@@ -1,0 +1,1880 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pknow Your Books</title>
+  <meta name="description" content="Pknow Your Books — Filipino Literature Collection" />
+
+  <style>
+    /* Book site theme: single source of truth */
+    :root{
+      /* Light (default) */
+      --bg-color:#f7f6f2;
+      --bg-image:url('image6/sky2.jpg');
+      --text-color:#1a1a1a;
+
+      --surface-color:#ffffff;
+      --overlay-color:rgba(17,24,39,.45);
+      --meta-color:#6b7280;
+      --border-color:#e5e7eb;
+
+      --chip-bg:#fafafa;
+      --chip-text:#111827;
+      --accent:#b45309; /* warm, bookish accent */
+
+      --radius:12px;
+      --radius-lg:14px;
+      --shadow:0 6px 18px rgba(17,24,39,.08);
+      --shadow-lg:0 16px 40px rgba(17,24,39,.12);
+
+      --heading-serif: Georgia, "Times New Roman", Times, serif;
+      --ui-sans: "Segoe UI", Tahoma, Verdana, sans-serif;
+    }
+
+    body.theme-dark{
+      --bg-color:#0f1115;
+      --bg-image:url('image6/sky22.jpg');
+      -o-object-fit: scale-down;
+      --text-color:#e5e7eb;
+
+      --surface-color:rgba(38,41,48,.9);
+      --overlay-color:rgba(0,0,0,.65);
+      --meta-color:#6c7786;
+      --border-color:#303541;
+
+      --chip-bg:#1a1d23;
+      --chip-text:#e5e7eb;
+      --accent:#ffb73a;
+
+      --shadow:0 8px 24px rgba(0,0,0,.35);
+      --shadow-lg:0 14px 36px rgba(0,0,0,.45);
+  
+    }
+
+    body.theme-light{
+      /* Explicit light override (matches :root) */
+      --bg-color:#f7f6f2;
+      --bg-image:url('image6/sky2.jpg');
+      --text-color:#1a1a1a;
+
+      --surface-color:#ffffff;
+      --overlay-color:rgba(17,24,39,.45);
+      --meta-color:#6b7280;
+      --border-color:#e5e7eb;
+
+      --chip-bg:#fafafa;
+      --chip-text:#111827;
+      --accent:#b45309;
+
+      --shadow:0 6px 18px rgba(17,24,39,.08);
+      --shadow-lg:0 16px 40px rgba(17,24,39,.12);
+    }
+
+    /* Base */
+    body{
+      margin:0;
+      font-family:var(--ui-sans);
+      color:var(--text-color);
+      line-height:1.6;
+      background:var(--bg-color) var(--bg-image) center / cover no-repeat fixed;
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:24px 18px}
+    .logo{max-width:680px;width:100%;margin:6px auto 0;display:block}
+    .disclaimer{text-align:center;font-size:12px;color:var(--meta-color);margin-top:6px}
+
+    /* Controls: search row + filters row */
+    .controls{
+      display:grid;grid-template-columns:1fr;gap:14px;max-width:1100px;margin:18px auto 0;padding:0 18px
+    }
+    .controls-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+    .search-input{
+      width:100%;min-width:0;padding:12px 16px;border-radius:999px;border:1px solid var(--border-color);
+      background:var(--chip-bg);color:var(--chip-text);box-shadow:none
+    }
+    .pill{
+      appearance:none;min-width:160px;padding:10px 14px;border-radius:999px;border:1px solid var(--border-color);
+      background:var(--chip-bg);color:var(--chip-text)
+    }
+    .btn{
+      padding:10px 14px;border-radius:999px;border:1px solid var(--border-color);
+      background:var(--chip-bg);color:var(--chip-text);cursor:pointer;transition:filter .15s ease,transform .05s ease
+    }
+    .btn:hover{filter:brightness(1.05)}
+    .btn:active{transform:translateY(1px)}
+    .btn-clear{background:transparent}
+    .btn-shuffle{background:var(--accent);border-color:transparent;color:#fff}
+
+    /* Theme toggle button */
+    .dark-toggle{
+      position:fixed;right:20px;top:20px;z-index:20;border-radius:999px;
+      backdrop-filter:saturate(140%) blur(6px);
+      background:var(--surface-color);border:1px solid var(--border-color);box-shadow:var(--shadow)
+    }
+
+    /* Poster grid (book covers) */
+    #filmGrid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px;
+      max-width:1100px;margin:18px auto;padding:0 18px
+    }
+    .poster-card{
+      background:var(--surface-color);
+      border:1px solid var(--border-color);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;cursor:pointer;aspect-ratio:2/3;position:relative;
+      transition:transform .28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .28s ease-out, border-color .2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .poster-card::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to bottom, rgba(0,0,0,.03), rgba(0,0,0,0));
+      pointer-events:none
+    }
+    .poster-card img{
+      width:100%;height:100%;object-fit:cover;display:block;
+      flex: 1;
+    }
+    .poster-card:hover{
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 16px 28px rgba(0,0,0,0.28);
+      border-color:var(--accent);
+      z-index:2;
+    }
+
+    /* Card info overlay on hover */
+    .card-info {
+      position: absolute;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      inset: auto 0 0 0;
+      height: 40%;
+      background: rgba(0,0,0,0.78);
+      color: #fff;
+      padding: 16px;
+      transform: translateY(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1), opacity .28s ease-out;
+      font-size: 14px;
+    }
+    
+    .poster-card:hover .card-info {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+    
+    .card-info h3 {
+      margin: -8px 0px 8px;
+      font-size: 18px;
+    }
+    
+    .card-info p {
+      margin: 4px 0;
+      line-height: 1.3;
+    }
+    
+    .poster-author {
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--meta-color);
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      font-family: var(--ui-sans);
+    }
+    .poster-author a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.15s ease;
+    }
+    .poster-author a:hover {
+      text-decoration: underline;
+      opacity: 0.8;
+    }
+
+    /* Custom Scrollbar for Modal */
+    .modal-scroll::-webkit-scrollbar {
+      width: 12px;
+    }
+    .modal-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .modal-scroll::-webkit-scrollbar-thumb {
+      background-color: #c8bca7;
+      border-radius: 20px;
+      border: 3px solid #fdfaf2; /* Match light modal background */
+    }
+    .modal-scroll::-webkit-scrollbar-thumb:hover {
+      background-color: #b4a58f;
+    }
+    body.theme-dark .modal-scroll::-webkit-scrollbar-thumb {
+      background-color: #5a4f3c;
+      border-color: #2a251e; /* Match dark modal background */
+    }
+    body.theme-dark .modal-scroll::-webkit-scrollbar-thumb:hover {
+      background-color: #857b6b;
+    }
+
+    /* Modal (book details) */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:var(--overlay-color)}
+    .modal.open{display:flex}
+    .modal-content{
+      position:relative;
+      background: linear-gradient(145deg, #2b241d, #1c1813);
+      border-radius: 14px;
+      width:95%;max-width:920px;max-height:min(86vh, 760px);
+      padding: 0; /* Remove padding to allow for two-page effect */
+      display:flex;flex-direction:column;
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        inset 0 0 40px rgba(255, 235, 200, 0.04);
+      border: 1px solid rgba(255, 215, 160, 0.15);
+      font-family: "Libre Baskerville", "Garamond", serif;
+      z-index: 100;
+    }
+    body.theme-dark .modal-content {
+      background: linear-gradient(145deg, #2b241d, #1c1813);
+      border-radius: 14px;
+      box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.6),
+        inset 0 0 40px rgba(255, 235, 200, 0.04);
+      border: 1px solid rgba(255, 215, 160, 0.15);
+      font-family: "Libre Baskerville", "Garamond", serif;
+    }
+    .modal-close{position:absolute;top:16px;right:16px;font-size:26px;cursor:pointer; z-index: 20;}
+    .modal-body{
+      display:grid;grid-template-columns:minmax(260px, 35%) 1fr;gap:0; /* No gap for page effect */
+      flex:1;overflow:hidden;
+      padding: 28px;
+    }
+    .modal-body > div:first-child {
+      padding-right: 28px;
+    }
+    .modal-poster{width:100%;border-top-left-radius:0px;border-bottom-left-radius:0px;border-top-right-radius:20px;border-bottom-right-radius:20px;border:1px solid var(--border-color);box-shadow: var(--shadow);}
+    .modal-scroll{overflow-y:auto;padding-left:28px; position: relative;}
+    .modal-scroll::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: -100vh; /* Extended to cover full content height */
+      height: auto;
+      min-height: 100%;
+      width: 20px;
+      background: linear-gradient(to right, rgba(163, 102, 102, 0.08), transparent);
+      pointer-events: none;
+    }
+    body.theme-dark .modal-scroll::before {
+      background: linear-gradient(to right, rgba(0,0,0,0.25), transparent);
+    }
+    h2#modalTitle{
+      font-family:var(--heading-serif);font-weight:700;font-size:28px;margin:0 0 6px
+    }
+    .meta, .meta a {font-size:13px;font-weight: 900px;color:var(--meta-color);margin-bottom:10px; font-family: var(--ui-sans);}
+    .section-label{font-size:13px; font-weight: 900px; margin:16px 0 6px;color:var(--meta-color);text-transform:uppercase;letter-spacing:.08em; font-family: var(--ui-sans);}
+
+    /* Responsive video inside modal */
+    #modalReview{
+      width:100%;
+      aspect-ratio:16/9;
+      height:auto;
+      border:0;
+      border-radius:var(--radius);
+      background:#000;
+      box-shadow:var(--shadow)
+    }
+
+    /* Awards chips (in-modal) */
+    .awards-list{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+    .award-chip{padding:6px 10px;border-radius:999px;border:1px solid var(--border-color);background:var(--chip-bg);color:var(--chip-text);font-size:12px; font-family: var(--ui-sans);}
+
+    /* Ratings (in-modal) */
+    .ratings-wrap{display:flex;align-items:center;gap:10px;margin:8px 0; flex-wrap: wrap;}
+    .rating-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;background:var(--chip-bg);border:1px solid var(--border-color);font-size:13px;text-decoration:none;color:var(--chip-text);transition:filter .15s ease; font-family: var(--ui-sans);}
+    .rating-badge:hover{filter:brightness(1.05)}
+    
+    /* Make rating container clickable */
+    .rating {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .rating:hover {
+      opacity: 0.8;
+    }
+
+    /* Accessibility */
+    :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+    /* Star Rating Styles (copied from films page) */
+    .star {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 35px;
+      line-height: 1;
+      color: #d8d8d8; /* Lighter gray for empty stars */
+      text-shadow: none;
+    }
+
+    .star::before {
+      content: '★';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0%;
+      overflow: hidden;
+      color: #ff9800; /* Orange/gold color like Goodreads */
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .star.full::before { 
+      width: 100%; 
+    }
+
+    .star.half::before { 
+      width: 50%; 
+    }
+
+    .star.empty::before {
+      width: 0%;
+    }
+
+    /* Modal stars (larger) */
+    .modal .star {
+      font-size: 35px;
+      line-height: 1;
+      position: relative;
+      color: #d8d8d8;
+      vertical-align: middle;
+    }
+
+    .modal .star::before { 
+      color: #ff9800; /* Orange/gold like Goodreads */
+    }
+
+    /* Goodreads stars - same as default */
+    .modal .star.goodreads::before { 
+      color: #ff9800; /* Orange/gold */
+    }
+
+    /* Rating container */
+    .rating {
+    
+      display: flex;
+      gap: 2px;
+      align-items: center;
+    }
+
+    /* Compact stars next to the badge */
+    .ratings-wrap .star { font-size: 18px; }
+
+    /* Rating value display */
+    .rating-value { 
+      margin-left: 6px; 
+      color: var(--meta-color); 
+      font-variant-numeric: tabular-nums; 
+    }
+    /* Inline source label beside stars */
+    .rating-source {
+      font-size: 12px;
+      color: var(--meta-color);
+      margin-right: 8px;
+      font-family: var(--ui-sans);
+    }
+
+    .author-link {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .author-link:hover {
+      text-decoration: underline;
+    }
+.meta-info-label {
+      font-weight: 500px;
+      color: var(--meta-color);
+      margin-right: 6px;
+      font-family: var(--ui-sans);
+    }
+    .sample-reviews-container {
+      margin-top: -5px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .sample-review {
+      padding: 5px;
+      font-size: 18px;
+      line-height: 1.5;
+      border-radius: 8px;
+    }
+    
+    .sample-review-text {
+      color: #d8d8d8;
+      font-style: italic;
+      margin-bottom: 5px;
+    }
+    
+    .sample-review-by {
+      font-size: 13px;
+      color: #a5a5a5;
+      text-align: right;
+      font-weight: 600;
+    }
+
+  </style>
+
+  <style>
+    /* Author photo in modal */
+    .author-photo {
+      float: left;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      width: 100px;
+      height: auto;
+      border-radius: 20%;
+      object-fit: cover;
+      border: 3px solid var(--border-color);
+      box-shadow: var(--shadow);
+      background: var(--chip-bg);
+      shape-outside: circle(50%);
+      shape-margin: 10px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+
+    .author-photo:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Photo viewer modal */
+    .photo-viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.651);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      cursor: zoom-out;
+    }
+    .photo-viewer.open {
+      display: flex;
+    }
+    .photo-viewer img {
+      max-width: 50%;
+      max-height: 50%;
+      object-fit: contain;
+      border-radius: var(--radius);
+      box-shadow: 0 25px 50px -12px rgba(121, 121, 121, 0.26);
+      cursor: default;
+    }
+
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 120px;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.09) translateY(-6px);
+}
+
+    .photo-viewer-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 36px;
+      color: white;
+      cursor: pointer;
+      background: rgba(0,0,0,0.5);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+      z-index: 10;
+    }
+    .photo-viewer-close:hover {
+      background: rgba(0,0,0,0.8);
+    }
+
+.modalAuthorBio {
+text-align: justify;    }
+
+    @media (max-width: 768px) {
+      .author-photo {
+        width: 120px;
+        height: auto;
+        margin-right: 15px;
+        margin-bottom: 15px;
+      }
+      .modal-body {
+        grid-template-columns: 1fr; /* Stack columns on mobile */
+        padding: 20px;
+      }
+      .modal-body > div:first-child {
+        padding-right: 0;
+        border-right: none;
+        margin-bottom: 20px;
+      }
+      .modal-scroll {
+        padding-left: 0;
+      }
+      .modal-scroll::before {
+        display: none; /* Hide page fold shadow on mobile */
+      }
+
+
+      
+    }
+  </style>
+</head>
+<body>
+
+<body style="overflow-x: hidden;">
+  <a href="home.html" class="index-logo-link" aria-label="Back to Index">
+    <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
+  </a>
+
+<header>
+  <div class="fixed-canvas">
+    <div class="wrap" id="app">
+      <img src="./image/books.svg" class="logo"/> 
+      <p class="disclaimer">
+        Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.<br>
+        Email me at tmdanao@up.edu.ph
+      </p>
+
+    <!-- controls bar (restructured) -->
+    <div class="controls">
+      <input id="searchInput" class="search-input" type="text" placeholder="Search books...">
+      <div class="controls-row">
+        <select id="yearFilter" class="pill">
+          <option value="all">All Years</option>
+        </select>
+        <select id="genreFilter" class="pill">
+          <option value="all">All Genres</option>
+        </select>
+        <select id="authorFilter" class="pill">
+          <option value="all">All Authors</option>
+        </select>
+        <button id="clearBtn" class="btn btn-clear">Clear</button>
+        <button id="shuffleBtn" class="btn btn-shuffle">Shuffle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div id="filmGrid"></div>
+
+  <!-- MODAL -->
+  <div class="modal" id="bookModal">
+    <div class="modal-content">
+      <span class="modal-close" id="modalClose"></span>
+      <div class="modal-body">
+        <div>
+          <img id="modalPoster" class="modal-poster" style="cursor: pointer;">
+          <div id="ratingsWrap" class="ratings-wrap"></div>
+          <!-- Sample reviews container (now supports multiple) -->
+          <div id="sampleReviewsContainer" class="sample-reviews-container" style="display:none;"></div>
+        </div>
+        <div class="modal-scroll">
+          <h2 id="modalTitle"></h2>
+          
+          <div class="meta-info-container">
+            <div class="meta-info-row">
+              <span class="meta-info-label">Author:</span>
+              <span class="meta-info-value" id="modalAuthor"></span>
+            </div>
+            <div class="meta-info-row">
+              <span class="meta-info-label">Year Published:</span>
+              <span class="meta-info-value" id="modalYear"></span>
+            </div>
+            <div class="meta-info-row">
+              <span class="meta-info-label">Genre:</span>
+              <span class="meta-info-value" id="modalGenre"></span>
+            </div>
+          </div>
+
+          <div class="section-label">Details</div>
+          <p id="modalDetails"></p>
+
+          <div class="section-label">Synopsis</div>
+          <p id="modalSynopsis"></p>
+
+          <div id="awardsLabel" class="section-label">Awards and Significance</div>
+          <div id="modalAwards" class="awards-list"></div>
+
+          <div class="section-label">Book Review</div>
+          <iframe id="modalReview" width="100%" height="260" allowfullscreen></iframe>
+                      <div> 
+          <img id="authorPhoto" class="author-photo" alt="Author" style="display:none;">
+                    <div class="section-label">About the Author</div>
+                              <p id="modalAuthorBio"></p>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photo viewer modal -->
+  <div class="photo-viewer" id="photoViewer">
+    <span class="photo-viewer-close" id="photoViewerClose"></span>
+    <img id="photoViewerImage" alt="Full size view">
+  </div>
+
+  <!-- BOOK DATA (CHANGED JSON ONLY) -->
+  <script>
+    const BOOKS = [
+      {
+        "Title": "Dekada '70",
+        "Author": "Lualhati Bautista",
+        "Author Photo": "image6/bautista.jpg", 
+        "AuthorBio": "Lualhati Bautista is a renowned Filipino author and activist known for her poignant novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal critic of authoritarianism and a champion of particularly novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal",
+        "Authorlink": "https://en.wikipedia.org/wiki/Lualhati_Bautista",
+        "Sample Reviews": [
+          { "text": "This book is such a good read amen!", "by": "Juan Dela Cruz" },
+          { "text": "A powerful portrayal of family life during Martial Law.", "by": "Maria Santos" },
+        ],
+        "Image": "image6/dekada.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Politics"],
+        "Details": "Dekada ’70 by Lualhati Bautista is a powerful Filipino novel that portrays the personal and political awakening of a middle-class family during the turbulent years leading up to and throughout the 1970s. Centered on Amanda Bartolome, the story explores how national unrest, censorship, and state control seep into the private sphere of the home. Through a feminist lens, Bautista examines motherhood, marriage, and womanhood in a society shaped by patriarchy and authoritarian rule, showing how ordinary lives are reshaped by extraordinary times.",
+        "Synopsis": "Set in the years before and during Martial Law in the Philippines, Dekada ’70 follows the Bartolome family as they navigate political tension and social change. Amanda Bartolome, initially a traditional housewife devoted to her husband Julian and their five sons, begins to question her role as her children grow increasingly involved in political movements. Each son represents a different response to the era—ranging from activism and idealism to fear, conformity, and resistance—while the family faces arrests, disappearances, and ideological conflict. As the nation grows more repressive, Amanda undergoes her own transformation, gradually asserting her voice and identity beyond the expectations placed upon her. The novel ultimately presents a deeply human account of how political oppression fractures families while also igniting personal awakening and courage.",
+        "Awards": ["Palanca Award for Novel", "Palanca Award for Literature", "Palanca Award for Fish"],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "https://www.goodreads.com/book/show/1431557.Dekada_70?from_search=true&from_srp=true&qid=8vEWlLprGD&rank=1" }
+        },
+        },
+        {
+        "Title": "Noli Me Tangere",
+        "Author": "José Rizal",
+        "Author Photo": "image6/jose.jpg",
+        "Image": "image6/noli.jpg",
+        "Publishing Date": 1887,
+        "Genre": ["Politics"],
+        "Details": "",
+        "Synopsis": "",
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "mpa_rating": "SPG",
+        "ratings": {
+          "Goodreads": { "score": "3/5", "link": "https://goodreads.com" }
+        },
+        },
+        {
+        "Title": "Dekada '70",
+        "Author": "Lualhati Bautista",
+        "Author Photo": "image6/lualhati.jpg",
+        "Image": "image6/dekada.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Politics"],
+        "Details": "",
+        "Synopsis": "",
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "mpa_rating": "SPG",
+        "ratings": {
+          "Goodreads": { "score": "3/5", "link": "https://goodreads.com" }
+        },
+        },
+        {
+        "Title": "Dekada '70",
+        "Author": "Lualhati Bautista",
+        "Author Photo": "image6/bautista.jpg", 
+        "AuthorBio": "Lualhati Bautista is a renowned Filipino author and activist known for her poignant novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal critic of authoritarianism and a champion of particularly novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal",
+        "Authorlink": "https://en.wikipedia.org/wiki/Lualhati_Bautista",
+        "Sample Reviews": [
+          { "text": "This book is such a good read amen!", "by": "Juan Dela Cruz" },
+          { "text": "A powerful portrayal of family life during Martial Law.", "by": "Maria Santos" },
+        ],
+        "Image": "image6/dekada.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Politics"],
+        "Details": "Dekada ’70 by Lualhati Bautista is a powerful Filipino novel that portrays the personal and political awakening of a middle-class family during the turbulent years leading up to and throughout the 1970s. Centered on Amanda Bartolome, the story explores how national unrest, censorship, and state control seep into the private sphere of the home. Through a feminist lens, Bautista examines motherhood, marriage, and womanhood in a society shaped by patriarchy and authoritarian rule, showing how ordinary lives are reshaped by extraordinary times.",
+        "Synopsis": "Set in the years before and during Martial Law in the Philippines, Dekada ’70 follows the Bartolome family as they navigate political tension and social change. Amanda Bartolome, initially a traditional housewife devoted to her husband Julian and their five sons, begins to question her role as her children grow increasingly involved in political movements. Each son represents a different response to the era—ranging from activism and idealism to fear, conformity, and resistance—while the family faces arrests, disappearances, and ideological conflict. As the nation grows more repressive, Amanda undergoes her own transformation, gradually asserting her voice and identity beyond the expectations placed upon her. The novel ultimately presents a deeply human account of how political oppression fractures families while also igniting personal awakening and courage.",
+        "Awards": ["Palanca Award for Novel", "Palanca Award for Literature", "Palanca Award for Fish"],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "https://www.goodreads.com/book/show/1431557.Dekada_70?from_search=true&from_srp=true&qid=8vEWlLprGD&rank=1" }
+        },
+      },
+        {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        }
+      },
+    ];
+
+    const grid  = document.getElementById('filmGrid');
+    const modal = document.getElementById('bookModal');
+    const photoViewer = document.getElementById('photoViewer');
+    const photoViewerImage = document.getElementById('photoViewerImage');
+    const photoViewerClose = document.getElementById('photoViewerClose');
+
+    // NEW: controls
+    const searchInput = document.getElementById('searchInput');
+    const yearFilter  = document.getElementById('yearFilter');
+    const genreFilter = document.getElementById('genreFilter');
+    const authorFilter= document.getElementById('authorFilter');
+    const clearBtn    = document.getElementById('clearBtn');
+    const shuffleBtn  = document.getElementById('shuffleBtn');
+
+    // build filter options once
+    function populateFilters(){
+      const years  = [...new Set(BOOKS.map(b => b['Publishing Date']).filter(Boolean))].sort((a,b)=>a-b);
+      const genres = [...new Set(BOOKS.flatMap(b => Array.isArray(b.Genre) ? b.Genre : [b.Genre]).filter(Boolean))].sort();
+      const authors= [...new Set(BOOKS.map(b => b.Author).filter(Boolean))].sort();
+
+      years.forEach(y => yearFilter.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`));
+      genres.forEach(g => genreFilter.insertAdjacentHTML('beforeend', `<option value="${g}">${g}</option>`));
+      authors.forEach(a => authorFilter.insertAdjacentHTML('beforeend', `<option value="${a}">${a}</option>`));
+    }
+
+    function matches(book){
+      const term = searchInput.value.trim().toLowerCase();
+      const inText = v => (v||'').toString().toLowerCase().includes(term);
+      const yearOk  = yearFilter.value === 'all' || String(book['Publishing Date']) === yearFilter.value;
+      const genreOk = genreFilter.value === 'all' ||
+                      (Array.isArray(book.Genre) ? book.Genre : [book.Genre]).some(g => g === genreFilter.value);
+      const authorOk= authorFilter.value === 'all' || book.Author === authorFilter.value;
+      const searchOk= !term || [book.Title, book.Author, book.Synopsis, book.Details].some(inText);
+      return yearOk && genreOk && authorOk && searchOk;
+    }
+
+    function renderGrid(list){
+      grid.innerHTML = '';
+      list.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'poster-card';
+        card.innerHTML = `
+          <img src="${book.Image}" alt="${book.Title}">
+          <div class="card-info">
+            <h3>${book.Title}</h3>
+            <p><strong>Author:</strong> ${book.Author || '—'}</p>
+            <p><strong>Year:</strong> ${book['Publishing Date'] || '—'}</p>
+          </div>
+        `;
+        card.onclick = (e) => {
+          // Remove hover state immediately before opening modal
+          card.style.pointerEvents = 'none';
+          setTimeout(() => {
+            card.style.pointerEvents = '';
+          }, 300);
+          openModal(book);
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function applyAndRender(){
+      renderGrid(BOOKS.filter(matches));
+    }
+
+    // initial
+    populateFilters();
+    renderGrid(BOOKS);
+
+    // events
+    searchInput.addEventListener('input', applyAndRender);
+    yearFilter.addEventListener('change', applyAndRender);
+    genreFilter.addEventListener('change', applyAndRender);
+    authorFilter.addEventListener('change', applyAndRender);
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      yearFilter.value = 'all';
+      genreFilter.value = 'all';
+      authorFilter.value = 'all';
+      renderGrid(BOOKS);
+    });
+
+    shuffleBtn.addEventListener('click', () => {
+      const arr = BOOKS.filter(matches).slice();
+      for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; }
+      renderGrid(arr);
+    });
+
+    // Add missing star rating generator function
+    function generateStarRating(scoreString) {
+      // Parse score - handle formats like "3/5" or "3.5/5" or just "3.5"
+      const match = scoreString.match(/([\d.]+)\s*\/?\s*(\d*)/);
+      if (!match) return '';
+      
+      const numerator = parseFloat(match[1]);
+      const denominator = match[2] ? parseFloat(match[2]) : 5;
+      
+      // Convert to a 5-star scale
+      const outOf5 = denominator === 5 ? numerator : (numerator / denominator) * 5;
+      
+      const fullStars = Math.floor(outOf5);
+      const hasHalfStar = (outOf5 % 1) >= 0.25 && (outOf5 % 1) < 0.75;
+      
+      let html = '';
+      for (let i = 0; i < 5; i++) {
+        if (i < fullStars) {
+          html += '<span class="star goodreads full">★</span>';
+        } else if (i === fullStars && hasHalfStar) {
+          html += '<span class="star goodreads half">★</span>';
+        } else {
+          html += '<span class="star goodreads empty">★</span>';
+        }
+      }
+      return html;
+    }
+
+    function openModal(book){
+      modal.classList.add('open');
+      const modalPosterEl = document.getElementById('modalPoster');
+      modalPosterEl.src = book.Image;
+      
+      // Add click handler to poster for photo view
+      modalPosterEl.onclick = (e) => {
+        e.stopPropagation();
+        openPhotoViewer(book.Image);
+      };
+
+      modalTitle.textContent = book.Title;
+
+      // FIX: define authorHref before using it
+      const authorHref = (book.Authorlink && book.Authorlink.trim())
+        ? book.Authorlink
+        : `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(book.Author || '')}`;
+      modalAuthor.innerHTML = `<a href="${authorHref}" class="author-link" target="_blank" rel="noopener noreferrer">${book.Author}</a>`;
+
+      modalYear.textContent = book['Publishing Date'] || '—';
+      modalGenre.textContent = (Array.isArray(book.Genre) ? book.Genre : [book.Genre]).filter(Boolean).join(', ') || '—';
+
+      // Add back Details, Synopsis, and Author Bio
+      modalDetails.textContent = book.Details || '—';
+      modalSynopsis.textContent = book.Synopsis || '—';
+      modalAuthorBio.textContent = book.AuthorBio || '—';
+
+      // Author photo (moved to top of function for immediate display)
+      const authorPhoto = document.getElementById('authorPhoto');
+      if (book['Author Photo'] && book['Author Photo'].trim()) {
+        authorPhoto.src = book['Author Photo'];
+        authorPhoto.alt = book.Author || 'Author';
+        authorPhoto.style.display = 'block';
+        
+        // Add click handler to author photo for photo view
+        authorPhoto.onclick = (e) => {
+          e.stopPropagation();
+          openPhotoViewer(book['Author Photo']);
+        };
+        
+        authorPhoto.onerror = function() {
+          this.style.display = 'none';
+        };
+      } else {
+        authorPhoto.style.display = 'none';
+        authorPhoto.src = '';
+        authorPhoto.onclick = null;
+      }
+
+      // Ratings (Goodreads stars as clickable link + inline label)
+      const ratingsWrap = document.getElementById('ratingsWrap');
+      ratingsWrap.innerHTML = '';
+      if (book.ratings && book.ratings.Goodreads) {
+        const gr = book.ratings.Goodreads;
+
+        // Add inline "Goodreads" label
+        const sourceLabel = document.createElement('span');
+        sourceLabel.className = 'rating-source';
+        sourceLabel.textContent = 'Goodreads';
+        ratingsWrap.appendChild(sourceLabel);
+
+        // Clickable star rating link
+        const starsLink = document.createElement('a');
+        starsLink.className = 'rating';
+        starsLink.href = gr.link || 'https://www.goodreads.com';
+        starsLink.target = '_blank';
+        starsLink.rel = 'noopener noreferrer';
+
+        const match = gr.score.match(/([\d.]+)\s*\/?\s*(\d*)/);
+        const numerator = match ? parseFloat(match[1]) : 0;
+        const denominator = match && match[2] ? parseFloat(match[2]) : 5;
+        const outOf5 = (numerator / denominator) * 5;
+        const displayScore = outOf5.toFixed(1);
+
+        starsLink.setAttribute('aria-label', `Goodreads rating ${displayScore} out of 5`);
+        starsLink.innerHTML = generateStarRating(gr.score) + `<span class="rating-value">${displayScore}</span>`;
+        ratingsWrap.appendChild(starsLink);
+      }
+
+      // Sample reviews display (now supports multiple)
+      const reviewsContainer = document.getElementById('sampleReviewsContainer');
+      reviewsContainer.innerHTML = '';
+      
+      if (book['Sample Reviews'] && Array.isArray(book['Sample Reviews']) && book['Sample Reviews'].length > 0) {
+        book['Sample Reviews'].forEach(review => {
+          if (review.text && review.text.trim()) {
+            const reviewCard = document.createElement('div');
+            reviewCard.className = 'sample-review';
+            
+            const reviewText = document.createElement('div');
+            reviewText.className = 'sample-review-text';
+            reviewText.textContent = `"${review.text}"`;
+            
+            const reviewBy = document.createElement('div');
+            reviewBy.className = 'sample-review-by';
+            reviewBy.textContent = `— ${review.by || 'Anonymous'}`;
+            
+            reviewCard.appendChild(reviewText);
+            reviewCard.appendChild(reviewBy);
+            reviewsContainer.appendChild(reviewCard);
+          }
+        });
+        reviewsContainer.style.display = 'flex';
+      } else {
+        reviewsContainer.style.display = 'none';
+      }
+
+      // Awards - Fixed to use correct element reference
+      const awardsLabel = document.getElementById('awardsLabel');
+      const modalAwards = document.getElementById('modalAwards');
+      const awards = Array.isArray(book.Awards) ? book.Awards : (book.Awards ? [book.Awards] : []);
+      const hasAwards = awards.length > 0;
+      awardsLabel.style.display = hasAwards ? '' : 'none';
+      modalAwards.style.display = hasAwards ? 'flex' : 'none';
+      modalAwards.innerHTML = hasAwards
+        ? awards.map(a => `<span class="award-chip">${a}</span>`).join('')
+        : '';
+      modalReview.src = book['Book Review'].replace('watch?v=', 'embed/');
+    }
+
+    function openPhotoViewer(imageSrc) {
+      photoViewerImage.src = imageSrc;
+      photoViewer.classList.add('open');
+    }
+
+    function closePhotoViewer() {
+      photoViewer.classList.remove('open');
+      photoViewerImage.src = '';
+    }
+
+    // Photo viewer close handlers
+    photoViewerClose.onclick = (e) => {
+      e.stopPropagation();
+      closePhotoViewer();
+    };
+    photoViewer.addEventListener('click', (e) => {
+      if (e.target === photoViewer) {
+        e.stopPropagation();
+        closePhotoViewer();
+      }
+    });
+
+    // Close photo viewer with Escape key (prevent modal from closing)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && photoViewer.classList.contains('open')) {
+        e.stopPropagation();
+        e.preventDefault();
+        closePhotoViewer();
+      }
+    });
+
+    modalClose.onclick = () => modal.classList.remove('open');
+
+    // close modal when clicking outside the content
+    modal.addEventListener('click', (e) => {
+      if (!e.target.closest('.modal-content')) {
+        modal.classList.remove('open');
+      }
+    });
+  </script>
+
+  <!-- THEME TOGGLE (new) -->
+  <!-- <button id="themeToggle" class="dark-toggle btn" aria-label="Toggle theme">🌙</button> -->
+
+  <script>
+    // theme toggle (updated)
+    const THEME_KEY = 'theme';
+    const themeToggles = document.querySelectorAll('.dark-toggle');
+
+    function updateThemeIcon(theme){
+      themeToggles.forEach(btn => {
+        btn.textContent = theme === 'theme-dark' ? '☀️' : '🌙';
+        btn.setAttribute('aria-label', theme === 'theme-dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      });
+    }
+    function applyTheme(theme){
+      document.body.classList.remove('theme-light','theme-dark');
+      document.body.classList.add(theme);
+      updateThemeIcon(theme);
+    }
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY);
+      const preferred = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+      applyTheme(preferred);
+    }
+    themeToggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const next = document.body.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+    });
+    initTheme();
+  </script>
+
+  <!-- Removed malformed trailing script/HTML and properly closed tags -->
+</body>
+</html>

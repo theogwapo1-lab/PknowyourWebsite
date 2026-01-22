@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinoy Know Your Food</title>
+
+<style>
+:root {
+  --bg: url('image5/comic.jpg') center / cover no-repeat;
+  --button-bg: #ffffff;
+  --text: #1e1e1e;
+  --accent: #3f3f3f;
+
+  --card-w: 250px;
+  --card-h: auto;
+
+  --card-top: 110px;
+  --card-left: 40px;
+  --card-right: 40px;
+  --card-bottom: 120px;
+}
+
+body.dark {
+  --bg: url('image5/comics2.jpg') center / cover no-repeat;
+  --button-bg: #c5c3c3;
+  --text: #eaeaea;
+  --accent: #464442;
+}
+
+* { box-sizing: border-box; font-family: system-ui, sans-serif; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+  background-attachment: fixed; 
+  background-size: cover;       
+  background-position: center;  
+  opacity: 0;
+  animation: pageFadeIn .5s ease-out forwards;
+}
+
+@keyframes pageFadeIn {
+  to { opacity: 1; }
+}
+
+.logo {
+  max-width: 850px;
+  width: 100%;
+  margin: -15px auto 30px;
+  display: block;
+  margin-bottom: -75px;
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  animation: logoIn .6s ease-out .25s forwards;
+}
+
+@keyframes logoIn {
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body, .logo {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+.disclaimer {
+  margin: 35px 0 2px;
+  margin-bottom: -25px !important;
+  margin-top: 50px;
+  font-size: 12px;
+  color:#d1d1d1;
+  opacity: 0.85;
+  text-align: center; /* Added to center disclaimer */
+}
+
+header { text-align: center; padding: 60px 20px 30px; }
+.controls {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+}
+.controls input {
+  width: 100%;
+  padding: 200px 18px;
+  font-size: 16px;
+  border-radius: 2px;
+  border: none;
+}
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+select, button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+button { background: var(--button-bg); }
+button.accent { background: var(--accent); color: #fff; }
+/* From Uiverse.io by JaydipPrajapati1910 — scoped to .ui-btn only */
+.ui-btn {
+  --color: black;
+  font-family: inherit;
+  display: inline-block;
+  line-height: 2.5em;
+  overflow: hidden;
+  font-size: 17px;
+  z-index: 1;
+  color: var(--color);
+  border: 2px solid var(--color);
+  border-radius: 6px;
+  position: relative;
+  background: var(--button-bg);
+  /* do NOT force width/margins here; placement is handled below */
+}
+.ui-btn::before {
+  position: absolute;
+  content: "";
+  background: var(--color);
+  width: 150px;
+  height: 200px;
+  z-index: -1;
+  border-radius: 50%;
+  top: 100%;
+  left: 100%;
+  transition: .3s all;
+}
+.ui-btn:hover { color: #fff; }
+.ui-btn:hover::before { top: -30px; left: -30px; }
+
+/* Scoped placement fixes for only the Clear/Shuffle buttons */
+.controls .filter-row .ui-btn {
+  margin-left: 0; /* reset the old negative margin */
+  width: auto;
+  min-height: 42px;
+  padding: 10px 18px;
+  line-height: 1.2;
+}
+.controls .filter-row .ui-btn.accent {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.controls .filter-row select {
+  height: 42px;
+  padding: 0 14px;
+  margin: 0;
+}
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-w), 1fr));
+  gap: 16px;
+  justify-items: center;
+}
+
+.card {
+  position: relative;
+  width: var(--card-w);
+  height: var(--card-h);
+  overflow: hidden;
+  border-radius: 8px;
+  cursor: pointer;
+  box-sizing: border-box 0 12px 20px rgba(0,0,0,0.24);
+  /* add smoother transitions for lift and shadow */
+  transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow .28s ease;
+  will-change: transform;
+  transform-origin: center; /* grow from center */
+}
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* smoother image animation */
+  transition: filter .28s ease; /* remove transform to avoid zoom-crop */
+}
+.card:hover img {
+  /* subtle zoom + slight lift + gentle color pop */
+  transform: none;            /* stop zooming the image */
+  filter: brightness(1.05);   /* optional subtle pop */
+}
+.card:hover {
+  /* smoother lift with slight scale and refined shadow */
+  transform: scale(1.18);
+  box-shadow: 0 24px 40px rgba(0,0,0,0.32);
+  z-index: 10;
+}
+.card-info {
+  /* switch from slide-up to fade-in with micro motion */
+  position: absolute;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  inset: auto 0 0 0;
+  height: 40%;
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  padding: 16px;
+  transform: translateY(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .28s cubic-bezier(0.22, 1, 0.36, 1), opacity .28s ease-out;
+  font-size: 14px;
+}
+.card:hover {
+  /* smoother lift with slight scale and refined shadow */
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 16px 28px rgba(0,0,0,0.28);
+  z-index: 2;
+}
+.card:hover .card-info {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.card-info h3 {
+  margin: -8px 0px 8px;
+  font-size: 18px;
+  
+}
+.card-info p {
+  margin: 4px 0;
+  line-height: 1.3;
+}
+
+.dark-toggle {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+}
+.comic-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  z-index: 2500;
+  background:
+    radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px) 0 0/16px 16px,
+    radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px) 8px 8px/16px 16px,
+    rgba(0,0,0,0.35);
+}
+.comic-modal-backdrop.open { display: grid; }
+
+.comic-modal {
+  width: 560px;          /* was 720px */
+  max-width: 88vw;       /* was 92vw */
+  height: auto;          /* was fixed 750px */
+  max-height: 80vh;      /* ensure it fits viewport */
+  background: #fffbe7;
+  border: 6px solid #111;
+  border-radius: 18px;
+  box-shadow:
+    12px 12px 0 #111,
+    0 0 0 6px #000 inset;
+  overflow: auto;        /* was scroll; auto is cleaner */
+  animation: powIn .25s ease-out;
+  position: relative;
+}
+
+@keyframes powIn {
+  from { transform: scale(0.92) rotate(-1.5deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.comic-modal-header {
+  position: relative;
+  padding: 16px 56px 16px 20px;
+  background:
+    conic-gradient(from 220deg at 10% 50%, #ffd24a, #ff6b3d, #ffd24a);
+  border-bottom: 6px solid #111;
+}
+.comic-modal-title {
+  font-family: 'Comic Sans MS','Comic Sans',cursive,system-ui,sans-serif;
+  font-size: 1.6rem;     /* was 2rem */
+  font-weight: 900;
+  color: #111;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 #fffbe7, -2px -2px 0 #fffbe7;
+}
+
+.comic-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;           /* was 40px */
+  height: 32px;          /* was 40px */
+  border: 4px solid #111;
+  border-radius: 50%;
+  background: #fffbec;
+  color: #111;
+  font-weight: 900;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #111;
+}
+.comic-modal-close:hover { transform: translate(-1px, -1px); }
+
+.comic-modal-body {
+  padding: 18px 20px 22px;
+  background:
+    radial-gradient(#f4e8b7 1px, transparent 1px) 0 0/14px 14px,
+    #fffbe7;/* keep layout width stable when scrollbar appears */
+  scrollbar-gutter: stable both-edges;
+  /* thin, themed scrollbars (Firefox) */
+  scrollbar-width: thin;
+  scrollbar-color: #797979 #3d3d3d;
+  padding-right: 4px; /* small buffer next to scrollbar */
+}
+
+/* Speech bubble content block */
+.comic-bubble {
+  position: relative;
+  background: #ffffff;
+  border: 5px solid #111;
+  border-radius: 18px;
+  padding: 16px 18px;
+  color: #1a1200;
+  font-family: 'Comic Sans MS','Comic Sans',cursive,system-ui,sans-serif;
+  box-shadow: 6px 6px 0 #111;
+}
+.comic-bubble::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  bottom: -18px;
+  width: 0; height: 0;
+  border: 12px solid transparent;
+  border-top-color: #111;
+  filter: drop-shadow(2px 2px 0 #111);
+}
+.comic-bubble::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  bottom: -14px;
+  width: 0; height: 0;
+  border: 10px solid transparent;
+  border-top-color: #ffffff;
+}
+
+/* Action buttons */
+.comic-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+.comic-btn {
+  appearance: none;
+  border: 4px solid #111;
+  border-radius: 999px;
+  background: #ffe27a;
+  color: #111;
+  font-weight: 900;
+  padding: 10px 16px;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 #111;
+  text-transform: uppercase;
+}
+.comic-btn.accent { background: #ff6b3d; color: #fffbe7; }
+.comic-btn:hover { transform: translate(-1px, -1px); }
+
+/* Landscape comic layout (cover left, details right) */
+.comic-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 340px) 1fr;
+  gap: 16px;
+  align-items: start;
+}
+.comic-cover {
+  margin: 0;
+  border: 6px solid #111;
+  border-radius: 18px;
+  background: #fffbec;
+  box-shadow: 8px 8px 0 #111;
+  overflow: hidden;
+}
+.comic-cover img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Right pane inherits .comic-bubble; add section styling */
+.comic-details .comic-title {
+  font-family: 'Comic Sans MS','Comic Sans',cursive,system-ui,sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.8rem;
+  margin: 0 0 6px;
+  color: #111;
+}
+.comic-details .comic-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 10px;
+  row-gap: 6px;
+  margin: 6px 0 14px;
+  font-weight: 600;
+}
+.comic-details .section-heading {
+  margin: 10px 0 6px;
+  font-size: 1.1rem;
+}
+.comic-details hr {
+  border: none;
+  border-top: 3px solid #111;
+  margin: 12px 0;
+}
+
+/* Responsive: stack on small screens */
+@media (max-width: 720px) {
+  .comic-layout { grid-template-columns: 1fr; }
+  .comic-details .comic-title { font-size: 1.5rem; }
+}
+
+/* Dark mode for cover */
+body.dark .comic-cover {
+  background: #2a2a2a;
+  border-color: #000;
+  box-shadow: 8px 8px 0 #000;
+}
+body.dark .comic-modal {
+  background: #2a2a2a;
+  box-shadow: 12px 12px 0 #000, 0 0 0 6px #000 inset;
+  border-color: #000;
+}
+body.dark .comic-modal-header { border-bottom-color: #000; }
+body.dark .comic-modal-title { color: #fff; text-shadow: none; }
+body.dark .comic-bubble { background: #2e2e2e; color: #eaeaea; border-color: #000; box-shadow: 6px 6px 0 #000; }
+body.dark .comic-bubble::before { border-top-color: #2e2e2e; }
+body.dark .comic-bubble::after { border-top-color: #000; }
+body.dark .comic-btn { background: #3a3a3a; color: #fff; border-color: #000; box-shadow: 4px 4px 0 #000; }
+body.dark .comic-btn.accent { background: #c24a3c; }
+
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 120;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 100%;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.08);
+}
+
+.highlighted-term {
+  color: #c4bebe;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  display: inline; /* Change to inline for normal text selection */
+  font-weight: 500;
+  outline: none;
+  position: relative;
+}
+.highlighted-term:active,
+.highlighted-term:focus {
+  color: #c24a3c;
+  border-color: #ffe9a7;
+}
+.highlighted-term:hover {
+  color: #602019;
+  z-index: 2;
+}
+
+#pptVideoEmbed video,
+#pptVideoEmbed iframe {
+  width: 95%;
+  height: 270px;
+  max-width: 95%;
+  max-height: 270px;
+  border-radius: 16px;
+  background: #000;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+#pptVideoControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 10px;
+}
+#pptVideoControls button {
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #f7e7b4;
+  color: #5b3a0a;
+  font-size: 1.05rem;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-weight: bold;
+  box-shadow: 1px 1px 0 #e0cfa3;
+  transition: background 0.2s;
+}
+#pptVideoControls button:hover {
+  background: #ffe9a7;
+}
+#videoIndicator {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: #7a5a1a;
+  font-weight: bold;
+}
+/* Search bar styling */
+#search {
+  width: 100%;
+  max-width: 800px;
+  padding: 8px 18px;
+  font-size: 17px;
+  border-radius: 8px;
+  border: 2px solid #2e2e2e;
+  background: #3a3838;
+  color: #9c9c9c;
+  box-shadow: 0 2px 8px rgba(192,57,43,0.07);
+  margin-bottom: 10px;
+  margin-left: 120px; /* Move more to right */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+#search:focus {
+  border-color: #000000;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.13);
+  outline: none;
+}
+body.dark #search {
+  background: #2a2a2a;
+  color: #eaeaea;
+  border-color: #2c2b29;
+}
+.filter-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 120px; 
+}
+
+/* Scoped placement fixes for the controls' buttons */
+.controls .filter-row {
+    align-items: center;
+    gap: 12px;           /* rely on gap instead of button margins */
+    flex-wrap: wrap;
+  }
+  .controls .filter-row button {
+    margin: 0;           /* override Uiverse margin: 20px */
+    width: auto;         /* don't force 6em, size to label */
+    min-height: 42px;
+    padding: 10px 18px;  /* consistent padding */
+    line-height: 1.2;
+  }
+  .controls .filter-row button.accent {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .controls .filter-row select {
+    height: 42px;        /* match button height */
+    padding: 0 14px;
+    margin: 0;           /* align with buttons */
+  }
+
+/* Toolbar row: Year ▼ | Genre ▼ | Clear | Shuffle */
+.chip-toolbar {
+  display: grid;
+  grid-template-columns: max-content max-content max-content max-content 1fr; /* Year | Genre | Clear | Shuffle | spacer */
+  column-gap: 12px;
+  row-gap: 6px;
+  align-items: start;
+  width: 100%; /* allow rows to span full width */
+}
+
+/* Flatten groups so children participate in grid */
+.chip-group {
+  display: contents;
+}
+
+/* First row order: [Year][Genre][Clear][Shuffle] */
+#yearToggle { grid-column: 1; grid-row: 1; }
+#tagToggle  { grid-column: 2; grid-row: 1; }
+#yearClear  { grid-column: 3; grid-row: 1; }
+#tagShuffle { grid-column: 4; grid-row: 1; }
+
+/* Second row: year chips (full width) */
+#yearChips { grid-column: 1 / -1; grid-row: 2; }
+
+/* Third row: tag chips (full width) */
+#tagChips  { grid-column: 1 / -1; grid-row: 3; }
+
+/* Hide old right-side actions container */
+.chip-actions { display: none !important; }
+
+/* Chips: unified base styles + states (override earlier chip rules) */
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .chip {
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 2px solid #555555;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    background: #3f3f3f;         /* inactive */
+    color: #cfcfcf;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.25) inset, 0 1px 0 rgba(0,0,0,0.35);
+    transition: background .15s ease, color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .05s ease;
+  }
+
+  .chip:hover { filter: brightness(1.08); }
+  .chip:active { transform: scale(0.98); }
+
+  .chip.selected {
+    background: var(--accent);    /* active */
+    color: #ffffff;
+    border: 2px solid #000000;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.18) inset, 0 0 0 2px rgba(255,255,255,0.04);
+  }
+
+  .chip:focus-visible {
+    outline: 2px solid #ffe9a7;
+    outline-offset: 2px;
+  }
+
+  /* "All" chip distinct styling */
+  .chip.chip-all:not(.selected) {
+    background: #ffffff;
+    color: #333333;
+    border-color: #000000;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.25) inset, 0 1px 0 rgba(0,0,0,0.35);
+  }
+  .chip.chip-all.selected {
+    background: #e9e9e9;
+    color: #222222;
+    border-color: #000000;
+  }
+
+  /* Dark mode tweaks */
+  body.dark .chip:not(.selected):not(.chip-all) {
+    background: #2a2a2a;
+    color: #eaeaea;
+    border-color: #2c2b29;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.25) inset, 0 1px 0 rgba(0,0,0,0.35);
+  }
+  body.dark .chip.chip-all:not(.selected) {
+    background: #2e2e2e;
+    color: #eaeaea;
+    border-color: #2c2b29;
+  }
+
+  /* Keep chip toggles compact and non-stretching */
+  .chip-toggle {
+    flex: 0 0 auto;
+    width: auto;
+    align-self: flex-start;
+  }
+
+/* Hideable chip rows (used by toggleChipGroup) */
+.chips.hidden {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+</style>
+</head>
+<body>
+<a href="home.html" class="index-logo-link" aria-label="Back to Index">
+  <img src="image/logo2.svg" alt="Back to Index" class="main-logo">
+</a>
+
+<button class="dark-toggle" onclick="toggleDark()">Dark Mode</button>
+
+<header>
+  <img class="logo" src="image/comics.svg" alt="Pinoy Know Your Food">
+  <p class="disclaimer">
+    Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights. <br> Email me at tmdanao@up.edu.ph
+  </p>
+</header>
+  <p> </p>
+<section class="controls">
+  <input id="search" placeholder="Search comics..." oninput="filterFood()">
+  <div class="filter-row">
+    <div class="chip-toolbar">
+      <div class="chip-group">
+        <button type="button" class="chip-toggle" id="yearToggle" onclick="toggleChipGroup('year')">Year ▼</button>
+        <button class="ui-btn" id="yearClear" onclick="clearFilters()">Clear</button>
+        <!-- Close Year chips by default -->
+        <div id="yearChips" class="chips hidden"></div>
+      </div>
+      <div class="chip-group">
+        <button type="button" class="chip-toggle" id="tagToggle" onclick="toggleChipGroup('tag')">Genre ▼</button>
+        <button class="ui-btn accent" id="tagShuffle" onclick="shuffleFood()">Shuffle</button>
+        <!-- Close Genre chips by default -->
+        <div id="tagChips" class="chips hidden"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="foodGrid" class="grid"></section>
+
+<!-- Add: Comic Modal (uses existing .comic-modal styles) -->
+<div id="comicBackdrop" class="comic-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="comic-modal" role="document">
+    <div class="comic-modal-header">
+      <div class="comic-modal-title" id="comicTitle"></div>
+      <button class="comic-modal-close" type="button" aria-label="Close" onclick="closeComicModal()">✕</button>
+    </div>
+    <div class="comic-modal-body">
+      <!-- NEW: two-column landscape layout -->
+      <div class="comic-layout">
+        <figure class="comic-cover" id="comicCover"></figure>
+        <div class="comic-bubble comic-details" id="comicBubble"><!-- populated dynamically --></div>
+      </div>
+    </div>
+    <div class="comic-actions">
+      <button class="comic-btn accent" type="button" onclick="closeComicModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- PowerPoint-like Modal Presentation -->
+<div id="pptModal" class="ppt-modal" style="display:none;">
+  <div class="ppt-container">
+    <div class="ppt-content">
+      <!-- Move tabs inside ppt_content, before close button -->
+      <div class="tabs" id="pptTabs" style="position:absolute;top:0;left:0;width:100%;z-index:-10 ;justify-content:flex-end;pointer-events:auto;">
+        <div class="tab active" data-tab="slides" onclick="showPptTab(event, 'slides')">Slides</div>
+        <div class="tab" data-tab="video" onclick="showPptTab(event, 'video')">Video</div>
+      </div>
+      <span class="ppt-close" onclick="closePptModal()">✕</span>
+      <div class="ppt-safe">
+        <div class="ppt-header">
+          <img id="pptFoodImg" class="ppt-food-img" alt="Food">
+          <div class="ppt-title-block">
+            <div class="ppt-title" id="pptTitle"></div>
+            <div class="ppt-subtitle" id="pptOrigin"></div>
+          </div>
+        </div>
+        <div class="ppt-slides tab-panel" id="pptSlidesPanel">
+          <div class="slide active"></div>
+          <div class="slide"></div>
+          <div class="slide"></div>
+          <div class="slide"></div>
+        </div>
+        <div class="tab-panel" id="pptVideoPanel" hidden>
+          <div id="pptVideoEmbed" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;">
+            <!-- Video player will be injected here -->
+          </div>
+          <div id="pptVideoControls">
+            <button onclick="pptPrevVideo()">&#x25C0; Prev</button>
+            <span id="videoIndicator"></span>
+            <button onclick="pptNextVideo()">Next &#x25B6;</button>
+          </div>
+        </div>
+        <div class="ppt-controls" id="pptSlidesControls">
+          <button onclick="pptPrevSlide()">&#x25C0; Prev</button>
+          <span id="slideIndicator"></span>
+          <button onclick="pptNextSlide()">Next &#x25B6;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const foods = [
+  {
+    name: "Darna",
+    origin: "Philippines",
+    category: "Superhero",
+    description: "A popular Filipino street food made of battered quail eggs.",
+    history: "Kwek-Kwek originated as a creative way to serve quail eggs in the Philippines, becoming a staple in street food markets.",
+    cultural: "Kwek-Kwek is a symbol of Filipino street food culture, often enjoyed as a snack during gatherings and festivals.",
+    recipe: "1. Boil quail eggs.\n2. Coat in orange batter.\n3. Deep fry until crispy.\n4. Serve with vinegar or sweet sauce.",
+    image: "image5/darna.jpg",
+    modalImage: "image4/kwek.svg",
+    modalVideos: [
+      "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
+      "https://www.youtube.com/watch?v=xoLPVGgGCF0"
+
+    ],
+    writer: "Mars Ravelo",
+    illustrator: "Nestor Redondo",
+    firstAppearance: "Darna #1 (1947)",
+    genre: "Superhero"
+  },
+  {
+    name: "Kenkoy",
+    origin: "Philippines",
+    category: "Dessert",
+    description: "A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.A famous Filipino shaved ice dessert.",
+    history: "Halo-Halo evolved from Japanese kakigori and Spanish-influenced sweets, becoming a Filipino summer staple.",
+    cultural: "Halo-Halo is a symbol of Filipino ingenuity, mixing various ingredients to create a unique, refreshing treat.",
+    recipe: "1. Layer sweetened beans, fruits, and jellies.\n2. Add shaved ice.\n3. Top with leche flan, ube, and evaporated milk.",
+    image: "image5/kenkoy.webp",
+    modalImage: "image5/kenkoy.webp",
+    modalVideo: "image5/videos/kenkoy.mp4",
+    highlights: [
+      { term: "kakigori", url: "https://en.wikipedia.org/wiki/Halo-halo?utm_source=chatgpt.com" },
+    ],
+    modalVideos: [
+      "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
+      "https://www.youtube.com/watch?v=xoLPVGgGCF0"
+    ],
+    writer: "",
+    illustrator: "",
+    firstAppearance: "",
+    genre: ""
+  }
+];
+let currentList = [...foods]; // Always keep a copy for shuffling
+
+function render(list) {
+  const grid = document.getElementById("foodGrid");
+  grid.innerHTML = list.map((f,i)=>`
+    <div class="card" data-index="${i}">
+      <img src="${f.image}" alt="${f.name}">
+      <div class="card-info">
+        <h3>${f.name || "Untitled"}</h3>
+        <p><strong>Writer:</strong> ${f.writer || "—"}</p>
+        <p><strong>Illustrator:</strong> ${f.illustrator || "—"}</p>
+        <p><strong>First appearance:</strong> ${f.firstAppearance || "—"}</p>
+        <p><strong>Genre:</strong> ${f.genre || "—"}</p>
+      </div>
+    </div>
+  `).join("");
+  currentList = list; // Keep currentList in sync
+}
+
+// Replace filterFood with flexible category handling and add helpers
+function isMatchingCategory(itemCategory, selected) {
+  if (!selected) return true;
+  if (!itemCategory) return false;
+  if (typeof itemCategory === 'string') {
+    return itemCategory.toLowerCase() === selected.toLowerCase();
+  }
+  if (Array.isArray(itemCategory)) {
+    return itemCategory.some(c => typeof c === 'string' && c.toLowerCase() === selected.toLowerCase());
+  }
+  return false;
+}
+
+function getCategoryLabel(cat) {
+  if (!cat) return '';
+  if (Array.isArray(cat)) return cat.filter(c=>c && c.trim()).join(', ');
+  return String(cat);
+}
+
+// Selected categories set (multi-select chips)
+const selectedCategories = new Set();
+
+// Match any selected category (or pass if none selected)
+function matchesAnyCategory(itemCategory, selectedSet) {
+  if (!selectedSet || selectedSet.size === 0) return true;
+  if (!itemCategory) return false;
+  const toSet = new Set(Array.from(selectedSet).map(c => String(c).toLowerCase()));
+  if (typeof itemCategory === 'string') {
+    return toSet.has(itemCategory.toLowerCase());
+  }
+  if (Array.isArray(itemCategory)) {
+    return itemCategory.some(c => c && toSet.has(String(c).toLowerCase()));
+  }
+  return false;
+}
+
+// Selected sets
+const selectedYears = new Set();
+const selectedTags  = new Set(); // uses your "category" as tags
+
+function getItemYear(f) {
+  // 1) explicit year property, 2) parse 4-digit in firstAppearance, else null
+  if (f.year) return String(f.year);
+  const fa = f.firstAppearance || '';
+  const m = fa.match(/\b(19|20)\d{2}\b/);
+  return m ? m[0] : null;
+}
+
+// Filtering helpers
+function matchesYears(f) {
+  if (selectedYears.size === 0) return true;
+  const y = getItemYear(f);
+  return y ? selectedYears.has(String(y)) : false;
+}
+function matchesTags(f) {
+  // treat f.category as the "tag" field (string or array)
+  if (selectedTags.size === 0) return true;
+  const toSet = selectedTags;
+  if (!f.category) return false;
+  if (typeof f.category === 'string') return toSet.has(f.category);
+  if (Array.isArray(f.category)) return f.category.some(c => c && toSet.has(String(c)));
+  return false;
+}
+
+// Build chip rows
+function makeChips(containerId, values, selectedSet) {
+  const wrap = document.getElementById(containerId);
+  const uniq = Array.from(new Set(values)).filter(Boolean);
+  wrap.innerHTML = [
+    `<button type="button" class="chip chip-all" data-val="__ALL__">All</button>`,
+    ...uniq.map(v => `<button type="button" class="chip" data-val="${v}">${v}</button>`)
+  ].join('');
+
+  wrap.querySelectorAll('.chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const val = btn.dataset.val;
+      if (val === '__ALL__') {
+        selectedSet.clear();
+        wrap.querySelectorAll('.chip').forEach(b => b.classList.remove('selected'));
+        wrap.querySelector('.chip-all')?.classList.add('selected');    // mark All as active
+      } else {
+        const active = btn.classList.toggle('selected');
+        if (active) selectedSet.add(val); else selectedSet.delete(val);
+        wrap.querySelector('.chip-all')?.classList.remove('selected'); // All not active when specific chips selected
+      }
+      filterFood();
+    });
+  });
+
+  // Default: if nothing selected, mark "All" as active
+  if (selectedSet.size === 0) {
+    wrap.querySelector('.chip-all')?.classList.add('selected');
+  }
+}
+
+// Populate both rows
+function populateYearChips() {
+  // If no years found, provide a friendly default range
+  const found = foods.map(getItemYear).filter(Boolean);
+  const fallback = Array.from({length: 2025 - 1990 + 1}, (_,i)=> String(1990+i));
+  const yearValues = found.length ? Array.from(new Set(found)).sort() : fallback;
+  makeChips('yearChips', yearValues, selectedYears);
+}
+function populateTagChips() {
+  const seen = new Set();
+  foods.forEach(f => {
+    if (!f.category) return;
+    if (Array.isArray(f.category)) f.category.forEach(c => c && seen.add(String(c)));
+    else seen.add(String(f.category));
+  });
+  makeChips('tagChips', Array.from(seen).sort((a,b)=>a.localeCompare(b)), selectedTags);
+}
+
+// Show/hide each chip group and reflect state on the toggle button
+function toggleChipGroup(which) {
+  const isYear = which === 'year';
+  const chipsRow = document.getElementById(isYear ? 'yearChips' : 'tagChips');
+  const toggleBtn = document.getElementById(isYear ? 'yearToggle' : 'tagToggle');
+  const nowHidden = chipsRow.classList.toggle('hidden');
+
+  // Mark toggle state
+  toggleBtn.classList.toggle('open', !nowHidden);
+  toggleBtn.setAttribute('aria-expanded', (!nowHidden).toString());
+  toggleBtn.setAttribute('aria-controls', isYear ? 'yearChips' : 'tagChips');
+}
+
+// After chips are populated, ensure initial ARIA/open state matches visibility
+(function initChipTogglesState(){
+  const yearRowHidden = document.getElementById('yearChips').classList.contains('hidden');
+  const tagRowHidden  = document.getElementById('tagChips').classList.contains('hidden');
+  const yearBtn = document.getElementById('yearToggle');
+  const tagBtn  = document.getElementById('tagToggle');
+
+  yearBtn.classList.toggle('open', !yearRowHidden);
+  yearBtn.setAttribute('aria-expanded', (!yearRowHidden).toString());
+  yearBtn.setAttribute('aria-controls', 'yearChips');
+
+  tagBtn.classList.toggle('open', !tagRowHidden);
+  tagBtn.setAttribute('aria-expanded', (!tagRowHidden).toString());
+  tagBtn.setAttribute('aria-controls', 'tagChips');
+})();
+
+// Update filter to consider search + years + tags
+function filterFood() {
+  const q = (document.getElementById("search").value || "").toLowerCase();
+  let filtered = foods.filter(f => (f.name || "").toLowerCase().includes(q));
+  filtered = filtered.filter(matchesTags).filter(matchesYears);
+  render(filtered);
+}
+
+// Clear resets search + both chip groups
+function clearFilters() {
+  document.getElementById("search").value = "";
+  selectedYears.clear();
+  selectedTags.clear();
+  document.querySelectorAll('#yearChips .chip, #tagChips .chip').forEach(b => b.classList.remove('selected'));
+  document.querySelector('#yearChips .chip-all')?.classList.add('selected'); // All active after clear
+  document.querySelector('#tagChips .chip-all')?.classList.add('selected');  // All active after clear
+  render(foods);
+}
+
+/* Add shuffle to randomize current view (respects active filters/search) */
+function shuffleFood() {
+  const arr = [...currentList];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  render(arr);
+}
+
+// --- Dark mode memory ---
+(function() {
+  if (localStorage.getItem('darkmode') === '1') {
+    document.body.classList.add('dark');
+  }
+})();
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem('darkmode', document.body.classList.contains('dark') ? '1' : '0');
+}
+
+let pptCurrentSlide = 0;
+let pptSlides = [];
+const pptLabels = [
+  "Description",
+  "History",
+  "Cultural Significance",
+  "Recipe"
+  
+];
+function highlightTerms(text, highlights) {
+  if (!highlights || !Array.isArray(highlights)) return text;
+  // Only highlight in plain text, not inside HTML tags
+  // Split by tags, only process text nodes
+  return text.split(/(<[^>]+>)/g).map(segment => {
+    if (segment.startsWith('<')) return segment; // leave tags untouched
+    let s = segment;
+    highlights
+      .sort((a, b) => b.term.length - a.term.length)
+      .forEach(({ term, url }) => {
+        const regex = new RegExp(`\\b${escapeRegExp(term)}\\b`, 'gi');
+        s = s.replace(regex, `<a href="${url}" class="highlighted-term" target="_blank" rel="noopener noreferrer">$&</a>`);
+      });
+    return s;
+  }).join('');
+}
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function openPptModal(food) {
+  document.getElementById("pptModal").style.display = "flex";
+  document.querySelector("#pptModal .ppt-container").style.opacity = "1";
+  document.getElementById("pptTitle").textContent = food.name || "";
+  // show a nice label even if category is an array
+  document.getElementById("pptOrigin").textContent = getCategoryLabel(food.category) || "Street Food";
+  document.getElementById("pptFoodImg").src = food.modalImage || food.image || "";
+  pptSlides = [
+    food.description || "",
+    food.history || "",
+    food.cultural || "",
+    food.recipe || ""
+  ];
+  const slideEls = document.querySelectorAll("#pptModal .slide");
+  for (let i = 0; i < slideEls.length; ++i) {
+    if (!pptSlides[i]) {
+      slideEls[i].innerHTML = "";
+      continue;
+    }
+    let content = pptSlides[i];
+    if (food.highlights && (i === 0 || i === 1 || i === 2 || i === 3)) {
+      content = highlightTerms(content, food.highlights);
+    }
+    if (i === 3) {
+      slideEls[i].innerHTML = `<strong>${pptLabels[i]}:</strong><br>${content.replace(/\n/g, "<br>")}`;
+    } else {
+      slideEls[i].innerHTML = `<strong>${pptLabels[i]}:</strong><br>${content}`;
+    }
+  }
+  pptShowSlide(0);
+
+  // Video tab: support multiple videos
+  pptVideos = Array.isArray(food.modalVideos) && food.modalVideos.length
+    ? food.modalVideos
+    : [];
+  pptCurrentVideo = 0;
+  showPptTab(null, 'slides');
+  renderPptVideo();
+  document.getElementById('pptVideoControls').style.display = pptVideos.length > 1 ? 'flex' : 'none';
+}
+
+function renderPptVideo() {
+  const videoEmbed = document.getElementById('pptVideoEmbed');
+  videoEmbed.innerHTML = '';
+  if (!pptVideos.length) {
+    videoEmbed.innerHTML = `<div style="color:#888;text-align:center;width:100%;">No video available.</div>`;
+    document.getElementById('videoIndicator').textContent = '';
+    return;
+  }
+  const link = pptVideos[pptCurrentVideo];
+  // Show video player for YouTube links, else show link
+  if (/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/.test(link)) {
+    const match = link.match(/v=([a-zA-Z0-9_-]+)/);
+    const youtubeId = match ? match[1] : "";
+    videoEmbed.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}" frameborder="0" allowfullscreen></iframe>`;
+  } else if (/vimeo\.com\/(\d+)/.test(link)) {
+    const match = link.match(/vimeo\.com\/(\d+)/);
+    const vimeoId = match ? match[1] : "";
+    videoEmbed.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoId}" frameborder="0" allowfullscreen></iframe>`;
+  } else {
+    videoEmbed.innerHTML = `<a href="${link}" target="_blank" style="font-size:1.2rem;color:#c0392b;text-decoration:underline;">Watch Video</a>`;
+  }
+  document.getElementById('videoIndicator').textContent = `${pptCurrentVideo + 1} / ${pptVideos.length}`;
+}
+
+function closePptModal() {
+  document.getElementById("pptModal").style.display = "none";
+}
+function pptShowSlide(idx) {
+  const slides = document.querySelectorAll("#pptModal .slide");
+  slides.forEach((s, i) => {
+    if (i === idx) {
+      s.classList.add("active");
+      s.style.display = "block";
+    } else {
+      s.classList.remove("active");
+      s.style.display = "none";
+    }
+  });
+  document.getElementById("slideIndicator").textContent = `${idx + 1} / ${slides.length}`;
+  pptCurrentSlide = idx;
+}
+function pptNextSlide() {
+  const slides = document.querySelectorAll("#pptModal .slide");
+  if (slides.length === 0) return;
+  // Wrap around to first slide if at the end
+  pptShowSlide((pptCurrentSlide + 1) % slides.length);
+}
+function pptPrevSlide() {
+  const slides = document.querySelectorAll("#pptModal .slide");
+  if (slides.length === 0) return;
+  // Wrap around to last slide if at the beginning
+  pptShowSlide((pptCurrentSlide - 1 + slides.length) % slides.length);
+}
+
+let pptCurrentVideo = 0;
+let pptVideos = [];
+
+function pptNextVideo() {
+  if (!pptVideos.length) return;
+  pptCurrentVideo = (pptCurrentVideo + 1) % pptVideos.length;
+  renderPptVideo();
+}
+function pptPrevVideo() {
+  if (!pptVideos.length) return;
+  pptCurrentVideo = (pptCurrentVideo - 1 + pptVideos.length) % pptVideos.length;
+  renderPptVideo();
+}
+
+// Add click-outside-to-close for pptModal (now closes only if clicking outside ppt-container)
+document.getElementById("pptModal").addEventListener("mousedown", function(e) {
+  // If clicking a highlighted-term link, do nothing (let the link work)
+  if (e.target.closest('.highlighted-term')) return;
+  const pptContainer = document.querySelector("#pptModal .ppt-container");
+  if (e.target === this || (!pptContainer.contains(e.target) && this.contains(e.target))) {
+    closePptModal();
+  }
+});
+
+document.getElementById("foodGrid").addEventListener("click", e => {
+  const card = e.target.closest(".card");
+  if (!card) return;
+  openComicModalByIndex(Number(card.dataset.index));
+});
+
+// Comic modal helpers
+let comicCurrentIndex = -1;
+
+function openComicModalByIndex(idx) {
+  comicCurrentIndex = idx;
+  const item = currentList[idx];
+  if (!item) return;
+  openComicModal(item);
+}
+
+function openComicModal(food) {
+  const backdrop = document.getElementById('comicBackdrop');
+  const titleEl = document.getElementById('comicTitle');
+  const bubbleEl = document.getElementById('comicBubble');
+  const coverEl  = document.getElementById('comicCover');
+
+  titleEl.textContent = food.name || 'Comic';
+
+  // Left: cover image
+  coverEl.innerHTML = food.image
+    ? `<img src="${food.image}" alt="${food.name || ''}">`
+    : `<div style="padding:24px;text-align:center;color:#666;">No cover available</div>`;
+
+  // Right: details bubble (title, meta, description)
+  bubbleEl.innerHTML = `
+    <div class="comic-title">${food.name || 'Comic'}</div>
+    <div class="comic-meta">
+      <span><strong>Writer:</strong></span><span>${food.writer || "—"}</span>
+      <span><strong>Illustrator:</strong></span><span>${food.illustrator || "—"}</span>
+      <span><strong>First appearance:</strong></span><span>${food.firstAppearance || "—"}</span>
+      <span><strong>Genre:</strong></span><span>${food.genre || (Array.isArray(food.category) ? food.category.join(', ') : (food.category || "—"))}</span>
+    </div>
+    ${food.description ? `
+      <hr>
+      <div class="section-heading"><strong>Description:</strong></div>
+      <p>${food.description}</p>
+    ` : ''}
+  `;
+
+  backdrop.classList.add('open');
+  backdrop.setAttribute('aria-hidden', 'false');
+  document.documentElement.style.overflow = 'hidden';
+}
+
+function closeComicModal() {
+  const backdrop = document.getElementById('comicBackdrop');
+  backdrop.classList.remove('open');
+  backdrop.setAttribute('aria-hidden', 'true');
+  document.documentElement.style.overflow = '';
+}
+
+// Click-outside to close
+document.getElementById('comicBackdrop').addEventListener('mousedown', (e) => {
+  if (e.target === e.currentTarget) closeComicModal();
+});
+
+// Escape to close
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeComicModal();
+});
+
+// Init chip rows then render
+populateYearChips();
+populateTagChips();
+render(foods);
+
+// Tab switching logic for modal
+function showPptTab(e, tab) {
+  // Prevent default if event is passed (for button clicks)
+  if (e) e.preventDefault && e.preventDefault();
+  // Tabs
+  document.querySelectorAll('#pptTabs .tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  // Panels
+  document.getElementById('pptSlidesPanel').hidden = tab !== 'slides';
+  document.getElementById('pptVideoPanel').hidden = tab !== 'video';
+  // Controls
+  document.getElementById('pptSlidesControls').style.display = (tab === 'slides') ? '' : 'none';
+  document.getElementById('pptVideoControls').style.display =
+    (tab === 'video' && pptVideos.length > 1) ? 'flex' : 'none';
+
+    
+}
+</script>
+</body>
+</html>
