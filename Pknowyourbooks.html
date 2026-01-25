@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pknow Your Books</title>
   <meta name="description" content="Pknow Your Books — Filipino Literature Collection" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap" rel="stylesheet">
 
   <style>
     /* Book site theme: single source of truth */
@@ -28,8 +31,8 @@
       --shadow:0 6px 18px rgba(17,24,39,.08);
       --shadow-lg:0 16px 40px rgba(17,24,39,.12);
 
-      --heading-serif: Georgia, "Times New Roman", Times, serif;
-      --ui-sans: "Segoe UI", Tahoma, Verdana, sans-serif;
+      -heading-serif: Georgia, "Times New Roman", Times, serif;
+      --ui-sans: "Google Sans", "Segoe UI", Tahoma, Verdana, sans-serif;
     }
 
     body.theme-dark{
@@ -168,6 +171,9 @@
     .card-info h3 {
       margin: -8px 0px 8px;
       font-size: 18px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
     
     .card-info p {
@@ -224,18 +230,23 @@
     .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:var(--overlay-color)}
     .modal.open{display:flex}
     .modal-content{
-      position:relative;
-      background: linear-gradient(145deg, #2b241d, #1c1813);
-      border-radius: 14px;
-      width:95%;max-width:920px;max-height:min(86vh, 760px);
-      padding: 0; /* Remove padding to allow for two-page effect */
-      display:flex;flex-direction:column;
-      box-shadow:
-        0 25px 60px rgba(0, 0, 0, 0.6),
-        inset 0 0 40px rgba(255, 235, 200, 0.04);
-      border: 1px solid rgba(255, 215, 160, 0.15);
-      font-family: "Libre Baskerville", "Garamond", serif;
-      z-index: 100;
+      position: relative;
+  background: linear-gradient(145deg, #2b241d, #1c1813);
+  border-radius: 14px;
+  width: 920px;
+  max-width: 98vw;
+  height: 750px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.6),
+    inset 0 0 40px rgba(255, 235, 200, 0.04);
+  border: 1px solid rgba(255, 215, 160, 0.15);
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent content from overflowing */
+
+
     }
     body.theme-dark .modal-content {
       background: linear-gradient(145deg, #2b241d, #1c1813);
@@ -244,27 +255,58 @@
         0 25px 60px rgba(0, 0, 0, 0.6),
         inset 0 0 40px rgba(255, 235, 200, 0.04);
       border: 1px solid rgba(255, 215, 160, 0.15);
-      font-family: "Libre Baskerville", "Garamond", serif;
     }
+
+    
     .modal-close{position:absolute;top:16px;right:16px;font-size:26px;cursor:pointer; z-index: 20;}
-    .modal-body{
-      display:grid;grid-template-columns:minmax(260px, 35%) 1fr;gap:0; /* No gap for page effect */
-      flex:1;overflow:hidden;
-      padding: 28px;
+    .modal-body {
+  display: grid;
+  grid-template-columns: minmax(260px, 35%) 1fr;
+  gap: 0;
+  padding: 28px;
+  height: 100%; /* Fill modal-content */
+  min-height: 0;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent overflow from grid children */
+
+
     }
     .modal-body > div:first-child {
       padding-right: 28px;
+      font-size: clamp(12px, 1.5vw, 16px); /* Auto-adjusts: min 12px, scales with viewport, max 16px */
+      line-height: 1.6; /* Improves readability */
+      height: 100%; /* Constrain height to prevent poster overflow */
+      overflow: hidden; /* Hide any excess */
     }
-    .modal-poster{width:100%;border-top-left-radius:0px;border-bottom-left-radius:0px;border-top-right-radius:20px;border-bottom-right-radius:20px;border:1px solid var(--border-color);box-shadow: var(--shadow);}
-    .modal-scroll{overflow-y:auto;padding-left:28px; position: relative;}
+    .modal-poster {
+      width: auto%;
+      height: 65%; /* Fill the container height */
+      object-fit: cover; /* Scale image to cover without distortion, preventing overflow */
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-top-right-radius: 20px;
+      border-bottom-right-radius: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
+    }
+    .modal-scroll {
+      overflow-y: auto; /* Remove duplicate */
+      padding-left: 28px;
+      position: relative;
+      height: 100%;
+      min-height: 0;
+      font-size: 15px;
+      line-height: 1.7;
+      box-sizing: border-box;
+      word-break: break-word;
+    }
     .modal-scroll::before {
       content: '';
       position: absolute;
       left: 0;
       top: 0;
-      bottom: -100vh; /* Extended to cover full content height */
+      bottom: auto; 
       height: auto;
-      min-height: 100%;
       width: 20px;
       background: linear-gradient(to right, rgba(163, 102, 102, 0.08), transparent);
       pointer-events: none;
@@ -412,26 +454,71 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-width: 100%;
+      overflow-x: hidden;
+      max-height: 180px;
+      overflow-y: scroll;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(180, 83, 9, 0) #3a372b00; /* thumb color, track color */
     }
-    
-    .sample-review {
-      padding: 5px;
-      font-size: 18px;
-      line-height: 1.5;
+   ::-webkit-scrollbar{
+display: none
+}
+
+    /* Custom scrollbar for sample reviews (Firefox) */
+    .sample-reviews-container::-webkit-scrollbar {
+      width: 10px;
+      background: #f7f6f2;
       border-radius: 8px;
     }
-    
+    .sample-reviews-container::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #b45309 60%, #e5e7eb 100%);
+      border-radius: 8px;
+      border: 2px solid #f7f6f2;
+    }
+    .sample-reviews-container::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(135deg, #a04a08 60%, #e5e7eb 100%);
+    }
+
+    .sample-review {
+      padding: 5px;
+      border-radius: 8px;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      max-width: 100%;
+      box-sizing: border-box;
+      color: #d8d8d8;
+      font-style: italic;
+      font-size: 15px;
+      font-family: libero, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      white-space: normal;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
     .sample-review-text {
       color: #d8d8d8;
       font-style: italic;
+      font-size: 15px; /* Fixed font size */
       margin-bottom: 5px;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      font-family: libero, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
-    
+
     .sample-review-by {
       font-size: 13px;
       color: #a5a5a5;
       text-align: right;
-      font-weight: 600;
+      font-style: italic;
+            overflow-wrap: break-word;
+
+      word-break: break-word;
+      max-width: 100%;
+      font-family: libero, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
   </style>
@@ -520,6 +607,26 @@
       background: rgba(0,0,0,0.8);
     }
 
+.references-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+    .reference-link {
+      color:#b45309;
+      text-decoration: none;
+      font-weight: 300;
+      font-family: var(--ui-sans);
+      word-break: break-word;
+    }
+    .reference-link:hover {
+      text-decoration: underline;
+      opacity: 0.85;
+    }
+      
+
+
 .modalAuthorBio {
 text-align: justify;    }
 
@@ -546,8 +653,6 @@ text-align: justify;    }
         display: none; /* Hide page fold shadow on mobile */
       }
 
-
-      
     }
   </style>
 </head>
@@ -564,7 +669,7 @@ text-align: justify;    }
       <img src="./image/books.svg" class="logo"/> 
       <p class="disclaimer">
         Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.<br>
-        Email me at tmdanao@up.edu.ph
+        Email me at tmdanao@up.edu.ph. This website was built with the help of AI.
       </p>
 
     <!-- controls bar (restructured) -->
@@ -634,6 +739,8 @@ text-align: justify;    }
                     <div class="section-label">About the Author</div>
                               <p id="modalAuthorBio"></p>
 
+              <div id="referencesLabel" class="section-label">References</div>
+          <div id="modalReferences" class="references-list"></div>
 
         </div>
       </div>
@@ -653,76 +760,361 @@ text-align: justify;    }
         "Title": "Dekada '70",
         "Author": "Lualhati Bautista",
         "Author Photo": "image6/bautista.jpg", 
-        "AuthorBio": "Lualhati Bautista is a renowned Filipino author and activist known for her poignant novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal critic of authoritarianism and a champion of particularly novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal",
-        "Authorlink": "https://en.wikipedia.org/wiki/Lualhati_Bautista",
+        "AuthorBio": "Lualhati Bautista (1945–2023) was a renowned Filipino novelist, writer, and activist, widely regarded as one of the most influential female voices in contemporary Philippine literature. Her works often explore social and political issues, reflecting her commitment to liberal ideals and criticism of authoritarianism. Among her most celebrated novels are Dekada ’70, Bata, Bata, Pa’no Ka Ginawa?, and GAPÔ, which continue to resonate for their insightful portrayal of Filipino society, women’s struggles, and historical realities.",
+        "Authorlink": "https://www.goodreads.com/author/show/673490.Lualhati_Bautista",
         "Sample Reviews": [
-          { "text": "This book is such a good read amen!", "by": "Juan Dela Cruz" },
-          { "text": "A powerful portrayal of family life during Martial Law.", "by": "Maria Santos" },
+          { "text": "“Anu't anuman, dito naganap ang mga unang pangamba ko, na ang anak ko'y hindi na isang estudyante sa loob ng kampus...unti-unti'y nagiging bahagi na rin siya ng mas malawak at balisang lipunan, ng mga bagong tao ng ngayon na siyang magpapasiya ng bukas: isang malinaw na mata at tainga at tinig ng kanyang panahon.", "by": "Lualhati Bautista" },
         ],
         "Image": "image6/dekada.jpg",
-        "Publishing Date": 1970,
-        "Genre": ["Politics"],
+        "Publishing Date": 1983,
+        "Genre": ["Politics","Classics","Historical Fiction",],
         "Details": "Dekada ’70 by Lualhati Bautista is a powerful Filipino novel that portrays the personal and political awakening of a middle-class family during the turbulent years leading up to and throughout the 1970s. Centered on Amanda Bartolome, the story explores how national unrest, censorship, and state control seep into the private sphere of the home. Through a feminist lens, Bautista examines motherhood, marriage, and womanhood in a society shaped by patriarchy and authoritarian rule, showing how ordinary lives are reshaped by extraordinary times.",
         "Synopsis": "Set in the years before and during Martial Law in the Philippines, Dekada ’70 follows the Bartolome family as they navigate political tension and social change. Amanda Bartolome, initially a traditional housewife devoted to her husband Julian and their five sons, begins to question her role as her children grow increasingly involved in political movements. Each son represents a different response to the era—ranging from activism and idealism to fear, conformity, and resistance—while the family faces arrests, disappearances, and ideological conflict. As the nation grows more repressive, Amanda undergoes her own transformation, gradually asserting her voice and identity beyond the expectations placed upon her. The novel ultimately presents a deeply human account of how political oppression fractures families while also igniting personal awakening and courage.",
-        "Awards": ["Palanca Award for Novel", "Palanca Award for Literature", "Palanca Award for Fish"],
+        "Awards": ["1983 Palanca Award Grand Prize", "Movie Adapted",],
         "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "https://www.goodreads.com/book/show/1431557.Dekada_70?from_search=true&from_srp=true&qid=8vEWlLprGD&rank=1" }
-        },
+        "ratings": {   
+  "Goodreads": { "score": "4.28/5", "link": "..." }
+},
+"References": [
+  "https://bookbed.org/2023/03/24/why-filipinos-should-read-dekada-70-by-lualhati-bautista/",
+  "https://en.wikipedia.org/wiki/Dekada_%2770_(novel)"
+],
         },
         {
         "Title": "Noli Me Tangere",
         "Author": "José Rizal",
         "Author Photo": "image6/jose.jpg",
+        "AuthorBio": "José Rizal (1861–1896) was a Filipino nationalist, novelist, and reformist whose writings inspired the Philippine movement against Spanish colonial rule. A polymath educated in Europe, he used his novels Noli Me Tangere and El Filibusterismo to expose social injustice, clerical abuse, and political corruption in colonial society. Though he advocated peaceful reform rather than revolution, his ideas awakened Filipino national consciousness. Rizal was executed by the Spanish government in 1896, and his martyrdom cemented his legacy as the national hero of the Philippines.",
+"Authorlink": "https://philippineculturaleducation.com.ph/rizal-jose/",
+        "Sample Reviews": [
+          { "text": "“I have to believe much in God because I have lost my faith in man.”", "by": "José Rizal, Noli me Tangere" },
+          { "text": "“Cowardice rightly understood begins with selfishness and ends with shame.”", "by": "José Rizal, Noli me Tangere" },
+
+        ],      
         "Image": "image6/noli.jpg",
         "Publishing Date": 1887,
-        "Genre": ["Politics"],
-        "Details": "",
-        "Synopsis": "",
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "mpa_rating": "SPG",
+        "Genre": ["Classic","Historical","Politics"],
+        "Details": "Written in Spanish and published in 1887, Noli Me Tangere is José Rizal’s powerful critique of Spanish colonial rule and clerical abuse in the Philippines. The novel uses satire and symbolism to expose social injustice, corruption, and the struggle between reform and revolution. Through its memorable characters—such as Maria Clara, Sisa, and Elias—Rizal portrays the deep suffering caused by oppression while raising questions about whether meaningful change can be achieved through peaceful means or requires radical action. The book became a foundational text of Philippine nationalism and played a crucial role in awakening political consciousness among Filipinos.",
+        "Synopsis": "Noli Me Tangere follows Crisostomo Ibarra, a young Filipino who returns to the Philippines after studying in Europe, hoping to introduce peaceful reforms for his countrymen. He is met with resistance from abusive Spanish friars and a corrupt colonial government, particularly Padre Damaso and Padre Salvi, who sabotage his plans and falsely accuse him of rebellion. Betrayed and forced to flee, Ibarra escapes with the help of Elias, whose tragic fate contrasts Ibarra’s belief in peaceful change. The novel ends with suffering and loss, symbolizing the beauty and misery of the Philippines under Spanish rule.",
+        "Book Review": "https://www.youtube.com/watch?v=ggt9zLeb5Q8",
+        "Awards": ["National Cultural Treasure", "Social Critique and Resistance ",],
         "ratings": {
-          "Goodreads": { "score": "3/5", "link": "https://goodreads.com" }
+          "Goodreads": { "score": "4.22/5", "link": "https://www.goodreads.com/book/show/418285.Noli_Me_T_ngere" }
         },
-        },
-        {
-        "Title": "Dekada '70",
-        "Author": "Lualhati Bautista",
-        "Author Photo": "image6/lualhati.jpg",
-        "Image": "image6/dekada.jpg",
-        "Publishing Date": 1970,
-        "Genre": ["Politics"],
-        "Details": "",
-        "Synopsis": "",
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "mpa_rating": "SPG",
-        "ratings": {
-          "Goodreads": { "score": "3/5", "link": "https://goodreads.com" }
-        },
+        "References": [
+          "https://www.penguinrandomhouse.com/books/291131/noli-me-tangere-touch-me-not-by-jose-rizal/9780143039693/readers-guide/",
+          "https://www.britannica.com/topic/Noli-me-tangere-novel-by-Rizal"
+        ]
         },
         {
-        "Title": "Dekada '70",
-        "Author": "Lualhati Bautista",
-        "Author Photo": "image6/bautista.jpg", 
-        "AuthorBio": "Lualhati Bautista is a renowned Filipino author and activist known for her poignant novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal critic of authoritarianism and a champion of particularly novels that explore social and political issues in the Philippines. Born in 1945, Bautista has been a vocal",
-        "Authorlink": "https://en.wikipedia.org/wiki/Lualhati_Bautista",
+        "Title": "The Woman Who Had Two Navels",
+        "Author": "Nick Joaquin",
+        "Author Photo": "image6/nick.jpg", 
+        "AuthorBio": "<p>Nick Joaquin (1917–2004) was a prominent Filipino writer and journalist, widely regarded as one of the most important figures in Philippine literature. Writing primarily in English, he distinguished himself from earlier national figures such as José Rizal and Claro M. Recto, whose works were written in Spanish. Joaquin also wrote under the pen name Quijano de Manila and was later honored as a National Artist of the Philippines for Literature.</p><p>Before his literary career, Joaquin studied as a seminarian in Hong Kong, an experience that deeply influenced his worldview. He eventually decided that writing, rather than the priesthood, was his way of serving both God and society. His works consistently emphasize the importance of history, Catholicism, and Spanish colonial heritage, reflecting his belief that understanding the past is essential to addressing modern social problems. He viewed himself as a “cultural apostle,” using literature to revive national consciousness and preserve the country’s spiritual traditions.</p><p>Upon returning to the Philippines, Joaquin joined the Philippines Free Press, where he gained recognition for his poetry, fiction, plays, and bold journalistic style. His essays as Quijano de Manila elevated Philippine journalism by combining intellectual depth with social critique. He was also a devoted admirer of José Rizal, writing extensively about the national hero and translating Rizal’s final poem, Mi Último Adiós, into English.</p><p>Joaquin represented the Philippines internationally and served in government cultural institutions, including the Motion Pictures Commission. After being named National Artist, he actively defended intellectual freedom, notably helping secure the release of an imprisoned writer. His criticism of authoritarian rule, however, led to his marginalization during the Marcos regime.</p><p>Nick Joaquin passed away in 2004 due to cardiac arrest. Until his death, he remained active in journalism and publishing, serving as editor of Philippine Graphic and contributing columns to major newspapers. His legacy endures as a writer who shaped Filipino identity through history, culture, and literature.</p>",
+        "Authorlink": "https://en.wikipedia.org/wiki/Nick_Joaquin",
         "Sample Reviews": [
-          { "text": "This book is such a good read amen!", "by": "Juan Dela Cruz" },
-          { "text": "A powerful portrayal of family life during Martial Law.", "by": "Maria Santos" },
+          { "text": "“[T]hey could never go home now, thought Pepe Monson, more vividly remembering that house he had never seen (as he remarked to the woman standing beside him at the window) than any of the houses he had actually lived in.", "by": "Narrator, p. 180" },
         ],
-        "Image": "image6/dekada.jpg",
-        "Publishing Date": 1970,
-        "Genre": ["Politics"],
-        "Details": "Dekada ’70 by Lualhati Bautista is a powerful Filipino novel that portrays the personal and political awakening of a middle-class family during the turbulent years leading up to and throughout the 1970s. Centered on Amanda Bartolome, the story explores how national unrest, censorship, and state control seep into the private sphere of the home. Through a feminist lens, Bautista examines motherhood, marriage, and womanhood in a society shaped by patriarchy and authoritarian rule, showing how ordinary lives are reshaped by extraordinary times.",
-        "Synopsis": "Set in the years before and during Martial Law in the Philippines, Dekada ’70 follows the Bartolome family as they navigate political tension and social change. Amanda Bartolome, initially a traditional housewife devoted to her husband Julian and their five sons, begins to question her role as her children grow increasingly involved in political movements. Each son represents a different response to the era—ranging from activism and idealism to fear, conformity, and resistance—while the family faces arrests, disappearances, and ideological conflict. As the nation grows more repressive, Amanda undergoes her own transformation, gradually asserting her voice and identity beyond the expectations placed upon her. The novel ultimately presents a deeply human account of how political oppression fractures families while also igniting personal awakening and courage.",
-        "Awards": ["Palanca Award for Novel", "Palanca Award for Literature", "Palanca Award for Fish"],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Image": "image6/navel.jpg",
+        "Publishing Date": 1961,
+        "Genre": ["Classics","Fiction","Magical Realism",],
+        "Details": "The Woman Who Had Two Navels is a novel that explores the psychological, social, and historical complexities of postwar Philippine society. The story centers on Manuela “Manang” Gonzaga, a woman who believes she has two navels, a physical anomaly that symbolizes the fragmented identity of the Filipino people after colonialism and war. Through Manuela’s relationships—with her family, lovers, and friends—the novel examines the tensions between tradition and modernity, the lingering effects of Spanish and American colonial influence, and the struggle for personal and national self-understanding. Other characters, including intellectuals and artists, reflect various responses to the nation’s political and cultural challenges. The novel blends psychological insight, historical reflection, and social critique, portraying how personal experiences mirror larger societal issues. It is considered one of Joaquin’s masterpieces and a landmark in Philippine literature, especially for its exploration of identity, memory, and the legacies of colonialism.",
+        "Synopsis": "The Woman Who Had Two Navels tells the story of Manuela “Manang” Gonzaga, a wealthy Filipino woman in postwar Manila who believes she has two navels. This unusual belief reflects her sense of being split between past and present, tradition and modernity. Manuela’s life is shaped by her search for identity and her desire to understand her family’s history, including her parents’ secrets. As she interacts with friends, lovers, and intellectuals—such as her suitor Joey Samson and her confidante Connie Escobar—Manuela confronts issues of love, betrayal, and societal change. The novel interweaves her personal story with the social and political upheavals of the Philippines after World War II, exploring how private lives are influenced by history and colonial legacy. In the end, Manuela’s journey is both psychological and symbolic, portraying the struggles of individuals trying to reconcile their personal desires with the forces of a transforming society",
+        "Awards": ["First Harry Stonehill Award",],
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "https://www.goodreads.com/book/show/1431557.Dekada_70?from_search=true&from_srp=true&qid=8vEWlLprGD&rank=1" }
+          "Goodreads": { "score": "3.94/5", "link": "https://www.goodreads.com/book/show/1432399.The_Woman_Who_Had_Two_Navels", },
         },
+        "References": [
+          "https://en.wikipedia.org/wiki/The_Woman_Who_Had_Two_Navels",
+          "https://www.britannica.com/biography/Nick-Joaquin"]
       },
-        {
-        "Title": "",
+      {
+        "Title": "Po-on",
+        "Author": "F. Sionil Jose",
+        "Author Photo": "image6/sionil.webp", 
+"AuthorBio": "<p>Francisco Sionil José (1924–2022) was a celebrated Filipino writer and National Artist for Literature. His novels and short stories, written in English and translated into 28 languages, explore class struggles, colonialism, and social injustice in Philippine society.</p><p>He founded the Philippine chapter of PEN International and ran Solidaridad Bookshop in Manila, a hub for writers and readers. His Rosales Saga, a five-part novel series, is among his most notable works, drawing on the life and writings of José Rizal.</p><p>José was a passionate advocate for social justice and cultural values, often critiquing elite society. He remained active in journalism and publishing until his death, leaving a legacy as one of the most influential Filipino authors.</p>",
+        "Authorlink": "https://up.edu.ph/celebrating-the-life-of-national-artist-f-sionil-jose-97/",
+        "Sample Reviews": [
+          { "text": "“We will love her, protect her, all of us--Bisaya, Tagalog, Ilokano, so many islands, so many tribes--because if we act as one, we will be strong and so will she be. Alone you will fall prey to every marauder that passes by. I am not asking that you love Filipinas. I am asking that you do what is right, what is duty...","by": "The Cripple" },
+        ],
+        "Image": "image6/po.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Historical Fiction","Classics",],
+"Details": "<p>Po-on is the first novel in the chronological order of F. Sionil José’s Rosales Saga, set in Rosales, Pangasinan. Although written last, it begins the saga, which includes Po-on, Tree, My Brother, My Executioner, The Pretenders, and Mass.</p><p>The story follows the Salvador family, later renamed Samson, as they flee Spanish oppression and settle in Rosales under the protection of Don Jacinto, a landowner sympathetic to peasants.</p><p>Through Istak Samson’s journey, the novel explores the social realities of the late 1800s Philippines, highlighting class inequality, colonial rule, and the transition from Spanish to American occupation.</p>",        "Synopsis": "<p>The events in Po-on take place from the 1880s to the early 1900s, focusing on an Ilocano family that leaves their hometown in northern Luzon to survive in southern Pangasinan and escape Spanish oppression.</p><p>The story centers on Eustaquio “Istak” Salvador, a learned Ilocano fluent in Spanish and Latin, trained by the parish priest Jose Leon. Istak aspired to become a priest and was skilled in traditional medicine, but his racial origins prevented him from entering the clergy.</p><p>Set against the backdrop of the Philippines on the brink of revolution following the execution of the Gomburza priests in 1872, the novel portrays societal tensions and the looming struggle against Spanish colonial rule.</p><p>Istak grapples with his personal search for meaning, moral principles, and identity while witnessing historical events, including the anticipated assistance of Americans in ending Spanish domination.</p><p>Tasked with delivering a message to President Emilio Aguinaldo, Istak dies heroically at the Battle of Tirad Pass, unable to complete his mission, symbolizing both personal sacrifice and the broader struggles of the Filipino people during this turbulent era.</p>",
+        "Awards": ["Parts of Rosales Saga", "Widely Studies",],
+        "Book Review": "https://www.youtube.com/watch?v=yoALxB-LSug",
+        "ratings": {
+          "Goodreads": { "score": "4.16/5", "link": "https://www.goodreads.com/book/show/449164.Dusk", },
+        },
+         "References": [
+          "https://www.philstar.com/lifestyle/sunday-life/2005/07/24/287998/145po-on146-filipino146s-memory-mirror-and-window",
+          "https://www.facebook.com/american.school.naga/posts/po-on-written-by-f-sionil-jos%C3%A9-is-a-powerful-novel-that-takes-us-back-to-the-lat/1082594970544659/"]
+      },
+      {
+        "Title": "Banaag at Sikat",
+        "Author": "Lope K. Santos",
+        "Author Photo": "image6/lope.jpg", 
+"AuthorBio": "Lope K. Santos was born on September 25, 1879, in Pasig, Province of Manila (now Metro Manila), to Ladislao Santos and Victorina Canseco, and grew up in Pandacan. His father was imprisoned during the Philippine Revolution for possessing copies of José Rizal’s Noli Me Tángere and Ang Kalayaan. Santos studied at the Escuela Normal Superior de Maestros and later at Colegio Filipino, before joining the revolutionaries during the 1896 Philippine Revolution.<br><br>At his mother’s request, he married Simeona Salazar on February 10, 1900, and they had three children: Lakambini, Luwalhati, and Makaaraw. He pursued law at Academia de la Jurisprudencia and Escuela de Derecho de Manila, earning a Bachelor of Arts in 1912.<br><br>Around 1900, Santos began publishing the newspaper Ang Kaliwanagan (The Illumination), and became involved in labor activism, absorbing and renaming José Ma. Dominador Gómez’s labor group into the Unión del Trabajo de Filipinas, which lasted until 1907. From 1903 to 1906, Santos serialized and completed his groundbreaking novel Banaag at Sikat, regarded as the first socialist-oriented book in the Philippines, advocating labor reforms and inspiring future movements such as the 1932 Socialist Party assembly and the 1946 Hukbalahap meeting.<br><br>Santos was also a poetic debater, mastering the traditional dupluhan form, and founded the weekly magazine Sampaguita. In the 1910s, he promoted a national language through lectures and academic leadership. Politically, he served as governor of Rizal (1910) and Nueva Vizcaya (1918–1920), later becoming a senator representing provinces with non-Christian majorities. He authored Act No. 2946, establishing Bonifacio Day on November 30.<br><br>In 1940, Santos published Balarila ng Wikang Pambansa, the first grammar of the national language, and in 1941, he was appointed Director of the Surian ng Wikang Pambansa by President Manuel L. Quezon, serving until 1946. He also assisted in translating the 1935 Constitution for UNESCO and the inaugural speeches of Presidents José P. Laurel and Manuel A. Roxas.<br><br>Santos faced liver complications in the early 1960s and passed away on May 1, 1963, leaving a legacy as a novelist, linguist, labor advocate, and nation-builder.",
+        "Authorlink": "https://mainlib.upd.edu.ph/meet-the-father-of-filipino-grammar/",
+        "Sample Reviews": [
+          { "text": "“Ang katumbás sa katuturán ng katá ay akó at ikáw, ang katumbás ng kitá ay ikaw ay aking, o ko ikáw, at ang sa kanitá ay akin at iyó, magkasama o pisán.”", "by": "Lope K. Santos, Balarila ng Wikang Pambansa" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/banaag.jpg",
+        "Publishing Date": 1906,
+        "Genre": ["Historical Fiction","Political"],
+        "Details": "Banaag at Sikat by Lope K. Santos, published in 1906, is considered the first Tagalog novel of social realism and is often hailed as Asia’s first proletarian novel. The work blends romance with political and social commentary, highlighting issues of class struggle, inequality, and colonial influence in early 20th-century Philippine society. Through the experiences of its characters, the novel explores competing ideologies—socialism and anarchism—and emphasizes the role of education, justice, and social reform in creating a fairer society.",
+        "Synopsis": "The story centers on Delfin, a poor man deeply in love with Meni, the daughter of a wealthy capitalist. Delfin is a socialist who advocates for citizens’ rights in business and property, believing that societal change can be achieved through education. His friend Felipe, an anarchist and son of a landlord, rejects inherited wealth and calls for factories and land to be owned by those who work and till them. Set during the early days of American colonial rule, the novel portrays the tension between the privileged and the oppressed, exploring themes of love, social justice, and hope for equality. Through the struggles and ideals of Delfin and Felipe, Banaag at Sikat presents a vision of a society where opportunities are fair and horizons are open to all.",
+        "Awards": ["Foundational Work in Philippine Literature",],
+        "Book Review": "https://www.youtube.com/watch?v=6ZD-pCFDcE4",
+        "ratings": {
+          "Goodreads": { "score": "4.02/5", "link": "https://www.goodreads.com/book/show/8366834-banaag-at-sikat", },
+        },
+         "References": [
+          "https://mainlib.upd.edu.ph/meet-the-father-of-filipino-grammar/",
+          "https://philippineculturaleducation.com.ph/santos-lope-k/",
+        "https://www.goodreads.com/author/quotes/1378574.Lope_K_Santos"]
+      },
+      {
+        "Title": "Ilustrado ",
+        "Author": "Miguel Syjuco",
+        "Author Photo": "image6/miguel.jpg", 
+"AuthorBio": "Miguel Syjuco (b. 1976) is a contemporary Filipino writer best known for his debut novel Ilustrado, which won the 2008 Man Asian Literary Prize and the Palanca Grand Prize. Ilustrado has been translated internationally and was named a New York Times Notable Book. Syjuco holds degrees from Ateneo de Manila, Columbia University, and the University of Adelaide. He is also a journalist, educator, and advocate, with work exploring politics, history, and Filipino identity. His recent novel, I Was the President’s Mistress!!, was published in 2022.",
+       "Authorlink": "https://en.wikipedia.org/wiki/Miguel_Syjuco",
+        "Sample Reviews": [
+          { "text": "“It kills me how these days everyone has clinical justification for their strangeness.”", "by": "Miguel Syjuco, Ilustrado" },
+          { "text": "“Angst is not the human condition, it’s the purgatory between what we have and what we want but can’t get.”", "by": "Miguel Syjuco, Ilustrado" },
+        ],
+        "Image": "image6/ilustrado.jpg",
+        "Publishing Date": 2008,
+        "Genre": ["Mystery","Fiction","Historical Fiction",],
+        "Details": "Ilustrado by Miguel Syjuco is a celebrated novel that blends mystery, history, and social commentary. The story follows Miguel, who investigates the death of his mentor, writer Crispin Salvador, and the disappearance of Salvador’s final manuscript. Through fragments of writings, interviews, and reflections, the novel explores Philippine society, identity, and the search for truth.",
+        "Synopsis": "After the mysterious death of writer Crispin Salvador in New York, his student Miguel returns to Manila to uncover the truth and find Salvador’s missing manuscript. The novel weaves together different texts and voices, exploring Filipino identity, history, and the complexities of searching for meaning.",
+         "Awards": ["Man Asian Literary Prize (2008)",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.36/5", "link": "https://www.goodreads.com/book/show/6905480-ilustrado", },
+        },
+         "References": [
+          "https://bythefirelight.com/2010/08/02/ilustrado-by-miguel-syjuco-a-review/",
+          ]
+      },
+      {
+        "Title": "Smaller and Smaller Circles",
+        "Author": "F.H. Bacatan",
+        "Author Photo": "image6/fh.jpg", 
+        "AuthorBio": "F. H. Batacan (Maria Felisa H. Batacan) is a Filipino journalist and acclaimed crime writer best known for her debut novel, Smaller and Smaller Circles. The book, considered the first major Filipino crime novel, won the Palanca Grand Prize and several other awards. Batacan holds a master’s degree from UP Diliman and has worked in intelligence and journalism. Her writing has made her a leading figure in Philippine crime fiction.",
+        "Sample Reviews": [
+          { "text": "“We are powerless when we wait for other people to act on our behalf.”", "by": "― F.H. Batacan, Smaller and Smaller Circles" },
+          { "text": "“My life can't just be interesting. It has to be meaningful.”", "by": "― F.H. Batacan, Smaller and Smaller Circles" },
+        ],
+        "Image": "image6/small.jpg",
+        "Publishing Date": 2002,
+        "Genre": ["Crime","Detective","Mystery",],
+        "Details": "Smaller and Smaller Circles is a mystery novel by Filipino author F. H. Batacan, widely recognized as the first major Filipino crime novel. It tells the story of two Jesuit priests who investigate a series of murders in Manila, blending detective fiction with social commentary on the city’s underprivileged communities. The novel won the Carlos Palanca Grand Prize for the English Novel in 1999, the National Book Award in 2002, and the Madrigal-Gonzalez Award in 2003. Originally published in 2002 by the University of the Philippines Press, it was notable for being reprinted multiple times—a rare feat for Filipino English-language fiction—with a total of 6,000 copies. In 2017, it was adapted into a film directed by Raya Martin, bringing the gripping story of crime and justice on the streets of Manila to the big screen.",
+        "Synopsis": "The novel is set in 1990s Manila and follows two Jesuit priests, Father Gus Saenz and Father Jerome Lucero, who are forensic investigators trying to solve a string of gruesome murders of young boys from poor neighborhoods. As they dig deeper, they confront not only the cunning serial killer but also the indifference and corruption of law enforcement and society at large. The story combines elements of crime investigation, mystery, and social critique, highlighting issues such as poverty, systemic injustice, and moral decay. Through their meticulous investigation and use of emerging forensic science, the priests race against time to catch the killer, all while reflecting on ethics, faith, and the social realities of the Philippines.",
+        "Awards": ["Grand Prize for the English Novel at the Philippine Centennial Literary Prize (1999).", "Adapted into a feature film in 2017",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.11/5", "link": "https://www.goodreads.com/book/show/1431558.Smaller_and_Smaller_Circles", },
+        },
+          "References": [
+          "https://en.wikipedia.org/wiki/F._H._Batacan",
+          "https://sohopress.com/books/smaller-and-smaller-circles/"]
+        },
+{
+        "Title": "ABNKKBSNPLAko",
+        "Author": "Bob Ong",
+        "Author Photo": "image6/bob2.jpg", 
+"AuthorBio": "Bob Ong is a contemporary Filipino author known for his humorous and reflective writing on Filipino life and culture. Writing under a pseudonym, he remains anonymous, never revealing his true identity. He began his career in the late 1990s with a satirical website called Bobong Pinoy, which won a people’s choice humor award and shaped his conversational style. In 2001, he published his first book, ABNKKBSNPLAko?!, which became a bestseller and launched a prolific career spanning humor, social commentary, and semi-autobiographical works, many of which have sold widely and inspired film adaptations.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Bob_Ong",
+        "Sample Reviews": [
+          { "text": "“karapatan kong madapa at bumangon sa buhay nang walang tatawa, magagalit, magtatanong, o magbibilang kung ilang beses na 'kong nagkamali at ilang ulit ako dapat bumawi”", "by": "Bob Ong, ABNKKBSNPLAKo?!" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/basa.jpg",
+        "Publishing Date": 2001,
+        "Genre": ["Humor","Comedy","Nonfiction"],
+        "Details": "ABNKKBSNPLAko?! was written by Bob Ong and published in 2001 by Visual Print Enterprises. Written primarily in Filipino with a mix of English, the book is a humorous autobiographical memoir that blends comedy, social commentary, and personal reflection. It is known for its casual, conversational style and use of satire to critique the Philippine education system, cultural norms, and societal expectations. The book became a bestseller and is widely read by students and young adults for its relatable portrayal of school life, family, and growing up in the Philippines, establishing Bob Ong as a significant voice in contemporary Filipino literature.",
+       "Synopsis":"ABNKKBSNPLAko?! is a humorous autobiographical memoir by Bob Ong that traces the author’s life from childhood to adulthood through a series of funny and relatable anecdotes. It recounts his experiences in Philippine public schools, struggles with academics, teenage crushes, and frustrations with the education system, from grade school to college. Told in a casual and conversational tone, the book blends comedy with nostalgia while offering a sharp critique of rote learning, societal expectations, and everyday Filipino life, making it both an entertaining coming-of-age story and a reflection on national culture.",
+        "Awards": ["Adapted to Film", "Bestseller",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.21/5", "link": "https://www.goodreads.com/book/show/1433337.ABNKKBSNPLAKo_", },
+        },
+          "References": [
+          "https://en.wikipedia.org/wiki/ABNKKBSNPLAko%3F!",
+          ""]
+        },
+         {
+        "Title": "Para kay B",
+        "Author": "Ricky Lee",
+        "Author Photo": "image6/ricky.jpg", 
+        "AuthorBio": "Ricky Lee (full name Ricardo “Ricky” Lee) is one of the most influential Filipino writers of his generation. He’s a National Artist for Film and Broadcast Arts, a prize-winning screenwriter, novelist, playwright, journalist, and teacher. He emerged as a major figure in Philippine cinema in the late 1970s and has written hundreds of film scripts that include classics like Himala, Jose Rizal, Muro-Ami, Anak, and more. Beyond film, he has published novels, short stories, essays, stage plays, and a scriptwriting manual that is widely used in communication courses. Over his career, he has received numerous awards, conducted free writing workshops since the 1980s, and helped shape generations of Filipino storytellers",
+        "Authorlink": "https://ncca.gov.ph/about-culture-and-arts/culture-profile/national-artists-of-the-philippines/ricky-lee-2/",
+        "Sample Reviews": [
+          { "text": "“I am a messy writer. I like to cross boundaries. I hate being boxed. Linear narrative seldom attracts me. The challenge always is how to find my bearings when I get lost. In all these, Karl serves as a compass.”", "by": "Ricky Lee" }
+        ],
+        "Image": "image6/b.webp",
+        "Publishing Date": 2008,
+        "Genre": [""],
+        "Details": "Para Kay B (o Kung Paano Dinevastate ng Pag-ibig ang 4 out of 5 sa Atin) is the first novel by acclaimed Filipino writer Ricky Lee, published in 2008. It’s a literary work that probes the messy, unpredictable nature of love by weaving together five different love stories told through the eyes of a frustrated writer named Lucas. At its core, the book explores a theory of love—that only one in five people who fall in love will find happiness—using five women’s experiences to reflect on heartbreak, longing, self-discovery, and the emotional risks of loving deeply. The novel isn’t just about romantic relationships; it also reflects on the act of storytelling itself and the insecurities of the writer who tries to understand life through words",
+"Synopsis": "Lucas, a writer, believes that only one in five people who fall in love will find happiness. To prove his theory—and perhaps win back his lost love, Bessie—he writes about five women whose lives are shaped by love in different ways.<br><br>Each chapter follows a different woman: Irene, haunted by a broken promise; Sandra, who faces forbidden feelings; Erica, discovering love for the first time; Ester, navigating same-sex love; and Bessie, the source of Lucas’s longing. Through their stories, Lucas confronts his own fears and the complexities of love, loss, and healing.",
+        "Awards": ["Best Seller", "Theater Adapted",],
+        "Book Review": "https://www.youtube.com/watch?v=uNtEpxrTrB0",
+        "ratings": {
+          "Goodreads": { "score": "4.03/5", "link": "https://www.goodreads.com/book/show/6139137-para-kay-b", },
+                },
+          "References": [
+          "https://www.gmanetwork.com/news/lifestyle/artandculture/940788/ricky-lee-para-kay-b-stage-adaptation-review/story/",
+          "https://karlcastro.com/work/para-kay-b/"]
+      },
+      {
+        "Title": "Ligo Na Ü, Lapit Na Me",
+        "Author": "Eros Atalia",
+        "Author Photo": "image6/eros.jpg", 
+"AuthorBio": "<p>Eros S. Atalia is a Filipino author and educator, known for his contemporary novels and poetry. He graduated from Philippine Normal University in 1996 with a degree in Secondary Education, majoring in Filipino, and received the Balagtas Award.<br><br>Atalia has won national prizes for his poetry and essays, contributed to campus and national publications, and served as an editor and creative consultant for various projects. His works are recognized for their wit and insight into Filipino life.</p>",
+        "Sample Reviews": [
+          { "text": "“Kumikirot ang tyan? Kumikirot ang ulo? Correlation? I therefore conclude na ang utak ay parang tyan, sumasakit kapag walang laman.”", "by": "Eros S. Atalia, Ligo Na U, Lapit Na Me" },
+        ],
+        "Image": "image6/ligo.jpg",
+        "Publishing Date": 2009,
+        "Genre": ["Romance","Comedy"],
+        "Details": "Ligo Na U, Lapit Na Me is a contemporary Filipino novel written by Eros S. Atalia and published in 2009 by Visprint in the Philippines. The book is written in Filipino and has approximately 181 pages, blending romance, coming-of-age, and contemporary fiction. It explores themes such as youth relationships, sexual exploration, love and heartbreak, intimacy, and the challenges faced by young adults in modern Filipino society. The novel gained significant popularity and was adapted into a film in 2011, which was showcased at the Cinemalaya Independent Film Festival.",
+        "Synopsis": "Karl “Intoy” Villalobos, a third-year state university student, meets Jenny, an attractive and wealthy transferee. They enter a friends-with-benefits relationship, spending time together and being intimate without emotional attachment. Over time, Intoy develops feelings, but Jenny reveals she is pregnant—though he isn’t the father—and cuts off contact. Heartbroken, Intoy struggles to move on, trying to forget her before eventually accepting that he will likely never see her again.",
+        "Awards": ["Adapted into film in 2011",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.86/5", "link": "https://www.goodreads.com/book/show/7623135-ligo-na-u-lapit-na-me?from_search=true&from_srp=true&qid=fwQf6u3aX3&rank=1", },
+        },
+          "References": [
+          "https://en.wikipedia.org/wiki/Ligo_Na_%C3%9C,_Lapit_Na_Me",
+          ""]
+      },
+      {
+        "Title": "The Last Time I Saw Mother ",
+        "Author": "Arlene J. Chai",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "Born in Manila in 1955, Arlene J. Chai is a Filipino-Chinese author known for blending personal family dramas with the political history of the Philippines. After earning her degree from Maryknoll College, she spent years as an advertising copywriter, eventually finding a mentor in novelist Bryce Courtenay. <p> In 1982, Chai moved to Sydney, Australia, to escape political unrest. During a year-long break from her career, she wrote her celebrated debut novel, The Last Time I Saw Mother (1995). Her sophisticated storytelling and focus on historical struggles have led many critics to compare her work to that of Chilean writer Isabel Allende.",
+        "Authorlink": "https://www.goodreads.com/author/show/214289.Arlene_J_Chai",
+        "Sample Reviews": [
+          { "text": "For the past defines us as much as the present. By never knowing my past, I was never sure of who I was. Because mine was missing, I never felt whole.", "by": "Caridad" },
+        ],
+        "Image": "image6/mother.jpg",
+        "Publishing Date": 1996,
+        "Genre": ["Fiction","Historical Fiction","Contemporary"],
+        "Details": "Published in 1995, The Last Time I Saw Mother is the acclaimed debut novel by Filipino-Australian author Arlene J. Chai. The book is celebrated for its intricate \"story-within-a-story\" structure, weaving together the voices of four different women to explore a singular family secret. It is a historical fiction piece that provides a deep look into the intersection of Spanish, Chinese, and Filipino cultures, particularly how they were reshaped by the trauma of the Japanese occupation during World War II.",
+        "Synopsis": "The story begins when Caridad, a Filipino woman living in Sydney, receives a sudden and mysterious summons from her mother, Thelma, in Manila. Upon her arrival, Thelma drops a bombshell: she is not Caridad's biological mother. To uncover her true identity, Caridad must listen to the intersecting testimonies of Thelma, her \"Aunt\" Emma, and her cousin Ligaya. Their accounts reveal a history of sacrifice and hidden parentage born out of the desperation of the war years, ultimately showing Caridad that her life was built on a well-intentioned lie meant to protect her from the harsh realities of their past.",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "3.93/5", "link": "https://www.goodreads.com/book/show/375883.The_Last_Time_I_Saw_Mother", },
+          },
+          "References": [
+          "https://www.librarything.com/work/141064/t/The-Last-Time-I-Saw-Mother#:~:text=Written%20in%20the%20first%20person,her%20strongest%20suit%3A%20historical%20backgrounds.",
+          "https://www.penguinrandomhouse.com/books/25779/the-last-time-i-saw-mother-by-arlene-j-chai/"]
+      },
+      {
+        "Title": "Stupid is Forever ",
+        "Author": "Miriam Defensor-Santiago",
+        "Author Photo": "image6/meriam.jpg", 
+        "AuthorBio": "Senator Miriam Defensor Santiago was a globally renowned legal expert who earned her Doctor of Juridical Science in the United States. She was a beacon of integrity in a political landscape often clouded by corruption, earning the prestigious Ramon Magsaysay Award—Asia’s version of the Nobel Prize—for her fearless efforts in purging government agencies of graft. Her influence extended worldwide, leading The Australian to name her one of the '100 Most Powerful Women in the World' <p> Historically, she broke barriers as the first Filipino and Asian from a developing nation elected as a judge for the International Criminal Court (ICC). Though she was forced to step down due to her health, she faced her battle with stage 4 lung cancer with the same legendary wit and courage she applied to politics. Despite being diagnosed in 2014 after years of battling chronic fatigue, she famously quipped that even cancer cells feared her, maintaining her role as a symbol of bold, moral leadership until the end.",
+        "Authorlink": "https://legacy.senate.gov.ph/senators/sen_bio/santiago_bio.asp",
+        "Sample Reviews": [
+  
+          { "text": "“In my view, leadership is the courage to take risks in defense of a position that is both legal and moral. The politician who tries to become a wise guy by becoming friends to everybody - corrupt or not - is not a leader.”", "by": "Miriam Defensor-Santiago, Stupid is Forever" },
+        { "text": "“Ignorance can be cured but stupid is forever.”", "by": "Miriam Defensor-Santiago, Stupid is Forever" },
+        ],
+        "Image": "image6/stupid.jpg",
+        "Publishing Date": 2014,
+        "Genre": ["Nonfiction","Humor","Politics","Satire"], 
+        "Details": "While most politicians lack a sense of humor, the late Senator Miriam Defensor Santiago was a brilliant exception, known for her ability to use wit even during national crises or personal threats. Her book, Stupid is Forever, serves as a curated collection of her most famous one-liners, pick-up lines, and sharp comebacks. These entries often target serious Philippine issues, such as government corruption and the pork barrel scandal, turning heavy political discourse into relatable satire. <p> Beyond her words, the book is a collaborative creative project featuring artwork from some of the Philippines’ top illustrators, including Manix Abrera, Cj de Silva-Ong, Elbert Or, and Rob Cham. This blend of biting social commentary and visual artistry has made the collection a beloved staple in Philippine popular literature.",
+        "Synopsis": "",
+        "Awards": ["Best Seller", "Pop-culture",],
+        "Book Review": "https://www.youtube.com/watch?v=WAAgl2_Wj3I",
+        "ratings": {
+          "Goodreads": { "score": "3.97/5", "link": "https://www.goodreads.com/book/show/23665558-stupid-is-forever", },
+          "References": [
+          "https://en.wikipedia.org/wiki/Stupid_Is_Forever",
+          "https://www.amazon.com/Stupid-Forever-Miriam-Defensor-Santiago/dp/9718161279/?tag=offa01-20"]
+        }
+      },
+      {
+        "Title": "Some Days You Can’t Save Them All",
+        "Author": "Dr. Ronnie E. Baticulon",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+          
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 2019,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+{
+        "Title": "Some People Need Killing",
+        "Author": "Patricia Evangelista",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+      {
+        "Title": "Cabinet of Curiosities",
+        "Author": "Ambeth Ocampo",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+      {
+        "Title": "A Question of Heroes",
         "Author": "",
         "Author Photo": "image6/.jpg", 
         "AuthorBio": "",
@@ -740,6 +1132,81 @@ text-align: justify;    }
         "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
         "ratings": {
           "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+      {
+        "Title": "How to Stand Up to a Dictator",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+      {
+        "Title": "Bakit Baliktad Magbasa Ang Mga Pilipino",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
+        }
+      },
+      {
+        "Title": "Luha ng Buwaya",
+        "Author": "Amado V. Hernandez",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
         }
       },
       {
@@ -761,6 +1228,9 @@ text-align: justify;    }
         "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
         "ratings": {
           "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
         }
       },
       {
@@ -782,785 +1252,35 @@ text-align: justify;    }
         "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
         "ratings": {
           "Goodreads": { "score": "4.28/5", "link": "", },
+          "References": [
+          "",
+          ""]
         }
       },
       {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Title": "100 Tula Para Kay Stella",
+        "Author": "Jason Paul Laxamana",
+        "Author Photo": "image6/jason.webp", 
+        "AuthorBio": "Jason Paul Laxamana is an acclaimed Filipino filmmaker and writer originally from Angeles City, Pampanga. He earned his degree in Broadcast Communication from the University of the Philippines Diliman. His entry into the industry involved serving in various support roles, including volunteer production assistant and stage manager, while also handling technical duties like script continuity and local coordination for regional film shoots. <p> Laxamana first gained recognition through award-winning Kapampangan short films and his 2010 feature Astro Mayabang. He eventually became a prominent figure in the industry by directing a string of successful romance films, such as 100 Tula Para Kay Stella, which he focused on to establish a steady career. Recently, he has shifted toward mainstream action-adventure projects like Penduko to explore more diverse creative interests beyond the romance genre.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Jason_Paul_Laxamana",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+          { "text": "Babaeng Nakaitim Na Lipstick, Itim ang lipstick niya, Subalit mabait siya, Sadya akong namangha, Sa angkin niyang... ganda? ", "by": "100 Tula Para Kay Stella (2017)" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
+        "Image": "image6/tula.jpg",
+        "Publishing Date": 2017,
+        "Genre": ["Romance","Love Story"],
+        "Details": "The book version of 100 Tula Para Kay Stella is a novelization written by the story's original creator, Jason Paul Laxamana, and published by Viva Books in 2017. While it follows the same plot as the film, the book provides a deeper look into Fidel’s internal thoughts and the specific text of the 100 poems he wrote. It serves as a companion piece to the movie, expanding on the emotional journey of the characters through the written word.",
+        "Synopsis": "Fidel is a shy college student with a speech impediment who loves poetry. He strikes up an unlikely friendship with Stella, a tough and aspiring rock musician who often struggles with her academics and personal life. <p> Because Fidel finds it hard to speak, he secretly writes poems to express his feelings. His goal is to write 100 poems for Stella and hand them to her when he finally builds the courage to confess his love. <p> The story spans their four years in college. Despite their deep bond, bad timing and different life choices keep them apart, teaching Fidel a painful lesson about letting go.",
+        "Awards": ["Novelization",],
         "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
+          "Goodreads": { "score": "3.80", "link": "https://www.goodreads.com/book/show/36072192-100-tula-para-kay-stella", },
+         },
+          "References": [
+          "https://www.goodreads.com/book/show/36072192-100-tula-para-kay-stella",
+          "https://en.wikipedia.org/wiki/Jason_Paul_Laxamana"]
       },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
-      {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
-        ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
-        "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
-        }
-      },
+      
     ];
 
     const grid  = document.getElementById('filmGrid');
@@ -1680,8 +1400,9 @@ text-align: justify;    }
       return html;
     }
 
-    function openModal(book){
+     function openModal(book){
       modal.classList.add('open');
+      document.querySelector('.modal-scroll').scrollTop = 0; // Add this line
       const modalPosterEl = document.getElementById('modalPoster');
       modalPosterEl.src = book.Image;
       
@@ -1703,9 +1424,13 @@ text-align: justify;    }
       modalGenre.textContent = (Array.isArray(book.Genre) ? book.Genre : [book.Genre]).filter(Boolean).join(', ') || '—';
 
       // Add back Details, Synopsis, and Author Bio
-      modalDetails.textContent = book.Details || '—';
-      modalSynopsis.textContent = book.Synopsis || '—';
-      modalAuthorBio.textContent = book.AuthorBio || '—';
+     modalDetails.innerHTML = book.Details || '—';
+      modalSynopsis.innerHTML = book.Synopsis || '—';
+      modalAuthorBio.innerHTML = book.AuthorBio || '—';
+
+       const referencesLabel = document.getElementById('referencesLabel');
+      const modalReferences = document.getElementById('modalReferences');
+
 
       // Author photo (moved to top of function for immediate display)
       const authorPhoto = document.getElementById('authorPhoto');
@@ -1732,7 +1457,7 @@ text-align: justify;    }
       // Ratings (Goodreads stars as clickable link + inline label)
       const ratingsWrap = document.getElementById('ratingsWrap');
       ratingsWrap.innerHTML = '';
-      if (book.ratings && book.ratings.Goodreads) {
+     if (book.ratings && book.ratings.Goodreads) {
         const gr = book.ratings.Goodreads;
 
         // Add inline "Goodreads" label
@@ -1748,16 +1473,16 @@ text-align: justify;    }
         starsLink.target = '_blank';
         starsLink.rel = 'noopener noreferrer';
 
+        // Parse score for stars
         const match = gr.score.match(/([\d.]+)\s*\/?\s*(\d*)/);
         const numerator = match ? parseFloat(match[1]) : 0;
         const denominator = match && match[2] ? parseFloat(match[2]) : 5;
-        const outOf5 = (numerator / denominator) * 5;
-        const displayScore = outOf5.toFixed(1);
+        const outOf5 = denominator === 5 ? numerator : (numerator / denominator) * 5;
 
-        starsLink.setAttribute('aria-label', `Goodreads rating ${displayScore} out of 5`);
-        starsLink.innerHTML = generateStarRating(gr.score) + `<span class="rating-value">${displayScore}</span>`;
+        starsLink.setAttribute('aria-label', `Goodreads rating ${gr.score}`);
+        starsLink.innerHTML = generateStarRating(gr.score) + `<span class="rating-value">${gr.score}</span>`;
         ratingsWrap.appendChild(starsLink);
-      }
+       }
 
       // Sample reviews display (now supports multiple)
       const reviewsContainer = document.getElementById('sampleReviewsContainer');
@@ -1775,7 +1500,7 @@ text-align: justify;    }
             
             const reviewBy = document.createElement('div');
             reviewBy.className = 'sample-review-by';
-            reviewBy.textContent = `— ${review.by || 'Anonymous'}`;
+            reviewBy.textContent = `— ${review.by || ''}`;
             
             reviewCard.appendChild(reviewText);
             reviewCard.appendChild(reviewBy);
@@ -1793,11 +1518,19 @@ text-align: justify;    }
       const awards = Array.isArray(book.Awards) ? book.Awards : (book.Awards ? [book.Awards] : []);
       const hasAwards = awards.length > 0;
       awardsLabel.style.display = hasAwards ? '' : 'none';
-      modalAwards.style.display = hasAwards ? 'flex' : 'none';
-      modalAwards.innerHTML = hasAwards
+       modalAwards.innerHTML = hasAwards
         ? awards.map(a => `<span class="award-chip">${a}</span>`).join('')
         : '';
       modalReview.src = book['Book Review'].replace('watch?v=', 'embed/');
+
+      // References
+      const refs = Array.isArray(book.References) ? book.References.filter(Boolean) : [];
+      const hasRefs = refs.length > 0;
+      referencesLabel.style.display = hasRefs ? '' : 'none';
+      modalReferences.style.display = hasRefs ? 'flex' : 'none';
+      modalReferences.innerHTML = hasRefs
+        ? refs.map(url => `<a href="${url}" class="reference-link" target="_blank" rel="noopener noreferrer">${new URL(url).hostname}</a>`).join('')
+        : '';
     }
 
     function openPhotoViewer(imageSrc) {
