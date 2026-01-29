@@ -11,16 +11,15 @@
 
   <style>
     /* Book site theme: single source of truth */
-    :root{
-      /* Light (default) */
-      --bg-color:#f7f6f2;
-      --bg-image:url('image6/sky2.jpg');
-      --text-color:#1a1a1a;
+    body.theme-light{
+      --bg-color:#000000;
+      --bg-image:url('image6/sky22.jpg');
+      --text-color:#ffffff;
 
-      --surface-color:#ffffff;
+      --surface-color:rgba(64, 66, 73, 0.9);
       --overlay-color:rgba(17,24,39,.45);
       --meta-color:#6b7280;
-      --border-color:#e5e7eb;
+      --border-color:#777779;
 
       --chip-bg:#fafafa;
       --chip-text:#111827;
@@ -34,19 +33,17 @@
       -heading-serif: Georgia, "Times New Roman", Times, serif;
       --ui-sans: "Google Sans", "Segoe UI", Tahoma, Verdana, sans-serif;
     }
-
-    body.theme-dark{
+:root{
       --bg-color:#0f1115;
-      --bg-image:url('image6/sky22.jpg');
-      -o-object-fit: scale-down;
+      --bg-image:url('image6/sky.jpg');
       --text-color:#e5e7eb;
 
-      --surface-color:rgba(38,41,48,.9);
+      --surface-color:rgba(64, 66, 73, 0.9);
       --overlay-color:rgba(0,0,0,.65);
       --meta-color:#6c7786;
-      --border-color:#303541;
+      --border-color:#4b505e;
 
-      --chip-bg:#1a1d23;
+      --chip-bg:#44484e;
       --chip-text:#e5e7eb;
       --accent:#ffb73a;
 
@@ -54,21 +51,19 @@
       --shadow-lg:0 14px 36px rgba(0,0,0,.45);
   
     }
-
-    body.theme-light{
-      /* Explicit light override (matches :root) */
+ body.theme-dark{      /* Light (default) */
       --bg-color:#f7f6f2;
-      --bg-image:url('image6/sky2.jpg');
-      --text-color:#1a1a1a;
+      --bg-image:url('image6/sky.jpg');
+      --text-color:#d42121;
 
-      --surface-color:#ffffff;
+      --surface-color:#636363;
       --overlay-color:rgba(17,24,39,.45);
-      --meta-color:#6b7280;
+      --meta-color:#f0f1f3;
       --border-color:#e5e7eb;
 
       --chip-bg:#fafafa;
-      --chip-text:#111827;
-      --accent:#b45309;
+      --chip-texrgb(124, 101, 101)27;
+      --accent:#b45309; 
 
       --shadow:0 6px 18px rgba(17,24,39,.08);
       --shadow-lg:0 16px 40px rgba(17,24,39,.12);
@@ -279,7 +274,7 @@
       overflow: hidden; /* Hide any excess */
     }
     .modal-poster {
-      width: auto%;
+      width: auto;
       height: 65%; /* Fill the container height */
       object-fit: cover; /* Scale image to cover without distortion, preventing overflow */
       border-top-left-radius: 0px;
@@ -625,7 +620,18 @@ display: none
       opacity: 0.85;
     }
       
-
+.dark-toggle
+{
+  padding: 10px 16px;
+  font-size: 14px;
+  color: var(--chip-text);
+  background: var(--chip-bg);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  transition: filter .15s ease, transform .05s ease;
+}
 
 .modalAuthorBio {
 text-align: justify;    }
@@ -662,6 +668,9 @@ text-align: justify;    }
   <a href="home.html" class="index-logo-link" aria-label="Back to Index">
     <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
   </a>
+
+  <button class="dark-toggle">Toggle Dark Mode</button>
+
 
 <header>
   <div class="fixed-canvas">
@@ -739,6 +748,19 @@ text-align: justify;    }
                     <div class="section-label">About the Author</div>
                               <p id="modalAuthorBio"></p>
 
+<div id="author2Block" style="display:none;">
+  <img id="modalAuthorPhoto2" class="author-photo" alt="Author 2" style="display:none;">
+
+  <div id="author2Label" class="section-label">
+    About the Author
+  </div>
+
+  <div id="modalAuthorInline2" style="margin-bottom: 4px;"></div>
+
+  <p id="modalAuthorBio2"></p>
+</div>
+
+
               <div id="referencesLabel" class="section-label">References</div>
           <div id="modalReferences" class="references-list"></div>
 
@@ -771,7 +793,7 @@ text-align: justify;    }
         "Details": "Dekada ’70 by Lualhati Bautista is a powerful Filipino novel that portrays the personal and political awakening of a middle-class family during the turbulent years leading up to and throughout the 1970s. Centered on Amanda Bartolome, the story explores how national unrest, censorship, and state control seep into the private sphere of the home. Through a feminist lens, Bautista examines motherhood, marriage, and womanhood in a society shaped by patriarchy and authoritarian rule, showing how ordinary lives are reshaped by extraordinary times.",
         "Synopsis": "Set in the years before and during Martial Law in the Philippines, Dekada ’70 follows the Bartolome family as they navigate political tension and social change. Amanda Bartolome, initially a traditional housewife devoted to her husband Julian and their five sons, begins to question her role as her children grow increasingly involved in political movements. Each son represents a different response to the era—ranging from activism and idealism to fear, conformity, and resistance—while the family faces arrests, disappearances, and ideological conflict. As the nation grows more repressive, Amanda undergoes her own transformation, gradually asserting her voice and identity beyond the expectations placed upon her. The novel ultimately presents a deeply human account of how political oppression fractures families while also igniting personal awakening and courage.",
         "Awards": ["1983 Palanca Award Grand Prize", "Movie Adapted",],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Book Review": "",
         "ratings": {   
   "Goodreads": { "score": "4.28/5", "link": "..." }
 },
@@ -810,8 +832,8 @@ text-align: justify;    }
         "Title": "The Woman Who Had Two Navels",
         "Author": "Nick Joaquin",
         "Author Photo": "image6/nick.jpg", 
-        "AuthorBio": "<p>Nick Joaquin (1917–2004) was a prominent Filipino writer and journalist, widely regarded as one of the most important figures in Philippine literature. Writing primarily in English, he distinguished himself from earlier national figures such as José Rizal and Claro M. Recto, whose works were written in Spanish. Joaquin also wrote under the pen name Quijano de Manila and was later honored as a National Artist of the Philippines for Literature.</p><p>Before his literary career, Joaquin studied as a seminarian in Hong Kong, an experience that deeply influenced his worldview. He eventually decided that writing, rather than the priesthood, was his way of serving both God and society. His works consistently emphasize the importance of history, Catholicism, and Spanish colonial heritage, reflecting his belief that understanding the past is essential to addressing modern social problems. He viewed himself as a “cultural apostle,” using literature to revive national consciousness and preserve the country’s spiritual traditions.</p><p>Upon returning to the Philippines, Joaquin joined the Philippines Free Press, where he gained recognition for his poetry, fiction, plays, and bold journalistic style. His essays as Quijano de Manila elevated Philippine journalism by combining intellectual depth with social critique. He was also a devoted admirer of José Rizal, writing extensively about the national hero and translating Rizal’s final poem, Mi Último Adiós, into English.</p><p>Joaquin represented the Philippines internationally and served in government cultural institutions, including the Motion Pictures Commission. After being named National Artist, he actively defended intellectual freedom, notably helping secure the release of an imprisoned writer. His criticism of authoritarian rule, however, led to his marginalization during the Marcos regime.</p><p>Nick Joaquin passed away in 2004 due to cardiac arrest. Until his death, he remained active in journalism and publishing, serving as editor of Philippine Graphic and contributing columns to major newspapers. His legacy endures as a writer who shaped Filipino identity through history, culture, and literature.</p>",
-        "Authorlink": "https://en.wikipedia.org/wiki/Nick_Joaquin",
+        "AuthorBio": "Nick Joaquin (1917–2004) was a prominent Filipino writer, journalist, and National Artist for Literature. Writing mainly in English, he explored Philippine history, Catholicism, and Spanish colonial heritage, aiming to revive national consciousness through literature. Joaquin began as a seminarian in Hong Kong before choosing writing over priesthood. He gained fame at the Philippines Free Press, wrote as Quijano de Manila, and translated Rizal’s Mi Último Adiós. Active in cultural institutions, he defended intellectual freedom and was marginalized during the Marcos regime for his criticism. Joaquin remained influential in journalism and publishing until his death, shaping Filipino identity through his works.",
+        "Authorlink": "https://www.britannica.com/biography/Nick-Joaquin",
         "Sample Reviews": [
           { "text": "“[T]hey could never go home now, thought Pepe Monson, more vividly remembering that house he had never seen (as he remarked to the woman standing beside him at the window) than any of the houses he had actually lived in.", "by": "Narrator, p. 180" },
         ],
@@ -1007,7 +1029,7 @@ text-align: justify;    }
         "Details": "Published in 1995, The Last Time I Saw Mother is the acclaimed debut novel by Filipino-Australian author Arlene J. Chai. The book is celebrated for its intricate \"story-within-a-story\" structure, weaving together the voices of four different women to explore a singular family secret. It is a historical fiction piece that provides a deep look into the intersection of Spanish, Chinese, and Filipino cultures, particularly how they were reshaped by the trauma of the Japanese occupation during World War II.",
         "Synopsis": "The story begins when Caridad, a Filipino woman living in Sydney, receives a sudden and mysterious summons from her mother, Thelma, in Manila. Upon her arrival, Thelma drops a bombshell: she is not Caridad's biological mother. To uncover her true identity, Caridad must listen to the intersecting testimonies of Thelma, her \"Aunt\" Emma, and her cousin Ligaya. Their accounts reveal a history of sacrifice and hidden parentage born out of the desperation of the war years, ultimately showing Caridad that her life was built on a well-intentioned lie meant to protect her from the harsh realities of their past.",
         "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Book Review": "",
         "ratings": {
           "Goodreads": { "score": "3.93/5", "link": "https://www.goodreads.com/book/show/375883.The_Last_Time_I_Saw_Mother", },
           },
@@ -1035,227 +1057,323 @@ text-align: justify;    }
         "Book Review": "https://www.youtube.com/watch?v=WAAgl2_Wj3I",
         "ratings": {
           "Goodreads": { "score": "3.97/5", "link": "https://www.goodreads.com/book/show/23665558-stupid-is-forever", },
+        },
           "References": [
           "https://en.wikipedia.org/wiki/Stupid_Is_Forever",
           "https://www.amazon.com/Stupid-Forever-Miriam-Defensor-Santiago/dp/9718161279/?tag=offa01-20"]
-        }
-      },
+        },
       {
         "Title": "Some Days You Can’t Save Them All",
         "Author": "Dr. Ronnie E. Baticulon",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Author Photo": "image6/ronnie.jpg", 
+        "AuthorBio": "Dr. Ronnie Baticulon is a distinguished Filipino pediatric neurosurgeon, educator, and award-winning author. An Oblation scholar, he completed the accelerated INTARMED program at the University of the Philippines College of Medicine. His extensive medical training includes a residency at the Philippine General Hospital and a specialized fellowship in pediatric neurosurgery at the Royal Children’s Hospital in Melbourne, Australia. <p> Currently based in Manila, Dr. Baticulon balances a high-stakes clinical practice with academia, serving as an Associate Professor of Anatomy at his alma mater and a biochemistry lecturer. Beyond medicine, he is a celebrated literary voice, having participated in prestigious writing workshops at UST and UP. His non-fiction work has appeared in major publications like Rappler and the Philippine Daily Inquirer. In 2018, he achieved a significant literary milestone by winning a Palanca Award for his essay collection, Some Days You Can’t Save Them All, published by the UP Press.",
+        "Authorlink": "https://ronibats.ph/ronibats/",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+          { "text": "“Everybody is in such a hurry to achieve something or become someone, that we forget to be thankful for what we have in the now. We are always where we are meant to be.”", "by": "Ronnie E. Baticulon, Some Days You Can’t Save Them All" },
+          { "text": "“Never settle for anything less. The greatest injustice you can do to yourself is to be mediocre. Do your best, even if you have to make a lot of sacrifices, even if you're afraid of failing, even if people discourage you and say otherwise. When you know that you have done all that you can, there will be no room for regret, shame, anger, humiliation, and frustration, no matter what.”", "by": "Ronnie E. Baticulon, Some Days You Can’t Save Them All" },
           
         ],
-        "Image": "image6/.jpg",
+        "Image": "image6/days.jpg",
         "Publishing Date": 2019,
-        "Genre": [""],
-        "Details": "",
+        "Genre": ["Medicine","Nonfiction","Memoir","Nonfiction"],
+        "Details": "Some Days You Can’t Save Them All is a debut collection of creative nonfiction by Dr. Ronnie Baticulon, released by the University of the Philippines Press. The volume compiles thirty essays written between 2002 and 2018, documenting his evolution from a student to a specialized surgeon. The collection is structured into three thematic parts: the first explores his family background and the challenges of medical education; the second provides a raw look at patient care and mortality during his neurosurgery residency at the Philippine General Hospital; and the final section offers critical insights into the systemic flaws within the Philippine healthcare landscape. <p> A major highlight of the book is the title essay, which earned Second Prize at the 2018 Carlos Palanca Memorial Awards for Literature. While the author previously shared fragments of his journey through his blog, Ronibats.PH, this specific award-winning piece was kept exclusive to the book's publication. Collectively, the essays serve as both a personal memoir and a professional reflection on the emotional and ethical complexities of practicing medicine in a developing nation.",
         "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Awards": ["NBDB National Book Awards Nominee for Essays in English (2022)",],
+        "Book Review": "https://www.youtube.com/watch?v=Sx6qR2WNvcE",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.66/5", "link": "https://www.goodreads.com/book/show/48644322-some-days-you-can-t-save-them-all", },
+        },
           "References": [
-          "",
-          ""]
-        }
-      },
+          "https://ronibats.ph/ronibats/",
+          "https://ronibats.ph/frequently-asked-questions/"]
+        },
 {
-        "Title": "Some People Need Killing",
+        "Title": "Some People Need Killing: A Memoir of Murder in My Country",
         "Author": "Patricia Evangelista",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Author Photo": "image6/pat.jpg", 
+        "AuthorBio": "Patricia Chanco Evangelista is a premier Filipina trauma journalist, documentary filmmaker, and author known for her rigorous reporting on human rights, conflict, and disaster. She first gained international acclaim at age 20 as the first Filipino to win the English-Speaking Union’s International Public Speaking Competition in London with her iconic speech, 'Blonde and Blue Eyes.' Since then, she has built a formidable career as a multimedia reporter for Rappler and a writer-at-large for Esquire Philippines, culminating in the 2023 release of her critically acclaimed first book, Some People Need Killing. <p> Evangelista’s career spans across print, digital, and broadcast media. She started as a columnist for major broadsheets like The Philippine Star and the Philippine Daily Inquirer before transitioning into television. At the ABS-CBN News Channel (ANC), she co-founded Storyline Productions and produced award-winning narrative series and investigative documentaries. Her work has earned prestigious global honors, including the Kate Webb Prize for frontline journalism, the Titus Brandsma Award for Emergent Journalism, and multiple medals from the New York Festivals. Her reporting remains a vital record of the socio-political landscape in the Philippines, particularly during times of national crisis.",
+        "Authorlink": "https://www.penguinrandomhouse.com/authors/2200743/patricia-evangelista/",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+          { "text": "“This is a book about the dead, and the people who are left behind. It is also a personal story, written in my own voice, as a citizen of a nation I cannot recognize as my own. The thousands who died were killed with the permission of my people. I am writing this book because I refuse to offer mine.”", "by": "Patricia Evangelista, Some People Need Killing" },
+          { "text": "“Maybe those who voted for death thought they had voted for a metaphor.”", "by": "Patricia Evangelista, Some People Need Killing" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
+        "Image": "image6/killings.jpg",
+        "Publishing Date": 2023,
+        "Genre": ["Nonfiction","Journalism","True Crime"],
+        "Details": "Some People Need Killing is a masterclass in literary journalism and a haunting record of the Philippine drug war under the administration of Rodrigo Duterte. For six years, Patricia Evangelista provided an unflinching ’act of witness,’ documenting the state-sanctioned violence and vigilante executions that resulted in thousands of deaths. The book explores the fragile state of Philippine democracy three decades after the People Power Revolution, examining how a nation began to accept an atmosphere of state-sponsored terror. <p> The title originates from a chilling quote by a vigilante who told Evangelista, ’I'm really not a bad guy... Some people need killing.’ This statement serves as the centerpiece for Evangelista’s investigation into the ’grammar of violence’ the psychological and linguistic shifts that occur when a society begins to justify the slaughter of its own citizens. Beyond a mere tally of victims, the book is a deep psychological profile of both the killers and the survivors, dissecting the human impulses toward dominance, resistance, and the devaluation of life.",
         "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Awards": ["	Helen Bernstein Book Award for Excellence in Journalism (2024),", "Women's Prize for Non-Fiction Nominee for Longlist (2024)"],
+        "Book Review": "https://www.youtube.com/watch?v=wc6owH8Ohlg",
         "ratings": {
           "Goodreads": { "score": "4.28/5", "link": "", },
+        },
           "References": [
-          "",
-          ""]
-        }
-      },
+          "https://www.penguinrandomhouse.com/authors/2200743/patricia-evangelista/",
+          "https://en.wikipedia.org/wiki/Patricia_Evangelista",
+        "https://www.penguinrandomhouse.com/books/612869/some-people-need-killing-by-patricia-evangelista/"]
+        },
       {
-        "Title": "Cabinet of Curiosities",
+        "Title": "Cabinet of Curiosities: History from Philippine Artifacts",
         "Author": "Ambeth Ocampo",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Author Photo": "image6/ambeth.jpg", 
+        "AuthorBio": "Dr. Ambeth R. Ocampo (born August 13, 1961) is a distinguished Filipino public historian, academic, and journalist celebrated for humanizing national history. A professor at the Ateneo de Manila University since 1998, he is best known for his long-running 'Looking Back' column in the Philippine Daily Inquirer and his bestselling book Rizal Without the Overcoat. His work focuses on the late 19th-century Philippines, where he utilizes primary sources to deconstruct traditional myths and present national heroes like José Rizal in a more nuanced, accessible light. <p> Beyond the classroom and the newsroom, Ocampo has held significant leadership roles as the former chairman of both the National Commission for Culture and the Arts (NCCA) and the National Historical Commission of the Philippines (NHCP). His dedication to academic and social progress earned him the prestigious 2016 Fukuoka Prize, recognizing his role in fostering open-minded nationalism and international cultural exchange. Educated at De La Salle University and the School of Oriental and African Studies (SOAS) in London, he remains a vital cultural voice, actively using social media to make history relevant to modern audiences.",
+        "Authorlink": "https://fukuoka-prize.org/en/laureates/detail/1b1f2638-220d-4d85-859c-b4cc2b7a28ad",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+          { "text": "“School made us 'literate' but did not teach us to read for pleasure.”", "by": " Ambeth Ocampo" },
+          { "text": "“It is ironic that many Filipinos learn to love the Philippines while abroad, not at home.”", "by": "Ambeth Ocampo" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
+        "Image": "image6/cabinet.jpg",
+        "Publishing Date": 2023,
+        "Genre": ["History","Nonfiction","Reference"],
+        "Details": "In Cabinet of Curiosities: History from Philippine Artifacts, renowned historian Ambeth Ocampo presents a vibrant alternative to traditional, text-heavy historical narratives by focusing on 100 diverse, man-made objects. Adapted from his popular newspaper series, the collection spans a wide chronological range—from prehistoric relics and everyday tools like brooms and baskets to high-art masterpieces by celebrated Filipino architects and painters. Ocampo’s central premise is that 'mute' objects are often just as articulate as written documents in defining the Filipino identity, offering a more tactile and nuanced understanding of the nation’s cultural evolution. <p> The book functions as a 'material history,' where Ocampo uses meticulous research and a conversational storytelling style to breathe life into each artifact. By uncovering the hidden stories behind these tangible items, he explores broader themes of cultural preservation, the challenges of modern archaeology, and the enduring legacy of the pre-colonial past. Ultimately, Cabinet of Curiosities serves as a celebration of Philippine heritage that challenges conventional perspectives, inviting readers to view history not just as a series of events, but as a rich tapestry of lived experiences embedded in the objects of daily life.",
         "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Awards": ["Cultural Preservation", "Public History Advocacy",],
+        "Book Review": "https://www.youtube.com/watch?v=oJ16UxL0ELw",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.30/5", "link": "https://www.goodreads.com/book/show/199206397-cabinet-of-curiosities", },
+        },
           "References": [
-          "",
+          "https://opinion.inquirer.net/166338/cabinet-of-curiosities",
           ""]
-        }
       },
       {
         "Title": "A Question of Heroes",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Author": "Nick Joaquin",
+        "Author Photo": "image6/nick.jpg", 
+        "AuthorBio": "Nick Joaquin (1917–2004) was a prominent Filipino writer, journalist, and National Artist for Literature. Writing mainly in English, he explored Philippine history, Catholicism, and Spanish colonial heritage, aiming to revive national consciousness through literature. Joaquin began as a seminarian in Hong Kong before choosing writing over priesthood. He gained fame at the Philippines Free Press, wrote as Quijano de Manila, and translated Rizal’s Mi Último Adiós. Active in cultural institutions, he defended intellectual freedom and was marginalized during the Marcos regime for his criticism. Joaquin remained influential in journalism and publishing until his death, shaping Filipino identity through his works.",
+        "Authorlink": "https://www.britannica.com/biography/Nick-Joaquin",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+         { "text": "\"The Revolution of the Ilustrados. There were two distinct but simultaneous revolutions in 1896, linked only by the Katipunan. The first was the Manileños' and it actually lasted only a few months; the second was the Caviteños' and it lasted about five years. Which one do we mean when we speak of the Unfinished Revolution? But from a larger view, there was only one revolution in 1896—and it was not Bonifacio's, though he tried to ride it. This larger view compels us to see the entire period from the Propaganda Movement to the Philippine-American War as a single event: the Revolution of the Ilustrados.\"", "by": "Nick Joaquin" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
-        "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Image": "image6/questions.jpg",
+        "Publishing Date": 1977,
+        "Genre": ["History","Nonfiction","Essays",],
+"Details": "In A Question of Heroes, National Artist Nick Joaquin presents a critical and often controversial re-evaluation of the men who shaped the Philippine nation. Rather than presenting the typical sanitized versions of history found in textbooks, Joaquin examines ten key figures—including José Rizal, Andrés Bonifacio, and Emilio Aguinaldo—through a lens of \"revisionist\" storytelling. He focuses on the human failings, class conflicts, and psychological motivations of these icons, arguing that the Philippine Revolution was not a seamless transition but a messy struggle between the Ilustrado elite and the revolutionary masses. By stripping away the mythic layers, Joaquin seeks to understand how their specific historical environment influenced their decisions, often raising uncomfortable questions about leadership, betrayal, and the true cost of independence.\n\n <p> The book is particularly significant for its assertion that the Filipino identity was not born in the heat of the 1896 Revolution, but rather during the 1872 execution of Gomburza, which served as the catalyst for national consciousness. Joaquin's prose challenges the reader to move beyond blind hero-worship and instead engage in a sophisticated critique of what it means to be a \"hero.\" By exploring the internal tensions within the movement—such as the rivalry between Aguinaldo and Bonifacio or the tragic end of Antonio Luna—Joaquin provides a profound dissection of the Filipino character. Ultimately, the work remains a cornerstone of Philippine literature and history, forcing a deeper dialogue on the complexities of the nation's struggle for sovereignty.",
+               "Synopsis": "",
+        "Awards": ["Foundational text in Philippine \"revisionist\" history",],
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.34/5", "link": "https://www.goodreads.com/book/show/6469276-a-question-of-heroes", },
+        },
           "References": [
           "",
           ""]
-        }
       },
       {
         "Title": "How to Stand Up to a Dictator",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
+        "Author": "Maria Ressa",
+        "Author Photo": "image6/ressa.jpg", 
+        "AuthorBio": "Maria Angelita Ressa (born October 2, 1963) is a world-renowned Filipino-American journalist, Nobel Peace Prize laureate, and the co-founder and CEO of the news site Rappler. Born in Manila and raised in New Jersey, Ressa’s career began in the late 1980s, co-founding the independent production company Probe and serving as CNN’s bureau chief in both Manila and Jakarta. As a leading investigative reporter for nearly two decades, she specialized in unearthing international terrorist networks across Southeast Asia. She later transitioned into executive leadership, heading the news division of the Philippine media giant ABS-CBN from 2004 to 2010.<br><br>In recent years, Ressa has become a global symbol for press freedom due to her fearless reporting on the administration of former President Rodrigo Duterte. Her work exposing state-sponsored disinformation and the human rights abuses of the Philippine drug war led to a series of legal battles, most notably a 2020 conviction for cyberlibel—a verdict widely condemned by the international community as politically motivated. For her \"efforts to safeguard freedom of expression,\" Ressa was awarded the 2021 Nobel Peace Prize alongside Dmitry Muratov.<br><br>Currently, Ressa is a prominent voice in the intersection of Artificial Intelligence (AI) and democracy. She serves as a Professor of Professional Practice at Columbia University’s School of International and Public Affairs and has held fellowships at prestigious institutions like MIT and Harvard. Her ongoing work focuses on the digital frontlines, advocating for more ethical technology and the protection of democratic institutions from the \"invisible atom bomb\" of online disinformation.",
+             "Authorlink": "https://www.nobelprize.org/prizes/peace/2021/ressa/facts/",
         "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+          { "text": "'Maria Ressa is 5ft 2in, but she stands taller than most in her pursuit of the truth'", "by": "Amal Clooney" },
+          { "text": "'Maria is a key voice ... she is so incredible in so many ways'", "by": "Carole Cadwalladr" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
+        "Image": "image6/stand.jpg",
+        "Publishing Date": 2022,
+        "Genre": ["Politics","Nonfiction","Biography","Journalism"],
+        "Details":"How to Stand Up to a Dictator is a powerful memoir and journalistic exposé by Nobel Peace Prize laureate Maria Ressa. The book chronicles her high-stakes battle against the Philippine government under President Rodrigo Duterte, where her investigation into state-sponsored disinformation networks led to a relentless campaign of legal harassment and the threat of over a century in prison. Ressa uses her personal struggle as a lens to examine the global \"death of democracy by a thousand cuts,\" arguing that social media platforms and Silicon Valley have enabled a \"digital atom bomb\" of lies and hate to manipulate public perception across the world.\n\n <p> From the frontlines of this information war, Ressa maps the interconnected web of disinformation that links the Philippine drug wars to major global events like Brexit and the January 6 Capitol riot. She contends that the weaponization of technology by authoritarian regimes has created a crisis of truth that threatens fundamental freedoms everywhere. Ultimately, the book serves as an urgent call to action, challenging readers to recognize their own role in this digital ecosystem and demanding that we \"hold the line\" to protect democratic institutions before the damage becomes irreversible.",
         "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Awards": ["Nobel Peace Prize 2021", "THE NEW YORK TIMES BESTSELLER",],
+        "Book Review": "https://www.youtube.com/watch?v=YxuXTB1IYGk",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.36/5", "link": "https://www.goodreads.com/book/show/58297471-how-to-stand-up-to-a-dictator", },
+        },
           "References": [
-          "",
-          ""]
-        }
+          "https://www.penguin.co.uk/books/446105/how-to-stand-up-to-a-dictator-by-ressa-maria/9780753559215",
+          "https://www.rappler.com/about/maria-ressa-book-how-stand-up-dictator-princeton-class-2027-pre-read/",
+        "https://en.wikipedia.org/wiki/Maria_Ressa"]
       },
       {
         "Title": "Bakit Baliktad Magbasa Ang Mga Pilipino",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
-        "AuthorBio": "",
-        "Authorlink": "",
-        "Sample Reviews": [
-          { "text": "", "by": "" },
-          { "text": ".", "by": "" },
+        "Author": "Bob Ong",
+        "Author Photo": "image6/bob2.jpg", 
+      "AuthorBio": "Bob Ong is a contemporary Filipino author known for his humorous and reflective writing on Filipino life and culture. Writing under a pseudonym, he remains anonymous, never revealing his true identity. He began his career in the late 1990s with a satirical website called Bobong Pinoy, which won a people’s choice humor award and shaped his conversational style. In 2001, he published his first book, ABNKKBSNPLAko?!, which became a bestseller and launched a prolific career spanning humor, social commentary, and semi-autobiographical works, many of which have sold widely and inspired film adaptations.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Bob_Ong",
+       "Sample Reviews": [
+          { "text": "“MARAMI ANG MAY AYAW SA PILIPINAS, PERO WALANG NAGTATANONG KUNG GUSTO SILA NG PILIPINAS”", "by": "Bob Ong" },
+          { "text": "“Nasasaktan ako dahil sa kabila ng lahat, mahal ko ang Pilipinas.”", "by": "Bob Ong" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
-        "Details": "",
+        "Image": "image6/baliktad.jpg",
+        "Publishing Date": 2001,
+        "Genre": ["Humor","Nonfiction","Satire"],
+    "Details": "Bakit Baliktad Magbasa ng Libro ang mga Pilipino? is Bob Ong’s thought-provoking sequel to ABNKKBSNPLAko?!. The book starts as a humorous collection of \"kuwentong barbero\" (casual tall tales) from his Bobong Pinoy website, poking fun at Filipino quirks—like the tendency to ignore overpasses or the use of deep Tagalog words like dagitab.<br><br>However, the tone shifts sharply in the latter half, moving from satire to a somber reflection on national identity. It confronts the reader with the harsh, unglamorous realities of Filipino behavior and the country's reputation abroad. Ultimately, the book isn't just about making people laugh; it’s a challenge for Filipinos to stop being \"backward\" in their thinking and to take responsibility for the nation's future.",
         "Synopsis": "",
-        "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Awards": ["Lingua Franca", "National Best Seller"],
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "3.90", "link": "https://www.goodreads.com/book/show/7315992-bakit-baliktad-magbasa-ng-libro-ang-mga-pilipino", },
+        },
           "References": [
-          "",
+          "https://sites.google.com/view/sibobpo/bit-lysibobpo/bakit-baliktad-magbasa-ng-libro-ang-mga-pilipino",
           ""]
-        }
       },
       {
         "Title": "Luha ng Buwaya",
         "Author": "Amado V. Hernandez",
-        "Author Photo": "image6/.jpg", 
+        "Author Photo": "image6/amado.jpg", 
         "AuthorBio": "",
         "Authorlink": "",
         "Sample Reviews": [
           { "text": "", "by": "" },
           { "text": ".", "by": "" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
+        "Image": "image6/luha.jpg",
+        "Publishing Date": 1962,
+        "Genre": ["Classics","Fiction","Political"],
         "Details": "",
         "Synopsis": "",
         "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.15/5", "link": "https://www.goodreads.com/book/show/1734867.Luha_ng_Buwaya", },
+        },
           "References": [
           "",
           ""]
-        }
       },
       {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
+        "Title": "Philippine Society and Revolution",
+        "Author": "Amado Guerrero",
+        "Author Photo": "image6/joma.webp", 
         "AuthorBio": "",
         "Authorlink": "",
         "Sample Reviews": [
           { "text": "", "by": "" },
           { "text": ".", "by": "" },
         ],
-        "Image": "image6/.jpg",
+        "Image": "image6/revolution.jpg",
         "Publishing Date": 1970,
-        "Genre": [""],
+        "Genre": ["History","Politics","Nonfiction","Theory"],
         "Details": "",
         "Synopsis": "",
         "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.39/5", "link": "https://www.goodreads.com/book/show/1636498.Philippine_Society_and_Revolution", },
+        },
           "References": [
           "",
           ""]
-        }
+      },
+
+{
+        "Title": "Mga Ibong Mandaragit",
+        "Author": "Amado V. Hernandez",
+        "Author Photo": "image6/amado.jpg", 
+        "AuthorBio": "Amado Vera Hernandez, known as Amado V. Hernandez, was a Filipino writer and labor leader celebrated for using his literary work to highlight social injustices in the Philippines. He became well known not only for his stories and poems included in early Tagalog anthologies but also for his leadership in labor organizing after World War II. Hernandez joined the resistance against the Japanese during the war and later helped build labor unions through the Congress of Labor Organizations. His activism and alleged ties to the communist movement led to his arrest in the early 1950s and a long legal battle that became a landmark case in Philippine law. While imprisoned, he produced many of his most important works, including Luha ng Buwaya and parts of Mga Ibong Mandaragit. After his release, he continued to write and teach, and was later honored as a National Artist for Literature",
+ "Authorlink": "https://www.penguin.sg/book_author/amado-v-hernandez/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/ibon.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Fiction","Classics","Historical","Politics"],
+        "Details": "Ibong Mandaragit (The Preying Birds) by Amado V. Hernandez is a seminal Filipino socio-political novel first published in 1969 that wrestles with the enduring inequalities of Philippine society in the wake of World War II and independence. Told through the experiences of Mando Plaridel, a former guerrilla fighter turned crusading journalist, the story blends political advocacy with adventure, romance, and social critique. Written during a time of national transformation, the novel emphasizes the pervasive influence of elite power, the importance of democratic values, and the struggle for social justice in a post-colonial nation. While the book carries clear political intent, its serialization in a popular magazine shows that Hernandez balanced message with narrative entertainment, including action, class conflict, and personal relationships.",
+        "Synopsis": "Set in the closing days of the Japanese occupation of the Philippines and continuing into the early years of independence, Ibong Mandaragit follows Mando Plaridel, once a servant in the household of the powerful landlord Segundo Montero, as he seeks to confront social injustice in his war-torn homeland. After the war, Mando recovers a treasure chest hidden at the end of a character’s journey in El Filibusterismo—a clever literary connection to the nation’s own canonical text—and uses the wealth to fund his newspaper, Kampilan, dedicated to exposing corruption and advocating reform. As Mando travels the world to sell the jewels and build resources for his mission, he navigates morally complex situations, indulgent comforts, and conflicting loyalties, including love affairs with his cousin Puri and Dolly Montero, the daughter of his former master who does not recognize him. Through his efforts to promote truth, education, and democratic change, the novel paints a vivid portrait of a nation struggling to realize its ideals amid entrenched privilege and power.",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.7/5", "link": "https://www.goodreads.com/book/show/1848266.Mga_Ibong_Mandaragit", },
+        },
+      },
+
+      {
+        "Title": "The Jupiter Effect",
+        "Author": "Katrina Tuvera",
+        "Author Photo": "image6/kat.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://www.goodreads.com/author/show/837072.Katrina_Tuvera",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/jupiter.jpg",
+        "Publishing Date": 2006,
+        "Genre": ["Fiction",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.62/5", "link": "https://www.goodreads.com/book/show/9591291-the-jupiter-effect", },
+        },
+          "References": [
+          "",
+          ""]
       },
       {
-        "Title": "",
-        "Author": "",
-        "Author Photo": "image6/.jpg", 
+        "Title": "The Conjugal Dictatorship of Ferdinand and Imelda Marcos",
+        "Author": "Primitivo Mijares",
+        "Author Photo": "image6/primitivo.jpg", 
         "AuthorBio": "",
         "Authorlink": "",
         "Sample Reviews": [
           { "text": "", "by": "" },
           { "text": ".", "by": "" },
         ],
-        "Image": "image6/.jpg",
-        "Publishing Date": 1970,
-        "Genre": [""],
+        "Image": "image6/conjugal.jpg",
+        "Publishing Date": 1976,
+        "Genre": ["History","Politics","Nonfiction",],
         "Details": "",
         "Synopsis": "",
         "Awards": ["", "", ""],
-        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "Book Review": "",
         "ratings": {
-          "Goodreads": { "score": "4.28/5", "link": "", },
+          "Goodreads": { "score": "4.4", "link": "https://www.goodreads.com/book/show/11027756-the-conjugal-dictatorship-of-ferdinand-and-imelda-marcos", },
+        },
           "References": [
           "",
           ""]
-        }
+      },
+       {
+        "Title": "Some Are Smarter than Others: The History of Marcos' Crony Capitalism",
+        "Author": "Ricardo Manapat",
+        "Author Photo": "image6/ricardo.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/smart.jpg",
+        "Publishing Date": 1991,
+        "Genre": ["History","Politics","Nonfiction","Biography"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.34/5", "link": "https://www.goodreads.com/book/show/1033578.Some_Are_Smarter_than_Others", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Banyaga: A Song of War",
+        "Author": "Charlson Ong",
+        "Author Photo": "image6/charles.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/war.jpg",
+        "Publishing Date": 2006,
+        "Genre": ["Historical Fiction","Novels"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.92", "link": "https://www.goodreads.com/book/show/1651892.Banyaga", },
+        },
+          "References": [
+          "",
+          ""]
       },
       {
         "Title": "100 Tula Para Kay Stella",
@@ -1279,6 +1397,950 @@ text-align: justify;    }
           "References": [
           "https://www.goodreads.com/book/show/36072192-100-tula-para-kay-stella",
           "https://en.wikipedia.org/wiki/Jason_Paul_Laxamana"]
+      },
+      {
+        "Title": "Eating Fire and Drinking Water",
+        "Author": "Arlene J. Chai",
+        "Author Photo": "image6/arlene.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/eatingfire.jpg",
+        "Publishing Date": 1996,
+        "Genre": ["Historical Fiction","Classics","Fiction",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.06/5", "link": "https://www.goodreads.com/book/show/1081084.Eating_Fire_and_Drinking_Water", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Rizal Without the Overcoat",
+        "Author": "Ambeth R. Ocampo",
+        "Author Photo": "image6/ambeth.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/rizal.jpg",
+        "Publishing Date": 1996,
+        "Genre": ["History","Nonfiction","Politics",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "https://www.goodreads.com/book/show/592719.Rizal_Without_the_Overcoat", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "History of the Filipino People",
+        "Author": "Teodoro A. Agoncillo",
+        "Author Photo": "image6/teodoro.webp", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/people.jpg",
+        "Publishing Date": 1960,
+        "Genre": ["History","Nonfiction","Reference",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.22/5", "link": "https://www.goodreads.com/book/show/2217845.History_of_the_Filipino_People", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "The Songs of Salanda and Other Stories of Sulu.",
+        "Author": "H. Arlo Nimmo",
+        "Author Photo": "image6/arlo.webp", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/nimo.jpg",
+        "Publishing Date": 1994,
+        "Genre": ["Anthropology","Ethnography"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.58", "link": "https://www.goodreads.com/book/show/1665686.The_Songs_of_Salanda_and_Other_Stories_of_Sulu_", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+       {
+        "Title": "An Anarchy of Families: State and Family in the Philippines",
+        "Author": "Alfred W. McCoy",
+        "Author Photo": "image6/alfred.jpg", 
+        "AuthorBio": "Dr. Alfred W. McCoy is a professor of Southeast Asian history at the University of Wisconsin–Madison and director of its Center for Southeast Asian Studies. For over 25 years, he has studied the politics and history of the opium trade and has served as an international speaker, consultant, and expert witness on drug policy, as well as a commentator for a global heroin trade documentary.",
+        "Authorlink": "https://www.goodreads.com/author/show/87928.Alfred_W_McCoy",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/state.jpg",
+        "Publishing Date": 1993,
+        "Genre": ["History","Politics","Nonfiction","Academic"],
+        "Details": "This award-winning book examines how the dominance of Filipino family-based oligarchies both grows out of—and helps sustain—a fragile and corrupt state. Spanning figures from provincial strongmen to modern corporate elites, it shows how influential Philippine leaders have long intertwined family ties, politics, and business to undermine public institutions while building private fortunes, a pattern that persists today. Edited by Alfred W. McCoy, An Anarchy of Families traces the enduring power of political dynasties over the past century. Families such as the Osmeñas, Lopezes, and Pardo de Taveras have operated as powerful alliances, commanding capital, shaping national politics, and at times relying on paramilitary force. Outside Manila, local bosses like Ramon Durano, Ali Dimaporo, and Justiniano Montano have similarly leveraged “guns, goons, and gold” to secure wealth and authority across the country’s provinces and islands.",
+        "Synopsis": "",
+        "Awards": ["Philippine National Book Award",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.35/5", "link": "https://www.goodreads.com/book/show/786690.An_Anarchy_of_Families", },
+        },
+          "References": [
+          "https://www.researchgate.net/publication/37699677_An_Anarchy_of_Families_State_and_Family_in_the_Philippines",
+          "https://www.goodreads.com/book/show/786690.An_Anarchy_of_Families"]
+      },
+      {
+        "Title": "America Is in the Heart",
+        "Author": "Carlos Bulosan",
+        "Author Photo": "image6/carlos.jpg", 
+        "AuthorBio": "Bulosan supported the labor movement and progressive politics through his writing and editorial work. He was involved with the United Cannery, Agricultural, Packing, and Allied Workers of America (UCAPAWA) and the International Longshore and Warehouse Union (ILWU), a largely Filipino American cannery union based in Seattle. In 1934, he helped edit The New Tide, a short-lived literary magazine for Filipino workers that linked him with other left-leaning writers such as Richard Wright and Sanora Babb. Through this publication, Bulosan advanced ideas of social justice, anti-colonial resistance, and working-class solidarity. He later served as editor of the 1952 Yearbook for ILWU Local 37. <p> In the 1940s and 1950s, Bulosan deepened his activism as a journalist for the ILWU. Writing for union publications, he focused on the harsh conditions faced by Filipino migrant laborers and advocated for interracial unity among workers along the Pacific Coast. His prominence as a labor writer attracted the attention of the FBI during the early Cold War, when he was labeled a “dangerous subversive.” Despite government scrutiny, Bulosan continued to publish in newsletters, magazines, and union yearbooks, giving voice to the experiences and hopes of Filipino workers and other marginalized communities in the United States.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Carlos_Bulosan",
+        "Sample Reviews": [
+          { "text": "“It is but fair to say that America is not a land of one race or one class of men. We are all Americans that have toiled and suffered and known oppression and defeat, from the first Indian that offered peace in Manhattan to the last Filipino pea pickers. America is not bound by geographical latitudes. America is not merely a land or an institution. America is in the hearts of men that died for freedom; it is also in the eyes of men that are building a new world. America is a prophecy of a new society of men: of a system that knows no sorrow or strife or suffering. America is a warning to those who would try to falsify the ideals of freemen.”", "by": " Carlos Bulosan, America Is in the Heart: A Personal History" },
+        ],
+        "Image": "image6/america.jpg",
+        "Publishing Date": 1946,
+        "Genre": ["Memoir","Autobiography","History"],
+        "Details": "America Is in the Heart by Carlos Bulosan is a landmark memoir that chronicles the struggles of Filipino immigrants in early 20th-century America. Following Allos as he leaves rural Philippines for the U.S., the book exposes the harsh realities of racism, labor exploitation, and shattered dreams. Through personal hardship and activism, Bulosan highlights the resilience and solidarity of the Filipino community, offering a powerful reflection on identity, injustice, and hope in the immigrant experience.",
+        "Synopsis": "First released in 1946, this landmark memoir by renowned Filipino poet Carlos Bulosan recounts his childhood in the Philippines, his journey to the United States, and the years of struggle and disillusionment he endured as a migrant worker moving along the agricultural circuits of the American West.",
+        "Awards": ["Filipino-American Representation",],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "3.92/5", "link": "https://www.goodreads.com/book/show/253813.America_Is_in_the_Heart", },
+        },
+          "References": [
+          "https://www.goodreads.com/book/show/253813.America_Is_in_the_Heart",
+          "https://www.kobo.com/ph/en/ebook/america-is-in-the-heart?srsltid=AfmBOorZGYhWDwuwXZeO731-IApxTQRABWi4etQAFrUw0YBzG14k3sbu",
+          "https://babel.hathitrust.org/cgi/pt?id=mdp.39015000566789&seq=13",
+        "https://www.ebsco.com/research-starters/literature-and-writing/america-heart-carlos-bulosan"
+      ,"https://www.litcharts.com/lit/america-is-in-the-heart/summary"]
+      },
+      
+      {
+        "Title": "100 Tula Para Kay Stella",
+        "Author": "Jason Paul Laxamana",
+        "Author Photo": "image6/jason.webp", 
+        "AuthorBio": "Jason Paul Laxamana is an acclaimed Filipino filmmaker and writer originally from Angeles City, Pampanga. He earned his degree in Broadcast Communication from the University of the Philippines Diliman. His entry into the industry involved serving in various support roles, including volunteer production assistant and stage manager, while also handling technical duties like script continuity and local coordination for regional film shoots. <p> Laxamana first gained recognition through award-winning Kapampangan short films and his 2010 feature Astro Mayabang. He eventually became a prominent figure in the industry by directing a string of successful romance films, such as 100 Tula Para Kay Stella, which he focused on to establish a steady career. Recently, he has shifted toward mainstream action-adventure projects like Penduko to explore more diverse creative interests beyond the romance genre.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Jason_Paul_Laxamana",
+        "Sample Reviews": [
+          { "text": "Babaeng Nakaitim Na Lipstick, Itim ang lipstick niya, Subalit mabait siya, Sadya akong namangha, Sa angkin niyang... ganda? ", "by": "100 Tula Para Kay Stella (2017)" },
+        ],
+        "Image": "image6/tula.jpg",
+        "Publishing Date": 2017,
+        "Genre": ["Romance","Love Story"],
+        "Details": "The book version of 100 Tula Para Kay Stella is a novelization written by the story's original creator, Jason Paul Laxamana, and published by Viva Books in 2017. While it follows the same plot as the film, the book provides a deeper look into Fidel’s internal thoughts and the specific text of the 100 poems he wrote. It serves as a companion piece to the movie, expanding on the emotional journey of the characters through the written word.",
+        "Synopsis": "Fidel is a shy college student with a speech impediment who loves poetry. He strikes up an unlikely friendship with Stella, a tough and aspiring rock musician who often struggles with her academics and personal life. <p> Because Fidel finds it hard to speak, he secretly writes poems to express his feelings. His goal is to write 100 poems for Stella and hand them to her when he finally builds the courage to confess his love. <p> The story spans their four years in college. Despite their deep bond, bad timing and different life choices keep them apart, teaching Fidel a painful lesson about letting go.",
+        "Awards": ["Novelization",],
+        "Book Review": "https://www.youtube.com/watch?v=ubJtywJcS6E",
+        "ratings": {
+          "Goodreads": { "score": "3.80", "link": "https://www.goodreads.com/book/show/36072192-100-tula-para-kay-stella", },
+         },
+          "References": [
+          "https://www.goodreads.com/book/show/36072192-100-tula-para-kay-stella",
+          "https://en.wikipedia.org/wiki/Jason_Paul_Laxamana"]
+      },
+      {
+        "Title": "Barangay: Sixteenth-Century Philippine Culture and Society",
+        "Author": "William Henry Scott",
+        "Author Photo": "image6/henry.jpg", 
+        "AuthorBio": "William Henry Scott (born Henry King Ahrens; July 10, 1921 – October 4, 1993) was an American historian, ethnographer, and scholar who specialized in the Cordillera Central and pre-Hispanic Philippines. Renowned for his in-depth research on Philippine history, indigenous cultures, and pre-colonial societies, Scott spent much of his life in the Philippines, focusing particularly on the Igorot people and early Filipino civilizations. <p> He authored several influential works that challenged colonial-era interpretations of Philippine history, most notably Prehispanic Source Materials for the Study of Philippine History (1968), which critically analyzed Spanish documents alongside indigenous accounts. His research made lasting contributions to understanding pre-colonial Philippine culture, trade, and political structures. <p> Before his academic career, Scott was a Benedictine monk, but he later left the religious order and became a professor at the University of the Philippines Baguio. He was widely respected for his dedication to historical accuracy and for centering indigenous perspectives in Philippine historiography.",
+        "Authorlink": "https://en.wikipedia.org/wiki/William_Henry_Scott_(historian)",
+        "Sample Reviews": [
+          
+        ],
+        "Image": "image6/barangay.png",
+        "Publishing Date": 1994,
+        "Genre": ["Academic","History","Anthropology"],
+        "Details": "This book offers a portrait of pre-Hispanic Philippine life by a leading Filipino historian, drawn primarily from a close study of early Philippine-language dictionaries. It aims to distinguish historical realities from later myths about pre-Spanish Filipinos. Presenting a sixteenth-century ethnography based strictly on contemporary accounts, the work does not attempt to reconstruct early society by referencing modern Philippine communities, generalized Austronesian traits, or parallels with other Southeast Asian cultures. Instead, it focuses on a single guiding question: how did the Spaniards describe the Filipino people at the time of first contact? By addressing this question, the book invites present-day Filipino readers to imaginatively experience the world of their ancestors four centuries ago. The first part examines Visayan society through eight chapters covering physical appearance, subsistence and agriculture, crafts and trade, religion, literature and leisure, natural knowledge, social structure, and warfare. The second part extends the discussion to other regions of the archipelago, moving from south to north.",
+        "Synopsis": "",
+        "Awards": ["1994 National Book Award,", "1998 Gintong Aklat Award, for Social Science",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.24/5", "link": "https://www.goodreads.com/book/show/1598818.Barangay", },
+        },
+          "References": [
+          "https://www.goodreads.com/book/show/1598818.Barangay",
+          "https://www.reddit.com/r/FilipinoHistory/comments/1f5ky3d/is_barangay_by_william_henry_scott_really_still/",
+        "https://unipress.ateneo.edu/product/barangay-sixteenth-century-philippine-culture-and-society-1",
+      ""]
+      },
+      {
+        "Title": "Looking for the Prehispanic Filipino: And Other Essays in Philippine History",
+        "Author": "William Henry Scott",
+        "Author Photo": "image6/henry.jpg", 
+        "AuthorBio": "William Henry Scott (born Henry King Ahrens; July 10, 1921 – October 4, 1993) was an American historian, ethnographer, and scholar who specialized in the Cordillera Central and pre-Hispanic Philippines. Renowned for his in-depth research on Philippine history, indigenous cultures, and pre-colonial societies, Scott spent much of his life in the Philippines, focusing particularly on the Igorot people and early Filipino civilizations. <p> He authored several influential works that challenged colonial-era interpretations of Philippine history, most notably Prehispanic Source Materials for the Study of Philippine History (1968), which critically analyzed Spanish documents alongside indigenous accounts. His research made lasting contributions to understanding pre-colonial Philippine culture, trade, and political structures. <p> Before his academic career, Scott was a Benedictine monk, but he later left the religious order and became a professor at the University of the Philippines Baguio. He was widely respected for his dedication to historical accuracy and for centering indigenous perspectives in Philippine historiography.",
+        "Authorlink": "https://en.wikipedia.org/wiki/William_Henry_Scott_(historian)",
+         "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/hispanic.jpg",
+        "Publishing Date": 1993,
+        "Genre": ["Academic","History","Anthropology"],
+        "Details": "For 25 years, William Henry Scott reconstructed sixteenth-century Philippine culture through a careful examination of contemporary documents. In his earlier work, Cracks in the Parchment Curtain, he illustrated how much valuable information could be extracted from obscure Spanish records. Regarding these sources, he noted that original letters, reports, disputes among conquistadors, requests for support or rewards, long-winded recommendations that went unheeded, and decrees shaped by local resistance all contained direct or indirect insights into Filipino behavior and societal conditions. <p> In this collection, Scott continues his rigorous scholarship to offer fresh perspectives on Filipino life at the time of Spanish contact. In the title essay, he demonstrates how mistranslations and colonial biases have skewed our understanding of indigenous cultures, while in another essay he demythologizes the so-called Papal Line of Demarcation. Other essays explore Philippine slavery, Tagalog technology, Cebuano politics, and Visayan agriculture, literature, and religion. Notably, he translates a 1595 document critical of Spanish rule as “The conquerors as seen by the conquered.”",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.20/5", "link": "https://www.goodreads.com/book/show/2233134.Looking_for_the_Prehispanic_Filipino", },
+        },
+          "References": [
+          "https://www.goodreads.com/book/show/2233134.Looking_for_the_Prehispanic_Filipino",]
+      },
+      {
+        "Title": "Culture and History",
+         "Author": "Nick Joaquin",
+        "Author Photo": "image6/nick.jpg", 
+        "AuthorBio": "<p>Nick Joaquin (1917–2004) was a prominent Filipino writer and journalist, widely regarded as one of the most important figures in Philippine literature. Writing primarily in English, he distinguished himself from earlier national figures such as José Rizal and Claro M. Recto, whose works were written in Spanish. Joaquin also wrote under the pen name Quijano de Manila and was later honored as a National Artist of the Philippines for Literature.</p><p>Before his literary career, Joaquin studied as a seminarian in Hong Kong, an experience that deeply influenced his worldview. He eventually decided that writing, rather than the priesthood, was his way of serving both God and society. His works consistently emphasize the importance of history, Catholicism, and Spanish colonial heritage, reflecting his belief that understanding the past is essential to addressing modern social problems. He viewed himself as a “cultural apostle,” using literature to revive national consciousness and preserve the country’s spiritual traditions.</p><p>Upon returning to the Philippines, Joaquin joined the Philippines Free Press, where he gained recognition for his poetry, fiction, plays, and bold journalistic style. His essays as Quijano de Manila elevated Philippine journalism by combining intellectual depth with social critique. He was also a devoted admirer of José Rizal, writing extensively about the national hero and translating Rizal’s final poem, Mi Último Adiós, into English.</p><p>Joaquin represented the Philippines internationally and served in government cultural institutions, including the Motion Pictures Commission. After being named National Artist, he actively defended intellectual freedom, notably helping secure the release of an imprisoned writer. His criticism of authoritarian rule, however, led to his marginalization during the Marcos regime.</p><p>Nick Joaquin passed away in 2004 due to cardiac arrest. Until his death, he remained active in journalism and publishing, serving as editor of Philippine Graphic and contributing columns to major newspapers. His legacy endures as a writer who shaped Filipino identity through history, culture, and literature.</p>",
+        "Authorlink": "https://en.wikipedia.org/wiki/Nick_Joaquin",
+       "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/culture.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.19/5", "link": "https://www.goodreads.com/book/show/1432397.Culture_and_History", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "The History of the Burgis",
+        "Author": ["Mariel N. Francisco and  Fe Maria Arriola"],
+        "Author Photo": "image6/culture.jpg", 
+        "AuthorBio": "asasdasdasdasd",
+        "Authorlink": "https://www.goodreads.com/en/book/show/1622524.The_History_of_the_Burgis",
+        "Author2": "Fe Maria Arriola",
+        "AuthorBio2": "yawAw",
+        "Author Photo": "image6/.jpg", 
+        "Authorlink": "https://www.goodreads.com/en/book/show/1622524.The_History_of_the_Burgis",
+
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/burgis.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["History","Academic"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["	NBDB National Book Awards for History (1987)",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.21/5", "link": "https://www.goodreads.com/book/show/1622524.The_History_of_the_Burgis", },
+        },
+          "References": [
+          "https://www.philippinebooks.com/products/history-of-the-burgis",
+          ""]
+      },
+      {
+        "Title": "The Boxer Codex",
+        "Author": "C.R. Boxer",
+        "Author Photo": "image6/boxer.jpg", 
+        "AuthorBio": "The English historian Charles Ralph Boxer acquired the manuscript in 1947 from Lord Ilchester’s collection in London. Recognizing its significance, which he referred to as the 'Manila Manuscript,'' Boxer published a detailed description of it in 1950. He also made the manuscript accessible to other researchers for study, after which it became widely known as the Boxer Codex. Eventually, Boxer sold the manuscript to Indiana University, where it is now housed in the Lilly Library.",
+        "Authorlink": "https://en.wikipedia.org/wiki/C._R._Boxer",
+        "Sample Reviews": [
+          { "text": "The Boxer Codex is a significant 16th-century Spanish manuscript from the Philippines, famous for its detailed illustrations and descriptions of indigenous peoples and cultures in Southeast Asia, including Filipinos (Tagalogs, Visayans, Aeta), Chinese, Japanese, and others,", "by": ""  },
+        ],
+        "Image": "image6/codex.jpg",
+        "Publishing Date": 1590,
+        "Genre": ["History","Anthropology","Academic",],
+        "Details": "The Boxer Codex is a late sixteenth-century manuscript, believed to have been created around 1590, that provides one of the earliest and most detailed records of the peoples and cultures of the Philippines and surrounding regions shortly after Spanish contact. Named after the British historian Charles Ralph Boxer, who acquired it in the 20th century, the codex contains over seventy full-color illustrations depicting various ethnic groups in the Philippines as well as communities from parts of Southeast Asia, including Borneo, Java, and China. These images carefully portray clothing, hairstyles, weapons, and daily activities, while accompanying text describes social customs, political structures, and cultural practices, offering invaluable ethnographic insight. The codex is particularly significant because it captures Philippine societies before they were heavily influenced by Spanish colonization, making it an essential resource for historians, anthropologists, and artists studying pre-Hispanic Philippine life. Likely commissioned by Spanish authorities to better understand the region’s people, the Boxer Codex remains a rare and vivid window into the early history and cultural diversity of the Philippines.",
+        "Synopsis": "",
+        "Awards": ["Accounts of Early Philippines",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "5/5", "link": "https://www.goodreads.com/book/show/59615898-boxer-codex", },
+        },
+          "References": [
+          "https://revista.carayanpress.com/page16/styled-3/page26/index.html",
+          "https://en.wikipedia.org/wiki/Boxer_Codex",
+        ]
+      },
+        {
+        "Title": "Tikim: Essays on Philippine Food and Culture",
+        "Author": "Doreen G. Fernandez",
+        "Author Photo": "image6/dooren.png", 
+        "AuthorBio": "Born on October 28, 1934, she earned her AB in English and History from St. Scholastica’s College, Manila, and her MA and PhD in Literature from the Ateneo de Manila University. She joined the Ateneo faculty in 1972, later chairing the departments of Communication, English, and Interdisciplinary Studies, and served on several scholarly editorial boards. A recipient of the Metrobank Foundation Outstanding Teacher Award in 1998, she taught literature, writing, and journalism, and conducted research on cultural, literary, theatrical, and culinary history.",
+        "Authorlink": "https://doreenfernandez.wordpress.com/about/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/tikim.jpg",
+        "Publishing Date": 1994,
+        "Genre": ["Cooking","History","Food","Essays"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["Gintong Aklat Awards for Cookbooks and Food 1998",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.09/5", "link": "https://www.goodreads.com/book/show/1621045.Tikim", },
+        },
+          "References": [
+          "https://bookbed.org/2021/04/30/why-filipinos-should-read-tikim-essays-on-philippine-food-and-culture-by-doreen-g-fernandez/",
+        "https://www.vice.com/en/article/how-doreen-fernandez-tikim-shaped-filipino-food-writing-and-how-it-was-resurrected/",  
+        "https://www.nytimes.com/2019/07/30/dining/filipino-food-doreen-fernandez.html"]
+      },
+      {
+        "Title": "Florante at Laura ",
+        "Author": "Francisco Balagtas",
+        "Author Photo": "image6/franciso.webp", 
+        "AuthorBio": "Francisco Balagtas y de la Cruz (April 2, 1788 – February 20, 1862), also known as Francisco Balagtas or Francisco Baltazar, was a prominent Filipino poet and writer in the Tagalog language during the Spanish colonial period. He is regarded as one of the most influential figures in Philippine literature, with Florante at Laura widely recognized as his most important and enduring work.",
+        "Authorlink": "https://en.wikipedia.org/wiki/Francisco_Balagtas",
+        "Sample Reviews": [
+          { "text": "Florante, ang bawat sandali ikay hindi ko kapiling, ay katumbas ng maraming taon sa akin.", "by": "Laura" },
+          { "text": "Ay, mahal kong Laura, paalam na ang abang sinta mong kinulang palad.", "by": "Florante" },
+        ],
+        "Image": "image6/florante.jpg",
+        "Publishing Date": 1838,
+        "Genre": ["Classic","Romance","School","Epic Poetry"],
+        "Details": "Florante at Laura is a classic Filipino epic poem (awit) written by Francisco Balagtas (also known as Francisco Baltazar) and first published in 1838. Widely regarded as one of the most important works in Philippine literature, the poem is written in Tagalog and follows a strict poetic structure of four lines per stanza, each line containing twelve syllables. Although the story is set in fictional European kingdoms such as Albania and Persia, the work symbolically reflects social injustice, oppression, and moral decay experienced by Filipinos during the Spanish colonial period. Through elevated language and poetic imagery, Balagtas explores enduring themes such as true love, loyalty, courage, betrayal, and the abuse of power. The poem also holds historical significance as it was written during the author’s imprisonment and was inspired by his own personal suffering and unfulfilled love.",
+        "Synopsis": "The story centers on Florante, a noble and courageous prince of Albania, who is found tied to a tree in a forest, lamenting his tragic fate. He is rescued by Aladin, a Muslim prince, to whom Florante narrates his life story. Florante recalls his education in Athens, where he excelled but earned the jealousy of Count Adolfo, who later becomes his enemy. Upon returning to Albania, Florante serves his kingdom bravely in war and falls in love with Laura, the daughter of King Linceo. While Florante is away defending the kingdom, Adolfo stages a coup, kills the king, imprisons Laura, and orders Florante’s execution. Florante survives and is abandoned in the forest, where the narrative begins. Eventually, Flerida, Aladin’s beloved, kills Adolfo to save Laura. With the help of Florante’s loyal friend Menandro, peace is restored in Albania. The poem ends with the reunion of Florante and Laura, as well as Aladin and Flerida, highlighting the triumph of justice, love, and virtue over cruelty and betrayal.",
+        "Awards": ["Classical Literature that is a required reading for school",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.81/5", "link": "https://www.goodreads.com/book/show/1848283.Florante_at_Laura", },
+        },
+          "References": [
+          "https://en.wikipedia.org/wiki/Francisco_Balagtas",
+          "https://en.wikipedia.org/wiki/Florante_at_Laura"]
+      },
+      {
+        "Title": "Patron Saints of Nothing",
+        "Author": "Randy Ribay",
+        "Author Photo": "image6/randy.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Randy_Ribay",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/patron.jpg",
+        "Publishing Date": 2019,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.20/5", "link": "https://www.goodreads.com/book/show/41941681-patron-saints-of-nothing", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Banana Heart Summer",
+        "Author": "Merlinda Bobis",
+        "Author Photo": "image6/merlin.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Merlinda_Bobis",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/banana.jpg",
+        "Publishing Date": 1970,
+        "Genre": ["Coming of Age","Young Adult"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.98/5", "link": "https://www.goodreads.com/book/show/2686630-banana-heart-summer", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Bone Talk",
+        "Author": "Candy Gourlay",
+        "Author Photo": "image6/candy.png", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Candy_Gourlay",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/bone.jpg",
+        "Publishing Date": 2018,
+        "Genre": ["Young Adult",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.74/5", "link": "https://www.goodreads.com/book/show/39723033-bone-talk", },
+        },
+          "References": [
+          "https://www.rappler.com/life-and-style/literature/226410-bone-talk-by-candy-gourlay/",
+          ""]
+      },
+      {
+        "Title": "In Our Image: America's Empire in the Philippines",
+        "Author": "Stanley A. Karnow",
+        "Author Photo": "image6/stan.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://iop.harvard.edu/fellows/stanley-karnow",
+        "Sample Reviews": [
+          { "text": "“A brilliant, coherent social and political overview spanning three turbulent centuries.", "by": "San Francisco Chronicles" },
+          { "text": "“Stanley Karnow has written the ultimate book—brilliant, panoramic, engrossing—about American behavior overseas in the twentieth century.”", "by": "The Boston Sunday Globe" },
+        ],
+        "Image": "image6/times.jpg",
+        "Publishing Date": 1989,
+        "Genre": ["American History","History","Politics","Academic"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["Pulitzer Prize",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.11/5", "link": "https://www.goodreads.com/book/show/362730.In_Our_Image", },
+        },
+          "References": [
+          "https://www.penguinrandomhouse.com/books/89863/in-our-image-by-stanley-karnow/",
+          ""]
+      },
+      {
+        "Title": "A History of the Philippines: From Indios Bravos to Filipinos",
+        "Author": "Luis H. Francia",
+        "Author Photo": "image6/luis.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/indios.jpg",
+        "Publishing Date": 2010,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.93/5", "link": "https://www.goodreads.com/book/show/7869640-a-history-of-the-philippines", },
+        },
+          "References": [
+          "https://www.penguinrandomhouse.com/authors/237400/luis-h-francia/",
+          "https://as.nyu.edu/faculty/luis-francia.html"]
+      },
+      {
+        "Title": "The Huk Rebellion: A Study of Peasant Revolt in the Philippines",
+        "Author": "Benedict J. Kerkvliet",
+        "Author Photo": "image6/ben.jpeg", 
+        "AuthorBio": "",
+        "Authorlink": "https://researchportalplus.anu.edu.au/en/persons/benedict-kerkvliet/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/huk.jpg",
+        "Publishing Date": 1977,
+        "Genre": ["History","War","Politics"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.77/5", "link": "https://www.goodreads.com/book/show/424000.The_Huk_Rebellion", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Amazons of the Huk Rebellion: Gender, Sex, and Revolution in the Philippines",
+        "Author": "Vina A. Lanzona",
+        "Author Photo": "image6/vina.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://manoa.hawaii.edu/history/directory/vlanzona.php",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/amazon.jpg",
+        "Publishing Date": 2009,
+        "Genre": ["History","War"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.38/5", "link": "https://www.goodreads.com/book/show/6294569-amazons-of-the-huk-rebellion", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "The Philippines: A Past Revisited",
+        "Author": "Renato Constantino, Letizia R. Constantino",
+        "Author Photo": "image6/renato.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://bantayogngmgabayani.org/bayani/renato-constantino/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/past.jpg",
+        "Publishing Date": 1975,
+        "Genre": ["History","Politics","Academic"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        },
+          "References": [
+          "https://bantayogngmgabayani.org/bayani/renato-constantino/",
+          "https://www.facebook.com/photo/?fbid=816844227151609&set=a.464186352417400"]
+      },
+      {
+        "Title": "When the Elephants Dance",
+        "Author": "Tess Uriza Holthe",
+        "Author Photo": "image6/tess.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://www.penguinrandomhouse.com/authors/13388/tess-uriza-holthe/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/elephant.jfif",
+        "Publishing Date": 1970,
+        "Genre": ["War","Historical Fiction","History"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.05/5", "link": "https://www.goodreads.com/book/show/16035.When_the_Elephants_Dance", },
+        },
+          "References": [
+          "https://www.penguinrandomhouse.com/books/286495/when-the-elephants-dance-by-tess-uriza-holthe/",
+          ""]
+      },
+      {
+        "Title": "The Revolt of the Masses: The Story of Bonifacio and the Katipunan",
+        "Author": "Teodoro Agoncillo",
+        "Author Photo": "image6/teo.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://philippineculturaleducation.com.ph/agoncillo-teodoro/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/agon.jpg",
+        "Publishing Date": 1956,
+        "Genre": ["History"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.10/5", "link": "https://www.goodreads.com/book/show/5663803-the-revolt-of-the-masses", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Doctrina Christiana",
+        "Author": "Fray Juan de Plasencia",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/doc.jpg",
+        "Publishing Date": 1593,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.64/5", "link": "https://www.goodreads.com/book/show/7421827-doctrina-christiana", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Insurrecto",
+        "Author": "Gina Apostol",
+        "Author Photo": "image6/gina.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://ginaapostol.com/about",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/inser.jfif",
+        "Publishing Date": 2018,
+        "Genre": ["Historical Fiction"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["	Dayton Literary Peace Prize Nominee for Fiction (2019)",],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.50/5", "link": "https://www.goodreads.com/book/show/40237027-insurrecto", },
+        },
+          "References": [
+          "https://barnard.edu/profiles/gina-apostol",
+          ""]
+      },
+      {
+        "Title": "Pasyon and Revolution: Popular Movements in the Philippines, 1840-1910",
+        "Author": "Reynaldo Clemena Ileto",
+        "Author Photo": "image6/reynaldo.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://fukuoka-prize.org/en/laureates/detail/23c0e846-12a6-413f-a3a3-027c626bdd7b",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/pasyon.webp",
+        "Publishing Date": 1979,
+        "Genre": ["History","Academic"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.17/5", "link": "https://www.goodreads.com/book/show/1271349.Pasyon_and_Revolution", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Desaparesidos",
+        "Author": "Lualhati Bautista",
+        "Author Photo": "image6/bautista.jpg", 
+        "AuthorBio": "Lualhati Bautista (1945–2023) was a renowned Filipino novelist, writer, and activist, widely regarded as one of the most influential female voices in contemporary Philippine literature. Her works often explore social and political issues, reflecting her commitment to liberal ideals and criticism of authoritarianism. Among her most celebrated novels are Dekada ’70, Bata, Bata, Pa’no Ka Ginawa?, and GAPÔ, which continue to resonate for their insightful portrayal of Filipino society, women’s struggles, and historical realities.",
+        "Authorlink": "https://www.goodreads.com/author/show/673490.Lualhati_Bautista",
+          "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/desa.jpg",
+        "Publishing Date": 2006,
+        "Genre": ["Historical Fiction"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.32/5", "link": "https://www.goodreads.com/book/show/5932370-desaparesidos", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Dreamland Trilogy",
+        "Author": "Ronaldo S. Vivo Jr.",
+        "Author Photo": "image6/ron.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://www.penguin.sg/book_author/ronaldo-s-vivo-jr/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/vivo.jpg",
+        "Publishing Date": 2015,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.5/5", "link": "https://www.goodreads.com/series/401885-dreamland-trilogy", },
+        },
+          "References": [
+          "https://www.penguin.sg/book_author/ronaldo-s-vivo-jr/",
+          ""]
+      },
+      {
+        "Title": "Mindoro and Beyond: Stories",
+        "Author": "N.V.M Gonzales",
+        "Author Photo": "image6/nvm.jfif", 
+        "AuthorBio": "",
+        "Authorlink": "https://www.ebsco.com/research-starters/history/n-v-m-gonzalez",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/abe.jpg",
+        "Publishing Date": 1979,
+        "Genre": ["Short Stories"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.96/5", "link": "https://www.goodreads.com/book/show/1727948.Mindoro_and_Beyond", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "The Spear Cuts Through Water",
+        "Author": "Simon Jimenez",
+        "Author Photo": "image6/simon.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Simon_Jimenez",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/spear.jpg",
+        "Publishing Date": 2022,
+        "Genre": ["Fantasy","LGBT","Fil-Am"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.14/5", "link": "https://www.goodreads.com/book/show/55868456-the-spear-cuts-through-water", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "The Body Papers",
+        "Author": "Grace Talusan",
+        "Author Photo": "image6/grace.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://www.gracetalusan.com/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/papers.jpg",
+        "Publishing Date": 2019,
+        "Genre": ["Memoir","Non-Fiction"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "In the Country",
+        "Author": "Mia Alvar",
+        "Author Photo": "image6/mia.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Mia_Alvar",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/country.jpg",
+        "Publishing Date": 2015,
+        "Genre": ["Short Stories","Fil-Am"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.07/5", "link": "https://www.goodreads.com/book/show/23616578-in-the-country", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Monstress",
+        "Author": "Lysley Tenorio",
+        "Author Photo": "image6/les.webp", 
+        "AuthorBio": "",
+        "Authorlink": "https://writingseminars.jhu.edu/directory/lysley-tenorio/",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/mons.jpg",
+        "Publishing Date": 2012,
+        "Genre": ["Short Stories","Fil-Am","LGBT"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.96/5", "link": "https://www.goodreads.com/book/show/12345883-monstress", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "A Tiny Upward Shove",
+        "Author": "Melissa Chadburn",
+        "Author Photo": "image6/melissa.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "https://capitalandmain.com/author/mchadburn",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/tiny.jpeg",
+        "Publishing Date": 2022,
+        "Genre": ["Fiction","Magical Realism","Fil-Am","Horror"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "3.88/5", "link": "https://www.goodreads.com/book/show/57693570-a-tiny-upward-shove", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "Letters to a Young Brown Girl",
+        "Author": "Barbara Jane Reyes",
+        "Author Photo": "image6/barb.jpeg", 
+        "AuthorBio": "",
+        "Authorlink": "https://en.wikipedia.org/wiki/Barbara_Jane_Reyes",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/letters.jpg",
+        "Publishing Date": 2020,
+        "Genre": ["Poetry","Feminism","Fil-Am"],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.35/5", "link": "https://www.goodreads.com/book/show/51042643-letters-to-a-young-brown-girl", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.jpg", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 1970,
+        "Genre": [""],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "4.28/5", "link": "", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.webp", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 2006,
+        "Genre": ["Fiction",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "", "link": "", },
+        },
+          "References": [
+          "",
+          ""]
+      },
+      {
+        "Title": "",
+        "Author": "",
+        "Author Photo": "image6/.webp", 
+        "AuthorBio": "",
+        "Authorlink": "",
+        "Sample Reviews": [
+          { "text": "", "by": "" },
+          { "text": ".", "by": "" },
+        ],
+        "Image": "image6/.jpg",
+        "Publishing Date": 2006,
+        "Genre": ["Fiction",],
+        "Details": "",
+        "Synopsis": "",
+        "Awards": ["", "", ""],
+        "Book Review": "",
+        "ratings": {
+          "Goodreads": { "score": "", "link": "", },
+        },
+          "References": [
+          "",
+          ""]
       },
       
     ];
@@ -1438,6 +2500,53 @@ text-align: justify;    }
         authorPhoto.src = book['Author Photo'];
         authorPhoto.alt = book.Author || 'Author';
         authorPhoto.style.display = 'block';
+
+        const author2Block = document.getElementById('author2Block');
+const author2Label = document.getElementById('author2Label');
+const modalAuthorInline2 = document.getElementById('modalAuthorInline2');
+const modalAuthorBio2 = document.getElementById('modalAuthorBio2');
+const modalAuthorPhoto2 = document.getElementById('modalAuthorPhoto2');
+
+if (book.Author2 && book.Author2.trim()) {
+  // Show entire Author 2 section
+  author2Block.style.display = '';
+
+  // Author 2 name + link
+  const author2Href = (book.Authorlink2 && book.Authorlink2.trim())
+    ? book.Authorlink2
+    : `https://en.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(book.Author2)}`;
+
+  modalAuthorInline2.innerHTML = `
+    <a href="${author2Href}" class="author-link" target="_blank" rel="noopener noreferrer">
+      ${book.Author2}
+    </a>
+  `;
+
+  // Author 2 bio
+  modalAuthorBio2.innerHTML = book.AuthorBio2 || '—';
+
+  // Author 2 photo
+  if (book.Authorphoto2 && book.Authorphoto2.trim()) {
+    modalAuthorPhoto2.src = book.Authorphoto2;
+    modalAuthorPhoto2.alt = book.Author2;
+    modalAuthorPhoto2.style.display = '';
+  } else {
+    modalAuthorPhoto2.style.display = 'none';
+    modalAuthorPhoto2.src = '';
+  }
+
+} else {
+  // Hide entire Author 2 section
+  author2Block.style.display = 'none';
+
+  // Cleanup (important for modal reuse)
+  modalAuthorInline2.innerHTML = '';
+  modalAuthorBio2.innerHTML = '';
+  modalAuthorPhoto2.src = '';
+  modalAuthorPhoto2.style.display = 'none';
+}
+
+        
         
         // Add click handler to author photo for photo view
         authorPhoto.onclick = (e) => {
@@ -1584,7 +2693,7 @@ text-align: justify;    }
 
     function updateThemeIcon(theme){
       themeToggles.forEach(btn => {
-        btn.textContent = theme === 'theme-dark' ? '☀️' : '🌙';
+        btn.textContent = theme === 'theme-dark' ? 'Light Mode' : 'Dark Mode';
         btn.setAttribute('aria-label', theme === 'theme-dark' ? 'Switch to light mode' : 'Switch to dark mode');
       });
     }
