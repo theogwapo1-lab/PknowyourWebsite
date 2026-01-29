@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pknow Your National Awardees</title>
+
+
+<style>
+:root{
+  --bg: #ffffff;      /* Light mode background */
+  --card:#1b1e25;
+  --accent:#ffb73a;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --radius:14px;
+}
+
+body{
+  margin:0;
+  font-family:'Times New Roman', Times, serif;
+  font-size: 16px;
+     background: var(--bg);
+       color:var(--text);
+
+}
+
+ body.theme-dark{      
+  --bg: #000000;      /* Dark mode background */
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+
+}
+
+ .wrap{max-width:1100px;margin:0 auto;padding:24px 18px}
+    .logo{max-width:680px;width:100%;margin:6px auto 0;display:block}
+    .disclaimer{text-align:center;font-size:12px;color:var(--meta-color);margin-top:6px}
+
+
+/* ===== GRID ===== */
+#awardeeGrid{
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+/* ===== CARD ===== */
+.card{
+  position:relative;
+  background:var(--card);
+  border-radius:var(--radius);
+  overflow:hidden;
+  cursor:pointer;
+  height:360px;
+  transition:.3s ease;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ===== SLIDE INFO ===== */
+.card-info{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:45%;
+  padding:16px;
+  background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.4));
+  transform:translateY(100%);
+  transition:.35s ease;
+}
+
+.card:hover .card-info{
+  transform:translateY(0);
+}
+
+.card-info h3{
+  margin:0;
+  font-size:18px;
+  font-weight:700;
+}
+
+.card-info .award{
+  font-size:13px;
+  color:var(--accent);
+  margin:4px 0;
+}
+
+.card-info p{
+  font-size:13px;
+  color:#d1d5db;
+  line-height:1.4;
+}
+
+/* ===== MODAL ===== */
+/* REPLACED MODAL CSS START */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  overflow: scroll;
+  z-index: 1000;
+}
+
+.modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Main modal panel */
+.modal-content {
+  width: 50%;
+  height: 500px;
+  padding: 28px 32px;
+  position: relative;
+  font-family: "Georgia", serif;
+background-color: white;
+}
+
+/* Decorative corners illusion */
+.modal-content::before,
+.modal-content::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border-radius: 16px;
+  pointer-events: none;
+}
+
+/* Tabs container */
+.modal-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+/* Tab buttons */
+.modal-tabs button {
+  background: #f5f1e6;
+  border: 2px solid #6f5a3a;
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.15);
+}
+
+.modal-tabs button:hover {
+  background: #fff;
+}
+
+.modal-tabs button.active {
+  background: #fff;
+  box-shadow: inset 0 2px 0 rgba(0,0,0,0.2);
+}
+
+/* Modal body layout */
+.modal-body {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 26px;
+}
+
+#modalImg {
+  width: 200px;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 4px solid #3a3a3a;
+  background: #fff;
+  box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+  display: block;
+  margin: 0 auto;
+  cursor: pointer;
+}
+/* ...e
+
+
+/* Text content */
+.modal-info h1 {
+  font-size: 32px;
+  margin: 0 0 6px;
+}
+
+.modal-info h2 {
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0 0 14px;
+  color: #333;
+}
+
+.modal-info p {
+  margin: 6px 0;
+  line-height: 1.55;
+}
+
+/* Biography section */
+.modal-bio {
+  margin-top: 14px;
+}
+
+/* Works list */
+#modalWorks {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+#modalWorks li {
+  margin-bottom: 6px;
+}
+
+/* References */
+#modalReferences a {
+  color: #3b2f1b;
+  text-decoration: underline;
+}
+
+#modalReferences a:hover {
+  color: #000;
+}
+
+/* Close button (optional) */
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 26px;
+  cursor: pointer;
+  color: #3a2e1c;
+}
+/* REPLACED MODAL CSS END */
+
+/* ...existing code... */
+
+.controls {
+  margin: 24px 0 0 0;
+  padding: 18px 24px;
+  border-radius: 16px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.controls-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 340px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #181b20;
+  color: #fff;
+  font-size: 15px;
+  margin-bottom: 8px;
+  outline: none;
+  transition: border 0.2s;
+}
+.search-input:focus {
+  border: 1.5px solid #74a9cc;
+}
+
+.dark-toggle {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.pill {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid #444;
+  background: #181b20;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+  cursor: pointer;
+}
+.pill:focus, .pill:hover {
+  border: 1.5px solid #74a9cc;
+  background: #23272f;
+}
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-clear {
+  background: #e5e7eb;
+  color: #23272f;
+}
+.btn-clear:hover {
+  background: #74a9cc;
+  color: #23272f;
+}
+
+.btn-shuffle {
+  background: #74a9cc;
+  color: #23272f;
+}
+.btn-shuffle:hover {
+  background: #23272f;
+  color: #1dafb9;
+}
+
+/* Responsive for controls */
+@media (max-width: 600px) {
+  .controls {
+    padding: 10px 6px;
+  }
+  .controls-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .search-input {
+    max-width: 100%;
+  }
+}
+
+.window-tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid #333;
+  margin-bottom: 14px;
+  height: 50px;
+}
+
+.window-tabs .tab {
+  padding: 10px 16px;
+  color: #ccc;
+  border: none;
+  border-radius: 10px 10px 0 0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.window-tabs .tab:hover {
+  background: #2a3446;
+  color: #fff;
+}
+
+.window-tabs .tab.active {
+  background: #111827;
+  color: #fff;
+  border-bottom: 2px solid #ffb73a;
+}
+
+/* ===== TAB CONTENT ===== */
+.tab-content {
+  background: transparent;
+  padding: 18px;
+  border-radius: 0 12px 12px 12px;
+  min-height: 220px;
+}
+
+.tab-panel {
+  display: none;
+  animation: fade 0.25s ease;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+
+/* Optional: Fade animation for tab panels */
+@keyframes fade {
+  from { opacity: 0; transform: translateY(4px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+/*Logo Home*/
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 120px;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.09) translateY(-6px);
+}
+
+@keyframes fade{
+  from{opacity:0; transform:translateY(4px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+
+#modalWorks img {
+  width: auto;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.08);
+  margin-right: 12px;
+  background: #fff;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+#modalWorks img:hover {
+  transform: scale(1.08) translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  border-color: #ffb73a;
+}
+#works.tab-content.tab-panel {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+/* Optional: style the works container for better alignment */
+#modalWorks > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+/* Add this for modal video iframe */
+#modalVideo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 12px;
+}
+
+</style>
+</head>
+
+<body style="overflow-x: hidden;">
+  <a href="home.html" class="index-logo-link" aria-label="Back to Index">
+    <img src="image/logo2.svg" class="main-logo" alt="Website Logo">
+  </a>
+
+  <button class="dark-toggle">Toggle Dark Mode</button>
+
+
+<header>
+  <div class="fixed-canvas">
+    <div class="wrap" id="app">
+      <img src="./image/awards.svg" class="logo"/>  
+      <p class="disclaimer">
+        Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights.<br>
+        Email me at tmdanao@up.edu.ph. This website was built with the help of AI.
+      </p>
+
+    <!-- controls bar (restructured) -->
+    <div class="controls">
+      <input id="searchInput" class="search-input" type="text" placeholder="Search books...">
+      <div class="controls-row">
+        <select id="yearFilter" class="pill">
+          <option value="all">Years</option>
+        </select>
+        <select id="genreFilter" class="pill">
+          <option value="all">Cateogory</option>
+        </select>
+        <select id="authorFilter" class="pill">
+          <option value="all">President</option>
+        </select>
+        <button id="clearBtn" class="btn btn-clear">Clear</button>
+        <button id="shuffleBtn" class="btn btn-shuffle">Shuffle</button>
+      </div>
+    </div>
+  </div>
+
+
+<body>
+
+<div id="awardeeGrid"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal()">✕</span>
+
+    <div id="photoViewerModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+      <img id="photoViewerImg" src="" alt="Photo" style="max-width:90vw;max-height:90vh
+  <span id="photoViewerClose" style="position:absolute;top:24px;right:36px;font-size:2.5rem;color:#fff;cursor:pointer;font-weight:bold;">&times;</span>
+</div>
+
+    <div class="window-tabs">
+      <button class="tab active" data-tab="info">Info</button>
+      <button class="tab" data-tab="works">Works</button>
+      <button class="tab" data-tab="references">References</button>
+    </div>
+
+    <!-- Tab panels -->
+    <div id="info" class="tab-content tab-panel active">
+      <div style="display: flex; gap: 32px; align-items: flex-start; min-height: 320px;">
+        <div style="flex: 0 0 220px; min-width: 0;">
+          <div style="position: sticky; top: 32px;">
+<img id="modalImg" alt="Awardee Photo">
+          </div>
+        </div>
+        <div id="bio" style="flex:1 1 0; min-width:0; max-height:420px; overflow-y:auto;">
+          <h2 id="modalName"></h2>
+<div class="subtitle"><span>Award:</span> <span id="modalAward"></span></div>
+<div class="subtitle"><span>Year Innagurated:</span> <span id="modalYear"></span></div>
+<div class="subtitle"><span>President:</span> <span id="modalPresident"></span></div>
+          <h3 class="label">Biography</h3>
+          <p id="modalBio"></p>
+          <!-- Video player section -->
+          <div id="modalVideoContainer" style="margin-top:18px;display:none;">
+            <h3 class="label">Video</h3>
+            <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
+              <iframe id="modalVideo" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="works" class="tab-content tab-panel">
+  <h3 class="label">Notable Works</h3>
+  <div id="modalWorks"></div>
+</div>
+
+    <div id="references" class="tab-content tab-panel">
+      <h3 class="label">References</h3>
+      <div id="modalReferences"></div>
+    </div>
+  </div>
+</div>
+<!-- ...existing code... -->
+
+<script>
+const AWARDEES = [
+  {
+    name: "Nick Joaquin",
+    award: "National Artist for Literature",
+    year: "1976",
+    image: "image7/nick.jpg",
+    snippet: "A towering figure in Philippine letters known for exploring history, faith, and identity.",
+    bio: "Nick Joaquin was a Filipino writer, journalist, and intellectual whose works examined the Filipino psyche shaped by colonial history. Writing primarily in English, he became one of the most influential voices in Philippine literature.",
+    President: "Ferdinand Marcos",
+    works: [
+      { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+            { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+                  { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+
+    ],
+    references: [
+      { title: "Nick Joaquin - National Artist Profile", url: "https://ncca.gov.ph/about-culture-and-arts/culture-profile/national-artists-of-the-philippines/nick-joaquin/" }
+    ],
+    video: "https://www.youtube.com/embed/8QnMmpfKWvo" // Example video
+  },
+  {
+    name: "Lualhati Bautista",
+    award: "National Artist for Literature",
+    year: "2021",
+    image: "image/lualhati.jpg",
+    snippet: "Renowned feminist writer whose novels confronted dictatorship and patriarchy.",
+    bio: "Lualhati Bautista was celebrated for socially conscious novels such as Dekada ’70 and Bata, Bata, Pa’no Ka Ginawa?. Her works amplified women’s voices and political resistance.",
+    President: "Rodrigo Duterte",
+    works: [
+      { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+          { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+      { "title": "Amazon", "image": "image6/amazon.jpg" , "description": "asdasdaspisot" },
+
+    ],
+    references: [
+      { title: "Lualhati Bautista - National Artist Profile", url: "https://ncca.gov.ph/about-culture-and-arts/culture-profile/national-artists-of-the-philippines/lualhati-bautista/" }
+    ],
+    video: "" // No video
+  },
+  {
+    name: "F. Sionil José",
+    award: "National Artist for Literature",
+    year: "2001",
+    image: "image/sionil.jpg",
+    snippet: "Known for the Rosales Saga and strong critique of social inequality.",
+    bio: "F. Sionil José was a prolific novelist whose writings examined class struggle, colonialism, and Filipino identity. His Rosales Saga remains one of the most important literary works in the country.",
+    President: "Gloria Macapagal Arroyo",
+    works: [
+      "Po-on",
+      "Tree",
+      "My Brother, My Executioner",
+      "The Pretenders",
+      "Mass"
+    ],
+    references: [
+      { title: "F. Sionil José - National Artist Profile", url: "https://ncca.gov.ph/about-culture-and-arts/culture-profile/national-artists-of-the-philippines/f-sionil-jose/" },
+      { title: "F. Sionil José Biography", url: "https://www.britannica.com/biography/F-Sionil-Jose" },
+      { title: "F. Sionil José and the Rosales Saga", url: "https://www.goodreads.com/author/show/152192.F_Sionil_Jos_" }
+    ],
+    video: "" // No video
+  }
+];
+
+
+// clear button functionality
+document.getElementById("clearBtn").onclick = function() {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("yearFilter").value = "all";
+  document.getElementById("genreFilter").value = "all";
+  document.getElementById("authorFilter").value = "all";
+  renderGrid(AWARDEES);
+};
+
+
+// theme toggle (updated)
+    const THEME_KEY = 'theme';
+    const themeToggles = document.querySelectorAll('.dark-toggle');
+
+    function updateThemeIcon(theme){
+      themeToggles.forEach(btn => {
+        btn.textContent = theme === 'theme-dark' ? 'Light Mode' : 'Dark Mode';
+        btn.setAttribute('aria-label', theme === 'theme-dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      });
+    }
+    function applyTheme(theme){
+      document.body.classList.remove('theme-light','theme-dark');
+      document.body.classList.add(theme);
+      updateThemeIcon(theme);
+    }
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY);
+      const preferred = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'theme-dark' : 'theme-light');
+      applyTheme(preferred);
+    }
+    themeToggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const next = document.body.classList.contains('theme-dark') ? 'theme-light' : 'theme-dark';
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
+      });
+    });
+    initTheme();
+
+const grid = document.getElementById("awardeeGrid");
+
+AWARDEES.forEach(a=>{
+  const card=document.createElement("div");
+  card.className="card";
+  card.innerHTML=`
+    <img src="${a.image}">
+    <div class="card-info">
+      <h3>${a.name}</h3>
+      <div class="award">${a.award}</div>
+      <p>${a.snippet}</p>
+    </div>
+  `;
+  card.onclick=()=>openModal(a);
+  grid.appendChild(card);
+});
+// shuffle function
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function renderGrid(list) {
+  grid.innerHTML = "";
+  list.forEach(a => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${a.image}">
+      <div class="card-info">
+        <h3>${a.name}</h3>
+        <div class="award">${a.award}</div>
+        <p>${a.snippet}</p>
+      </div>
+    `;
+    card.onclick = () => openModal(a);
+    grid.appendChild(card);
+  });
+}
+
+
+
+// filtering functionality
+
+// 1. Populate filter dropdowns
+function populateFilters() {
+  const years = new Set();
+  const categories = new Set();
+  const presidents = new Set();
+
+  AWARDEES.forEach(a => {
+    if (a.year) years.add(a.year);
+    if (a.award) categories.add(a.award);
+    if (a.President) presidents.add(a.President);
+  });
+
+  // Year filter
+  const yearFilter = document.getElementById("yearFilter");
+  yearFilter.innerHTML = '<option value="all">Years</option>';
+  Array.from(years).sort().forEach(y => {
+    yearFilter.innerHTML += `<option value="${y}">${y}</option>`;
+  });
+
+  // Category filter
+  const genreFilter = document.getElementById("genreFilter");
+  genreFilter.innerHTML = '<option value="all">Category</option>';
+  Array.from(categories).sort().forEach(c => {
+    genreFilter.innerHTML += `<option value="${c}">${c}</option>`;
+  });
+
+  // President filter
+  const authorFilter = document.getElementById("authorFilter");
+  authorFilter.innerHTML = '<option value="all">President</option>';
+  Array.from(presidents).sort().forEach(p => {
+    authorFilter.innerHTML += `<option value="${p}">${p}</option>`;
+  });
+}
+
+// 2. Filter logic
+function getFilteredAwardees() {
+  const year = document.getElementById("yearFilter").value;
+  const category = document.getElementById("genreFilter").value;
+  const president = document.getElementById("authorFilter").value;
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  return AWARDEES.filter(a => {
+    const matchYear = year === "all" || a.year === year;
+    const matchCategory = category === "all" || a.award === category;
+    const matchPresident = president === "all" || a.President === president;
+    const matchSearch =
+      !search ||
+      a.name.toLowerCase().includes(search) ||
+      (a.snippet && a.snippet.toLowerCase().includes(search));
+    return matchYear && matchCategory && matchPresident && matchSearch;
+  });
+}
+
+// 3. Listen for filter changes
+["yearFilter", "genreFilter", "authorFilter", "searchInput"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    renderGrid(getFilteredAwardees());
+  });
+  document.getElementById(id).addEventListener("input", () => {
+    renderGrid(getFilteredAwardees());
+  });
+});
+
+// 4. Update clear button to reset filters and grid
+document.getElementById("clearBtn").onclick = function() {
+  document.getElementById("searchInput").value = "";
+  document.getElementById("yearFilter").value = "all";
+  document.getElementById("genreFilter").value = "all";
+  document.getElementById("authorFilter").value = "all";
+  renderGrid(AWARDEES);
+};
+
+// 5. Call once on load
+populateFilters();
+
+// Initial render
+renderGrid(AWARDEES);
+
+document.getElementById("shuffleBtn").onclick = function() {
+  shuffleArray(AWARDEES);
+  renderGrid(AWARDEES);
+};
+
+function openModal(a){
+  document.getElementById("modal").classList.add("open");
+  // Info tab
+  document.getElementById("modalImg").src = a.image || "";
+  document.getElementById("modalName").textContent = a.name || "";
+  document.getElementById("modalAward").textContent = a.award || "";
+document.getElementById("modalYear").textContent = a.year || "";
+document.getElementById("modalPresident").textContent = a.President || "";
+  document.getElementById("modalBio").textContent = a.bio || "";
+
+  // Video player
+  const videoContainer = document.getElementById("modalVideoContainer");
+  const videoFrame = document.getElementById("modalVideo");
+  if (a.video && a.video.startsWith("https://www.youtube.com/embed/")) {
+    videoContainer.style.display = "";
+    videoFrame.src = a.video;
+  } else {
+    videoContainer.style.display = "none";
+    videoFrame.src = "";
+  }
+
+  // Works tab
+  const worksList = document.getElementById("modalWorks");
+worksList.innerHTML = "";
+if (a.works && Array.isArray(a.works) && a.works.length) {
+  // Check if works are objects (with image/title/description)
+  if (typeof a.works[0] === "object" && a.works[0] !== null) {
+    a.works.forEach(work => {
+      // Skip empty works
+      if (!work.title && !work.image && !work.description) return;
+      const div = document.createElement("div");
+      div.style.display = "flex";
+      div.style.alignItems = "flex-start";
+      div.style.gap = "16px";
+      div.style.marginBottom = "18px";
+      div.innerHTML = `
+${work.image ? `<img src="${work.image}" alt="${work.title || ''}">` : ""}        <div>
+          <div style="font-weight:bold;font-size:16px;">${work.title || ""}</div>
+          <div style="font-size:13px;color:#bbb;">${work.description || ""}</div>
+        </div>
+      `;
+      worksList.appendChild(div);
+    });
+  } else {
+    // Fallback for string-only works
+    a.works.forEach(work => {
+      const div = document.createElement("div");
+      div.textContent = work;
+      worksList.appendChild(div);
+    });
+  }
+} else {
+  worksList.innerHTML = "<div>No works available.</div>";
+}
+
+  // References tab
+  const referencesDiv = document.getElementById("modalReferences");
+  referencesDiv.innerHTML = "";
+  if (a.references && Array.isArray(a.references) && a.references.length) {
+    a.references.forEach(ref => {
+      referencesDiv.innerHTML += `<div><a href="${ref.url}" target="_blank">${ref.title}</a></div>`;
+    });
+  } else {
+    referencesDiv.innerHTML = "No references available.";
+  }
+
+  // Reset to Info tab on open
+  document.querySelectorAll('.window-tabs .tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.window-tabs .tab[data-tab="info"]').classList.add('active');
+  document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+  document.getElementById('info').classList.add('active');
+}
+
+function openPhotoViewer(src) {
+  const modal = document.getElementById('photoViewerModal');
+  const img = document.getElementById('photoViewerImg');
+  img.src = src;
+  modal.style.display = 'flex';
+}
+
+document.getElementById('photoViewerModal').onclick = function(e) {
+  if (e.target === this) this.style.display = 'none';
+};
+
+
+
+// Modal tab functionality
+document.querySelectorAll('.window-tabs .tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    // Remove active class from all tabs
+    document.querySelectorAll('.window-tabs .tab').forEach(t => t.classList.remove('active'));
+    // Add active class to clicked tab
+    this.classList.add('active');
+    // Hide all tab panels
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+    // Show the selected tab panel
+    const tabName = this.getAttribute('data-tab');
+    document.getElementById(tabName).classList.add('active');
+  });
+});
+// close modal when clicking outside content
+document.getElementById("modal").addEventListener("mousedown", function(e) {
+  if (e.target === this) {
+    closeModal();
+  }
+});
+
+document.getElementById('modalImg').onclick = function(e) {
+  e.stopPropagation();
+  if (this.src) openPhotoViewer(this.src);
+};
+
+// works images click to open viewer
+
+document.getElementById('modalWorks').onclick = function(e) {
+  if (e.target && e.target.tagName === 'IMG') {
+    e.stopPropagation();
+    if (e.target.src) openPhotoViewer(e.target.src);
+  }
+};
+
+authorPhoto.onclick = (e) => {
+  e.stopPropagation();
+  openPhotoViewer(book['Author Photo']);
+};
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("open");
+}
+</script>
+
+</body>
+</html>
