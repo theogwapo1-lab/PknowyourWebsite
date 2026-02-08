@@ -443,13 +443,13 @@ header {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 200px; /* Add space for bottom buttons on iOS */
+  padding-bottom: 150px; /* Increased for bottom button clearance */
 }
 
 /* Make cards narrower on small screens for better fit */
 @media (max-width: 600px) {
   #filmGrid {
-    padding-bottom: calc(120px + env(safe-area-inset-bottom, 20px)); /* More space on mobile */
+    padding-bottom: calc(150px + env(safe-area-inset-bottom, 30px)); /* Large bottom space for iOS */
   }
   
   .film-card {
@@ -462,36 +462,46 @@ header {
 /* Add bottom padding to body to prevent card overlap */
 body {
   background: transparent;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-bottom: calc(100px + env(safe-area-inset-bottom, 20px));
+  min-height: 100vh;
 }
 
 /* Ensure wrap container has bottom spacing */
 .wrap {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 8px 100px 8px; /* Added bottom padding */
+  padding: 0 8px 150px 8px; /* Increased bottom padding */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
-/* iOS-specific bottom spacing */
+/* iOS-specific bottom spacing with safe areas */
 @supports (padding: max(0px)) {
   #filmGrid {
-    padding-bottom: 100px; /* base padding */
+    padding-bottom: max(150px, calc(120px + env(safe-area-inset-bottom)));
   }
   
   .wrap {
+    padding-bottom: max(150px, calc(120px + env(safe-area-inset-bottom)));
+  }
+  
+  body {
     padding-bottom: max(100px, calc(80px + env(safe-area-inset-bottom)));
   }
 }
 
-/* Make cards narrower on small screens for better fit */
-@media (max-width: 600px) {
-  .film-card { max-width: 92%; }
+/* Additional iOS Safari specific fix */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 120px;
+  }
+  
+  #filmGrid {
+    margin-bottom: 40px;
+  }
 }
-
 /* Header controls: search + toggle */
 .header-controls{
   display:flex;
