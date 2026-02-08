@@ -474,6 +474,22 @@ header {
   max-width: 800px;
   margin: 0 auto;
   padding-bottom: 200px; /* Significantly increased */
+  padding-top: 20px; /* Add top padding for spacing from filters */
+}
+
+/* iOS Mobile - Extra top padding for grid */
+@media (max-width: 768px) {
+  #filmGrid {
+    padding-top: 30px;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    #filmGrid {
+      padding-top: 40px;
+    }
+  }
 }
 
 /* Header controls: search + toggle */
@@ -3012,8 +3028,8 @@ synopsis:"The story follows Ilyong, a petty thief who is killed by the police, m
   mpa_rating: "",
   ratings: {
     imdb: {
-      score: "https://www.imdb.com/title/tt23771510/",
-      link: "4.4",
+      score: "4.4",
+      link: "https://www.imdb.com/title/tt23771510/",
     },
     rotten_tomatoes: {
       tomatometer: "",
