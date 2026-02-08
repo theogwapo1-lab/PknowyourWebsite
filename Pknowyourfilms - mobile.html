@@ -59,7 +59,7 @@ body, html {
 /* iOS-specific fixes for control buttons */
 .controls {
   padding: 20px 15px;
-  margin-bottom: env(safe-area-inset-bottom, 20px);
+  margin-bottom: 50px;
   box-sizing: border-box;
 }
 
@@ -488,7 +488,6 @@ header {
    GRID
    =========================== */
 
-/* Cards stacked in a single column, centered */
 #filmGrid {
   display: flex;
   flex-direction: column;
@@ -497,63 +496,53 @@ header {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  padding-bottom: 150px; /* Increased for bottom button clearance */
+  padding-bottom: 200px; /* Significantly increased */
 }
 
-/* Make cards narrower on small screens for better fit */
-@media (max-width: 600px) {
-  #filmGrid {
-    padding-bottom: calc(150px + env(safe-area-inset-bottom, 30px)); /* Large bottom space for iOS */
+/* iOS Mobile Exclusive - Prevent Card/Button Overlap */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    #filmGrid {
+      padding-bottom: calc(250px + env(safe-area-inset-bottom, 50px)) !important;
+      margin-bottom: 50px !important;
+    }
+    
+    .wrap {
+      padding-bottom: calc(200px + env(safe-area-inset-bottom, 50px)) !important;
+    }
+    
+    body {
+      padding-bottom: calc(180px + env(safe-area-inset-bottom, 40px)) !important;
+    }
+    
+    .film-card:last-child {
+      margin-bottom: 100px !important;
+    }
   }
-  
-  .film-card {
-    width: 95%;
-    max-width: 500px;
-    margin-bottom: 15px;
+}
+
+/* iPhone X and newer with notch - Extra spacing */
+@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    #filmGrid {
+      padding-bottom: max(250px, calc(200px + env(safe-area-inset-bottom))) !important;
+    }
   }
 }
 
-/* Add bottom padding to body to prevent card overlap */
-body {
-  background: transparent;
-  padding-bottom: calc(100px + env(safe-area-inset-bottom, 20px));
-  min-height: 100vh;
-}
-
-/* Ensure wrap container has bottom spacing */
-.wrap {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 8px 150px 8px; /* Increased bottom padding */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-
-/* iOS-specific bottom spacing with safe areas */
-@supports (padding: max(0px)) {
+/* General mobile fallback */
+@media (max-width: 768px) {
   #filmGrid {
-    padding-bottom: max(150px, calc(120px + env(safe-area-inset-bottom)));
+    padding-bottom: 220px;
   }
   
   .wrap {
-    padding-bottom: max(150px, calc(120px + env(safe-area-inset-bottom)));
+    padding-bottom: 180px;
   }
   
   body {
-    padding-bottom: max(100px, calc(80px + env(safe-area-inset-bottom)));
-  }
-}
-
-/* Additional iOS Safari specific fix */
-@media (max-width: 768px) {
-  body {
-    padding-bottom: 120px;
-  }
-  
-  #filmGrid {
-    margin-bottom: 40px;
+    padding-bottom: 150px;
+    min-height: 100vh;
   }
 }
 /* Header controls: search + toggle */
