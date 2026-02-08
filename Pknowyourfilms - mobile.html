@@ -226,7 +226,7 @@ header {
 /* iOS-specific fixes for control buttons */
 .controls {
   padding: 20px 15px;
-  margin-bottom: 30px;
+    margin-bottom: 50px;
   box-sizing: border-box;
 }
 
@@ -235,19 +235,21 @@ header {
   padding: 12px 20px;
   min-height: 44px; /* iOS touch target minimum */
   min-width: 44px;
-  margin-bottom: 200px;
+    margin-bottom: 50px;
 }
 
 /* Better mobile spacing */
 @media (max-width: 768px) {
   .controls {
     padding: 15px 10px;
-    padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+    margin-bottom: 50px;
   }
   
   .controls .btn {
     margin: 6px 4px;
     font-size: 14px;
+        margin-bottom: 50px;
+
   }
 }
 
@@ -255,6 +257,7 @@ header {
 @supports (padding: max(0px)) {
   .controls {
     padding-bottom: max(20px, env(safe-area-inset-bottom));
+    margin-bottom: 50px;
   }
 }
 
