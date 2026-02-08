@@ -56,103 +56,6 @@ body, html {
   min-height: 100vh; /* Ensure body fills viewport */
 }
 
-/* iOS-specific fixes for control buttons */
-.controls {
-  padding: 20px 15px;
-  margin-bottom: 50px;
-  box-sizing: border-box;
-}
-
-.controls .btn {
-  margin: 8px 5px;
-  padding: 12px 20px;
-  min-height: 44px;
-  min-width: 44px;
-    margin-bottom: 50px;
-
-}
-
-/* iOS Mobile Exclusive - Bottom Button Spacing */
-@supports (-webkit-touch-callout: none) {
-  /* This targets iOS Safari specifically */
-  @media (max-width: 768px) {
-    .controls {
-      margin-bottom: 50px;
-
-      padding-bottom: 20px;
-    }
-    
-    .controls .btn {
-    margin-bottom: 50px;
-    }
-    
-    /* Bottom navigation buttons if present */
-    .control-btn {
-    margin-bottom: 50px;
-    }
-  }
-}
-
-/* Additional iOS detection using webkit prefixes */
-@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-  .controls {
-    margin-bottom: 50px;
-  }
-  
-  .controls .btn {
-    margin-bottom: 50px;
-  }
-}
-
-/* iPhone X and newer with notch */
-@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    .controls {
-    margin-bottom: 50px;
-    }
-  }
-}
-
-/* iOS Mobile Exclusive - Filter Buttons Bottom Margin */
-@supports (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    #filters {
-      margin-bottom: calc(50px + env(safe-area-inset-bottom, 20px)) !important;
-      padding-bottom: 20px;
-    }
-    
-    #filters .control-btn {
-      margin-bottom: 50px !important;
-    }
-    
-    #filters .filter-select {
-      margin-bottom: 50px !important;
-    }
-    
-    #clearFiltersBtn,
-    #shuffleBtn,
-    #toggleViewBtn {
-      margin-bottom: 50px !important;
-    }
-  }
-}
-
-/* Additional iOS detection for filter container */
-@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-  #filters {
-    margin-bottom: 70px;
-  }
-}
-
-/* iPhone X and newer with notch - Filter buttons */
-@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    #filters {
-      margin-bottom: max(70px, calc(50px + env(safe-area-inset-bottom))) !important;
-    }
-  }
-}
-
 /* Alternative: Use a pseudo-element for true fixed background on iOS */
 body::before {
   content: '';
@@ -255,52 +158,46 @@ header {
   padding-left: -200px; /* safer for inner spacing */
   width: 100%;
 }
+#filters{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  gap: 8px;
+  padding-left: -200px; /* safer for inner spacing */
+  width: 100%;
+}
 
+/* iOS Mobile Exclusive - Filters Bottom Margin */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    #filters {
+      margin-bottom: calc(50px + env(safe-area-inset-bottom, 20px)) !important;
+      padding-bottom: 20px;
+    }
+  }
+}
+
+/* Additional iOS detection for Retina displays */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  #filters {
+    margin-bottom: 70px;
+  }
+}
+
+/* iPhone X and newer with notch - Extra spacing */
+@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    #filters {
+      margin-bottom: max(70px, calc(50px + env(safe-area-inset-bottom))) !important;
+    }
+  }
+}
 
 .filter-select {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid #ffffff;
 }
-
-/* iOS-specific fixes for control buttons */
-.controls {
-  padding: 20px 15px;
-    margin-bottom: 50px;
-  box-sizing: border-box;
-}
-
-.controls .btn {
-  margin: 8px 5px; /* Increase margin between buttons */
-  padding: 12px 20px;
-  min-height: 44px; /* iOS touch target minimum */
-  min-width: 44px;
-    margin-bottom: 50px;
-}
-
-/* Better mobile spacing */
-@media (max-width: 768px) {
-  .controls {
-    padding: 15px 10px;
-    margin-bottom: 50px;
-  }
-  
-  .controls .btn {
-    margin: 6px 4px;
-    font-size: 14px;
-        margin-bottom: 50px;
-
-  }
-}
-
-/* iPhone notch/home indicator spacing */
-@supports (padding: max(0px)) {
-  .controls {
-    padding-bottom: max(20px, env(safe-area-inset-bottom));
-    margin-bottom: 50px;
-  }
-}
-
 
 .control-btn {
   padding: 8px 12px;
@@ -312,7 +209,40 @@ header {
   font-size: 14px;
   
 }
+.control-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+}
 
+/* iOS Mobile Exclusive - Control Buttons Bottom Margin */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    .control-btn {
+      margin-bottom: calc(50px + env(safe-area-inset-bottom, 20px)) !important;
+    }
+  }
+}
+
+/* Additional iOS detection for Retina displays */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  .control-btn {
+    margin-bottom: 70px;
+  }
+}
+
+/* iPhone X and newer with notch - Extra spacing */
+@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
+  @media (max-width: 768px) {
+    .control-btn {
+      margin-bottom: max(70px, calc(50px + env(safe-area-inset-bottom))) !important;
+    }
+  }
+}
 .control-btn:hover {
   background: rgba(255,255,255,0.02);
 }
@@ -546,52 +476,6 @@ header {
   padding-bottom: 200px; /* Significantly increased */
 }
 
-/* iOS Mobile Exclusive - Prevent Card/Button Overlap */
-@supports (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    #filmGrid {
-      padding-bottom: calc(250px + env(safe-area-inset-bottom, 50px)) !important;
-      margin-bottom: 50px !important;
-    }
-    
-    .wrap {
-      padding-bottom: calc(200px + env(safe-area-inset-bottom, 50px)) !important;
-    }
-    
-    body {
-      padding-bottom: calc(180px + env(safe-area-inset-bottom, 40px)) !important;
-    }
-    
-    .film-card:last-child {
-      margin-bottom: 100px !important;
-    }
-  }
-}
-
-/* iPhone X and newer with notch - Extra spacing */
-@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    #filmGrid {
-      padding-bottom: max(250px, calc(200px + env(safe-area-inset-bottom))) !important;
-    }
-  }
-}
-
-/* General mobile fallback */
-@media (max-width: 768px) {
-  #filmGrid {
-    padding-bottom: 220px;
-  }
-  
-  .wrap {
-    padding-bottom: 180px;
-  }
-  
-  body {
-    padding-bottom: 150px;
-    min-height: 100vh;
-  }
-}
 /* Header controls: search + toggle */
 .header-controls{
   display:flex;
