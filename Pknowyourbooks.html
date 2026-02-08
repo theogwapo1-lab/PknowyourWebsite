@@ -195,33 +195,8 @@ html {
       transform:translateY(-3px) scale(1.02);
       box-shadow:0 16px 28px rgba(0,0,0,0.28);
       border-color:var(--accent);
-      z-index:2;
+      z-index:0;
     }
-
-    
-/* iOS Mobile Exclusive - Enhanced touch interaction */
-@supports (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-    .poster-card {
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
-    }
-    
-    /* Remove hover on iOS touch devices */
-    .poster-card:hover {
-      transform: none;
-      box-shadow: 0 6px 18px rgba(17,24,39,.08);
-      border-color: var(--border-color);
-      z-index: 0;
-    }
-  }
-}
-
-/* iPhone X and newer - Refined touch response */
-@supports (padding: max(0px)) and (-webkit-touch-callout: none) {
-  @media (max-width: 768px) {
-  }
-}
 
     /* Card info overlay on hover */
     .card-info {
