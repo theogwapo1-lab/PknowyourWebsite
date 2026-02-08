@@ -81,8 +81,6 @@
     }
 
  :root {
-    /* remove `fixed` to avoid iOS zoom bug */
-    --background: url("image/bolbohol.jpg") no-repeat center/cover;
     --card: #000000;
     --accent: #123f72;
     --muted: #403c3c;
@@ -90,8 +88,44 @@
     --radius: 10px;
     --text: #222;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
+}
 
+/* Base */
+body{
+  margin:0;
+  font-family:var(--ui-sans);
+  color:var(--text-color);
+  line-height:1.6;
+  /* Remove background from body - it will be handled by ::before pseudo-element */
+  background: transparent;
+}
+
+/* Fixed background layer for iOS compatibility */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-color) var(--bg-image) center / cover no-repeat;
+  z-index: -1;
+  pointer-events: none;
+  /* Prevent iOS zoom/stretch */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* Ensure HTML doesn't cause scroll issues */
+html {
+  height: 100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
     /* Base */
     body{
       margin:0;
@@ -184,6 +218,7 @@
       transform: none;
       box-shadow: 0 6px 18px rgba(17,24,39,.08);
       border-color: var(--border-color);
+      z-index: 0;
     }
   }
 }
