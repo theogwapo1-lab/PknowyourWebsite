@@ -207,12 +207,6 @@ html {
       transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
     }
     
-    .poster-card:active {
-      transform: translateY(-2px) scale(1.01);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.25);
-      border-color: var(--accent);
-    }
-    
     /* Remove hover on iOS touch devices */
     .poster-card:hover {
       transform: none;
@@ -226,10 +220,6 @@ html {
 /* iPhone X and newer - Refined touch response */
 @supports (padding: max(0px)) and (-webkit-touch-callout: none) {
   @media (max-width: 768px) {
-    .poster-card:active {
-      transform: translateY(-1px) scale(1.005);
-      transition-duration: .15s;
-    }
   }
 }
 
