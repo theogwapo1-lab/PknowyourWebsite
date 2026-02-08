@@ -44,6 +44,40 @@
     --muted-contrast: #000000;
   }
 
+
+body, html {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* Changed from fixed - iOS doesn't support fixed properly */
+  transition: background 0.4s cubic-bezier(.4,1.6,.6,1), color 0.4s cubic-bezier(.4,1.6,.6,1);
+  min-height: 100vh; /* Ensure body fills viewport */
+}
+
+/* Alternative: Use a pseudo-element for true fixed background on iOS */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Remove background from body when using pseudo-element */
+body {
+  background: transparent;
+}
+
   :root.dark body {
     --background: url("image/memenight.jpg") no-repeat center/cover fixed;
     text-align: center;
