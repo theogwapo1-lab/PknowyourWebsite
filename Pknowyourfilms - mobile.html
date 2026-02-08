@@ -77,17 +77,18 @@ body, html {
   /* This targets iOS Safari specifically */
   @media (max-width: 768px) {
     .controls {
-      margin-bottom: calc(40px + env(safe-area-inset-bottom, 20px));
+      margin-bottom: 50px;
+
       padding-bottom: 20px;
     }
     
     .controls .btn {
-      margin-bottom: 12px;
+    margin-bottom: 50px;
     }
     
     /* Bottom navigation buttons if present */
     .control-btn {
-      margin-bottom: calc(20px + env(safe-area-inset-bottom, 15px));
+    margin-bottom: 50px;
     }
   }
 }
@@ -99,7 +100,7 @@ body, html {
   }
   
   .controls .btn {
-    margin-bottom: 15px;
+    margin-bottom: 50px;
   }
 }
 
@@ -107,7 +108,7 @@ body, html {
 @supports (padding: max(0px)) and (-webkit-touch-callout: none) {
   @media (max-width: 768px) {
     .controls {
-      margin-bottom: max(60px, calc(40px + env(safe-area-inset-bottom)));
+    margin-bottom: 50px;
     }
   }
 }
