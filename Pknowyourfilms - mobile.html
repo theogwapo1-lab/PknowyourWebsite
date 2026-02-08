@@ -15,6 +15,18 @@
   box-sizing: border-box;
   margin-bottom: -350px;  /* adjust based on footer height */
 }
+:root {
+    /* remove `fixed` to avoid iOS zoom bug */
+    --background: url("image6/sky22.jpg") no-repeat center/cover;
+    --card: #000000;
+    --accent: #123f72;
+    --muted: #403c3c;
+    --maxw: 1100px;
+    --radius: 10px;
+    --text: #222;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
 
 :root {
   --bg: url("image/bolbohol.jpg");
@@ -131,6 +143,41 @@ header {
   border-radius: 8px;
   border: 1px solid #ffffff;
 }
+
+/* iOS-specific fixes for control buttons */
+.controls {
+  padding: 20px 15px;
+  margin-bottom: env(safe-area-inset-bottom, 20px); /* Add safe area spacing for iOS notch */
+  box-sizing: border-box;
+}
+
+.controls .btn {
+  margin: 8px 5px; /* Increase margin between buttons */
+  padding: 12px 20px;
+  min-height: 44px; /* iOS touch target minimum */
+  min-width: 44px;
+}
+
+/* Better mobile spacing */
+@media (max-width: 768px) {
+  .controls {
+    padding: 15px 10px;
+    padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+  }
+  
+  .controls .btn {
+    margin: 6px 4px;
+    font-size: 14px;
+  }
+}
+
+/* iPhone notch/home indicator spacing */
+@supports (padding: max(0px)) {
+  .controls {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
 
 .control-btn {
   padding: 8px 12px;
