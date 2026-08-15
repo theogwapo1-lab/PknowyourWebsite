@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinoy Know Your Festivals</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: url('image8/land2.jpg') center / cover no-repeat;
+  --card-image: url('image4/menubox.svg');
+  --button-bg: #ffffff;
+  --text: #1e1e1e;
+  --accent: #ca15c1;
+
+  --card-w: 500px;
+  --card-h: 400px;
+
+  --card-top: 110px;
+  --card-left: 40px;
+  --card-right: 40px;
+  --card-bottom: 120px;
+}
+
+body.dark {
+  --bg: url('image8/land2.jpg') center / cover no-repeat;
+  --button-bg: #c5c3c3;
+  --text: #eaeaea;
+  --accent: #96610c;
+}
+
+* { box-sizing: border-box; font-family: system-ui, sans-serif; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+  background-attachment: fixed; 
+  background-size: cover;       
+  background-position: center;  
+}
+
+.disclaimer {
+  margin: 35px 0 2px;
+  margin-bottom: -25px !important;
+  margin-top: 50px;
+  font-size: 12px;
+  color: var(--muted);
+  opacity: 0.85;
+  text-align: center; /* Added to center disclaimer */
+}
+
+header { text-align: center; padding: 60px 20px 30px; }
+.logo { max-width: 850px; width: 100%; margin: -15px auto 30px; display: block; margin-bottom: -75px;}
+
+.controls {
+  max-width: 1100px;
+  margin: 0 auto 30px;
+  padding: 0 20px;
+}
+.controls input {
+  width: 100%;
+  max-width: 800px;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e1e1e;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.controls input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(192, 57, 43, 0.2);
+  outline: none;
+}
+body.dark .controls input {
+  background: rgba(42, 42, 42, 0.95);
+  color: #eaeaea;
+  border-color: var(--accent);
+}
+.filter-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  justify-content: center;
+}
+select, button {
+  padding: 11px 20px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+select {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e1e1e;
+}
+select:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+button {
+  background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%);
+  color: #1e1e1e;
+  border: 2px solid #b134a6;
+}
+button:hover {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+  border-color: #af25e6;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+button.accent {
+  background: linear-gradient(135deg, var(--accent) 0%, #d94432 100%);
+  color: #fff;
+  border-color: var(--accent);
+}
+button.accent:hover {
+  background: linear-gradient(135deg, #d94432 0%, var(--accent) 100%);
+  box-shadow: 0 5px 20px rgba(192, 57, 43, 0.3);
+}
+body.dark select {
+  background: rgba(42, 42, 42, 0.95);
+  color: #eaeaea;
+}
+body.dark select:hover {
+  background: rgba(42, 42, 42, 1);
+}
+body.dark button {
+  background: linear-gradient(135deg, #404040 0%, #333333 100%);
+  color: #eaeaea;
+  border-color: #555555;
+}
+body.dark button:hover {
+  background: linear-gradient(135deg, #333333 0%, #404040 100%);
+  border-color: #777777;
+}
+
+.grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-right: 1450px;
+  padding-bottom: 120px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  justify-items: center;
+}
+
+.card-container {
+  width: var(--card-w);
+  height: var(--card-h);
+  cursor: pointer;
+  perspective: 1000px;
+  position: relative;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-container:hover .card {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.card-front {
+  background-size: cover;
+  background-position: center;
+}
+
+.card-back {
+  background: linear-gradient(135deg, var(--accent) 0%, #d94432 100%);
+  transform: rotateY(180deg);
+  padding: 30px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card-back h3 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.card-back p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.dark-toggle {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+}
+
+.modal-backdrop[hidden] { display: none; }
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+.modal {
+  width: 850px;
+  max-width: 95vw;
+  height: 600px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+}
+body.dark .modal { background: #2a2a2a; color: var(--text); }
+
+.modal header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 20px 0;
+  margin-left: -50px;
+  z-index: 0; 
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.tab {
+  padding: 8px 12px;
+  border-radius: 8px 8px 0 0;
+  background: var(--button-bg);
+  font-weight: 500;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-size: 15px;
+  cursor: pointer;
+}
+.tab.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.tab-panel { padding: 16px 20px; }
+.tab-panel[hidden] { display: none; }
+
+.slides-wrapper {
+  position: relative;
+  min-height: 420px;
+}
+
+.slide {
+  position: relative;
+  display: none;
+  line-height: 1.7;
+  color: #1a1200;
+  background: none;
+  padding: 0 10px 0 0;
+  font-size: 1.13rem;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  text-align: left;
+  white-space: pre-line;
+  max-width: 95%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.slide:hover {
+  scrollbar-color: #b9885746 transparent;
+}
+
+.slide::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.slide::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.slide:hover::-webkit-scrollbar-thumb {
+  background: #a6692c2d;
+}
+
+.slide.active {
+  display: block;
+  padding-bottom: 30px;
+}
+
+.slide strong {
+  font-size: 1.25rem;
+  font-weight: bold;
+  display: block;
+  margin-bottom: -20px;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  color: #222;
+  text-shadow: 0 1px 0 #fffbe7;
+  margin-top: 30px;
+}
+
+/* PPT Modal */
+.ppt-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.65);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.08) 1px, transparent 1px);
+  background-size: 18px 18px;
+  background-position: 0 0, 9px 9px;
+}
+
+.ppt-modal[style*="display: flex"] { 
+  display: flex !important; 
+}
+
+.ppt-container{
+    width: min(880px, calc(100vw - 40px));
+    max-width: 100%;
+    height: min(700px, calc(100vh - 40px));
+
+    background:none;
+    border-radius:0;
+    box-shadow:none;
+    padding:0;
+
+    position:relative;
+    top: -80px;
+
+    display:block;
+
+    overflow:hidden;
+    box-sizing:border-box;
+}
+.ppt-bg-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.ppt-content-area {
+  position: absolute;
+  top: 250px;
+  left: 200px;
+  width: 520px;
+  height: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 5;
+}
+
+.ppt-safe {
+  display: none;
+}
+
+.ppt-title {
+  margin-left: -80px;
+  margin-top: -50px;
+      font-family:"Luckiest Guy", cursive;
+    font-size:4rem;
+
+    color:#ffcf59;
+
+    -webkit-text-stroke:4px #111;
+    text-stroke:4px #111;
+
+    text-shadow:
+        4px 4px 0 rgba(0,0,0,.45);
+
+    transform:rotate(-8deg);
+
+    letter-spacing:2px;
+}
+
+.ppt-slides {
+  flex: 1;
+  width: 100%;
+  margin: 0;
+  border-radius: 18px;
+  padding: 18px;
+  overflow-y: auto;
+  margin-top: -70px;
+}
+
+.ppt-controls {
+  position: absolute;
+  bottom: -400px;
+  left: 700px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+
+}
+
+.ppt-controls button:first-child,
+.ppt-controls span {
+  display: none;
+}
+
+.ppt-controls button:last-child {
+  min-width: 10px;
+  padding: 14px 20px;
+  background: #262626;
+  border: 1px solid #444;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 700;
+
+}
+
+.ppt-slides::-webkit-scrollbar {
+  width: 8px;
+  background: #fffbe7;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.2s;
+  display: none;
+}
+
+.ppt-slides:hover::-webkit-scrollbar,
+.ppt-slides:focus-within::-webkit-scrollbar {
+  display: block;
+  opacity: 1;
+}
+
+.ppt-slides::-webkit-scrollbar-thumb {
+  background: #e0cfa3;
+  border-radius: 8px;
+}
+
+.ppt-slides::-webkit-scrollbar-thumb:hover {
+  background: #c8b27a;
+}
+
+.ppt-slides:hover,
+.ppt-slides:focus-within {
+  scrollbar-width: thin;
+}
+
+.ppt-controls {
+  position: relative;
+  right: auto;
+  top: auto;
+  transform: none;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  z-index: 2;
+}
+ .ppt-controls button {
+    min-width: 90px;
+    padding: 10px 14px;
+    height: auto;
+
+    background: #262626;
+    border: 1px solid #444;
+    border-radius: 999px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.ppt-controls button:hover {
+    background: #333;
+    border-color: #666;
+}
+
+.ppt-controls button:active {
+    background: #1d1d1d;
+    transform: scale(.96);
+}
+
+#slideIndicator {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-size: 1.1rem;
+  color: #7a5a1a;
+  font-weight: bold;
+}
+
+.ppt-close {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  cursor: pointer;
+  font-size: 22px;
+  color: #b88b1a;
+  background: #fffbe7;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #e0cfa3;
+  box-shadow: 1px 1px 0 #e0cfa3;
+  z-index: 3;
+  transition: background 0.2s;
+}
+
+.ppt-close:hover {
+  background: #ffe9a7;
+}
+
+#pptImage {
+  display: none;
+}
+
+.index-logo-link {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 120;
+  display: block;
+}
+.index-logo-link .main-logo {
+  max-width: 120px;
+  width: 100%;
+  margin: 0;
+  transition: transform .2s;
+}
+.index-logo-link:hover .main-logo {
+  transform: scale(1.08);
+}
+
+.highlighted-term {
+  color: #c0392b;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  display: inline; /* Change to inline for normal text selection */
+  font-weight: 500;
+  outline: none;
+  position: relative;
+}
+.highlighted-term:active,
+.highlighted-term:focus {
+  color: #c24a3c;
+  border-color: #ffe9a7;
+}
+.highlighted-term:hover {
+  color: #602019;
+  z-index: 2;
+}
+
+#pptVideoEmbed video,
+#pptVideoEmbed iframe {
+  width: 95%;
+  height: 270px;
+  max-width: 95%;
+  max-height: 270px;
+  border-radius: 16px;
+  background: #000;
+  display: block;
+  margin: 0 auto;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+#pptVideoControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  margin-top: 10px;
+}
+#pptVideoControls button {
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  background: #f7e7b4;
+  color: #5b3a0a;
+  font-size: 1.05rem;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-weight: bold;
+  box-shadow: 1px 1px 0 #e0cfa3;
+  transition: background 0.2s;
+}
+#pptVideoControls button:hover {
+  background: #ffe9a7;
+}
+#videoIndicator {
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
+  font-size: 1.05rem;
+  color: #7a5a1a;
+  font-weight: bold;
+}
+/* Search bar styling */
+#search {
+  width: 100%;
+  max-width: 800px;
+  padding: 12px 18px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e1e1e;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 14px;
+  margin-left: 120px;
+  transition: all 0.3s ease;
+}
+#search:focus {
+  border-color: var(--accent);
+  box-shadow: 0 6px 20px rgba(180, 33, 185, 0.2);
+  outline: none;
+}
+body.dark #search {
+  background: rgba(42, 42, 42, 0.95);
+  color: #eaeaea;
+  border-color: transparent;
+}
+body.dark #search:focus {
+  border-color: var(--accent);
+}
+.filter-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  justify-content: center;
+}
+
+</style>
+</head>
+
+<body>
+<a href="home.html" class="index-logo-link" aria-label="Back to Index">
+  <img src="image/logo2.svg" alt="Back to Index" class="main-logo">
+</a>
+
+<header>
+  <img class="logo" src="image/festivals.svg" alt="Pinoy Know Your Food">
+  <p class="disclaimer">
+    Disclaimer: some data may not be 100% accurate and I would appreciate it if you give me insights. <br> Email me at tmdanao@up.edu.ph
+  </p>
+</header>
+  <p> </p>
+<section class="controls">
+  <input id="search" placeholder="Search Festival..." oninput="filterFood()">
+  <div class="filter-row">
+    <select id="category" onchange="filterFood()">
+      <option value="">All Categories</option>
+      <option value="Street Food">Street Food</option>
+      <option value="Dessert">Dessert</option>
+      <option value="Dish">Dish</option>
+    </select>
+    <button onclick="clearFilters()">Clear</button>
+    <button class="" onclick="shuffleFood()">Shuffle</button>
+  </div>
+</section>
+
+<section id="foodGrid" class="grid"></section>
+
+<!-- PowerPoint-like Modal Presentation -->
+<div id="pptModal" class="ppt-modal" style="display:none;">
+  <div class="ppt-container">
+    <img src="image8/menubox.png" class="ppt-bg-svg" alt="PPT Background">
+    <div class="ppt-content-area">
+      <div class="ppt-title" id="pptTitle"></div>
+
+        <div class="slide"></div>
+        <div class="slide"></div>
+      </div>
+
+      <div class="ppt-controls" id="pptSlidesControls">
+        <button type="button" onclick="pptPrevSlide()">← Prev</button>
+        <span id="slideIndicator"></span>
+        <button type="button" onclick="pptNextSlide()">
+          <img src="image8/next.png" alt="Next">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const foods = [
+  {
+    name: "Sinulog Festival",
+    origin: "Philippines",
+    category: "Catholic Festival",
+    description: "A popular Filipino street food made of battered quail eggs.",
+    history: "Kwek-Kwek originated as a creative way to serve quail eggs in the Philippines, becoming a staple in street food markets.",
+    references: "asasdasd",
+    recipe: "1. Boil quail eggs.\n2. Coat in orange batter.\n3. Deep fry until crispy.\n4. Serve with vinegar or sweet sauce.",
+    image: "image8/aklan.png",
+    imageflip: "image8/sinulog_flip.png",
+    modalImage: "image4/kwek.svg",
+    modalVideos: [
+      "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
+      "https://www.youtube.com/watch?v=xoLPVGgGCF0"
+
+    ]
+  },
+  {
+    name: "Sinulog Festival",
+    origin: "Cebu City, Philippines",
+    category: "Catholic Festival",
+    description: "Sinulog Festival is Cebu's largest and most famous festival, held every third Sunday of January in honor of the Santo Niño (Child Jesus). It is celebrated with vibrant street dancing, colorful costumes, drumbeats, and religious processions, blending Filipino faith, culture, and tradition.Sinulog Festival is Cebu's largest and most famous festival, held every third Sunday of January in honor of the Santo Niño (Child Jesus). It is celebrated with vibrant street dancing, colorful costumes, drumbeats, and religious processions, blending Filipino faith, culture, and tradition.Sinulog Festival is Cebu's largest and most famous festival, held every third Sunday of January in honor of the Santo Niño (Child Jesus). It is celebrated with vibrant street dancing, colorful costumes, drumbeats, and religious processions, blending Filipino faith, culture, and tradition.",
+    history: "Kwek-Kwek originated as a creative way to serve quail eggs in the Philippines, becoming a staple in street food markets.",
+    references: "asasdasd",
+    recipe: "1. Boil quail eggs.\n2. Coat in orange batter.\n3. Deep fry until crispy.\n4. Serve with vinegar or sweet sauce.",
+    image: "image8/sinulog3.png",
+        imageflip: "image8/sinulog_flip.png",
+    modalImage: "image4/kwek.svg",
+    modalVideos: [
+      "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
+      "https://www.youtube.com/watch?v=xoLPVGgGCF0"
+
+    ]
+  },
+  {
+    name: "Kwek-Kwek",
+    origin: "Philippines",
+    category: "Street Food",
+    description: "A popular Filipino street food made of battered quail eggs.",
+    history: "Kwek-Kwek originated as a creative way to serve quail eggs in the Philippines, becoming a staple in street food markets.",
+    references: "asasdasd",
+    recipe: "1. Boil quail eggs.\n2. Coat in orange batter.\n3. Deep fry until crispy.\n4. Serve with vinegar or sweet sauce.",
+    image: "image8/rodeo.png",
+            imageflip: "image8/sinulog_flip.png",
+
+    modalImage: "image4/kwek.svg",
+    modalVideos: [
+      "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
+      "https://www.youtube.com/watch?v=xoLPVGgGCF0"
+
+    ]
+  },
+];
+
+let currentList = [...foods]; // Always keep a copy for shuffling
+
+function render(list) {
+  const grid = document.getElementById("foodGrid");
+  grid.innerHTML = list.map((f,i)=>`
+    <div class="card-container" data-index="${i}" onclick="openFood(${i})">
+      <div class="card">
+        <div class="card-face card-front" style="background-image: url('${f.image}')"></div>
+        <div class="card-face card-back" style="background-image: url('${f.imageflip || f.image}'); background-size: cover; background-position: center;"></div>
+      </div>
+    </div>
+  `).join("");
+  currentList = list; // Keep currentList in sync
+}
+
+function openFood(index) {
+  const food = currentList[index];
+  if (!food) return;
+  openPptModal(food);
+}
+
+// Replace filterFood with flexible category handling and add helpers
+function isMatchingCategory(itemCategory, selected) {
+  if (!selected) return true;
+  if (!itemCategory) return false;
+  if (typeof itemCategory === 'string') {
+    return itemCategory.toLowerCase() === selected.toLowerCase();
+  }
+  if (Array.isArray(itemCategory)) {
+    return itemCategory.some(c => typeof c === 'string' && c.toLowerCase() === selected.toLowerCase());
+  }
+  return false;
+}
+
+function getCategoryLabel(cat) {
+  if (!cat) return '';
+  if (Array.isArray(cat)) return cat.filter(c=>c && c.trim()).join(', ');
+  return String(cat);
+}
+
+function filterFood() {
+  const search = document.getElementById("search");
+  const q = (search.value || "").toLowerCase();
+  const category = document.getElementById("category").value;
+  let filtered = foods.filter(f => (f.name || "").toLowerCase().includes(q));
+  if (category) {
+    filtered = filtered.filter(f => isMatchingCategory(f.category, category));
+  }
+  render(filtered);
+}
+
+function clearFilters() {
+  document.getElementById("search").value = "";
+  document.getElementById("category").value = "";
+  render(foods);
+}
+
+function shuffleFood() {
+  const shuffled = [...currentList].sort(()=>Math.random()-0.5);
+  render(shuffled);
+}
+
+// --- Dark mode memory ---
+(function() {
+  if (localStorage.getItem('darkmode') === '1') {
+    document.body.classList.add('dark');
+  }
+})();
+
+function toggleDark() {
+  document.body.classList.toggle("dark");
+  localStorage.setItem('darkmode', document.body.classList.contains('dark') ? '1' : '0');
+}
+
+let pptCurrentSlide = 0;
+let pptSlides = [];
+const pptLabels = [
+  "Description",
+  "History",
+  "Recipe",
+  "References"
+];
+
+function highlightTerms(text, highlights) {
+  if (!highlights || !Array.isArray(highlights)) return text;
+  return text.split(/(<[^>]+>)/g).map(segment => {
+    if (segment.startsWith('<')) return segment;
+    let s = segment;
+    highlights
+      .sort((a, b) => b.term.length - a.term.length)
+      .forEach(({ term, url }) => {
+        const regex = new RegExp(`\\b${escapeRegExp(term)}\\b`, 'gi');
+        s = s.replace(regex, `<a href="${url}" class="highlighted-term" target="_blank" rel="noopener noreferrer">$&</a>`);
+      });
+    return s;
+  }).join('');
+}
+
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function openPptModal(food) {
+  if (!food) return;
+
+  document.getElementById("pptModal").style.display = "flex";
+  document.getElementById("pptTitle").textContent = food.name || "";
+
+  pptSlides = [
+    food.description || "",
+    food.history || "",
+    food.recipe || "",
+    food.references || ""
+  ];
+
+  const slideEls = document.querySelectorAll("#pptModal .slide");
+  slideEls.forEach((slide, i) => {
+    const content = pptSlides[i] || "No content available.";
+    slide.innerHTML = `<strong>${pptLabels[i] || 'Slide'}:</strong><br>${content.replace(/\n/g, "<br>")}`;
+  });
+
+  pptShowSlide(0);
+}
+
+function closePptModal() {
+  document.getElementById("pptModal").style.display = "none";
+}
+
+function pptShowSlide(idx) {
+  const slides = document.querySelectorAll("#pptModal .slide");
+  if (!slides.length) return;
+
+  const safeIndex = (idx + slides.length) % slides.length;
+  slides.forEach((s, i) => {
+    s.classList.toggle("active", i === safeIndex);
+    s.style.display = i === safeIndex ? "block" : "none";
+  });
+
+  const indicator = document.getElementById("slideIndicator");
+  if (indicator) {
+    indicator.textContent = `${safeIndex + 1} / ${slides.length}`;
+  }
+  pptCurrentSlide = safeIndex;
+}
+
+function pptNextSlide() {
+  pptShowSlide(pptCurrentSlide + 1);
+}
+
+function pptPrevSlide() {
+  pptShowSlide(pptCurrentSlide - 1);
+}
+
+// Add click-outside-to-close for pptModal (now closes only if clicking outside ppt-container)
+document.getElementById("pptModal").addEventListener("mousedown", function(e) {
+  // If clicking a highlighted-term link, do nothing (let the link work)
+  if (e.target.closest('.highlighted-term')) return;
+  const pptContainer = document.querySelector("#pptModal .ppt-container");
+  if (e.target === this || (!pptContainer.contains(e.target) && this.contains(e.target))) {
+    closePptModal();
+  }
+});
+
+document.getElementById("foodGrid").addEventListener("click", e => {
+  const cardContainer = e.target.closest(".card-container");
+  if (!cardContainer) return;
+  openFood(cardContainer.dataset.index);
+});
+
+// Populate category dropdown from data (keeps options in sync with JSON)
+function populateCategories() {
+  const select = document.getElementById('category');
+  // keep the "All Categories" option (value = "")
+  const seen = new Set();
+  foods.forEach(f => {
+    if (!f.category) return;
+    if (Array.isArray(f.category)) {
+      f.category.forEach(c => { if (c && c.trim()) seen.add(c.trim()); });
+    } else if (typeof f.category === 'string' && f.category.trim()) {
+      seen.add(f.category.trim());
+    }
+  });
+  const sorted = Array.from(seen).sort((a,b)=>a.localeCompare(b));
+  // remove existing non-empty options then append new ones
+  select.querySelectorAll('option:not([value=""])').forEach(o => o.remove());
+  sorted.forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat;
+    opt.textContent = cat;
+    select.appendChild(opt);
+  });
+}
+
+// Call populateCategories before initial render
+populateCategories();
+render(foods);
+
+
+</script>
+</body>
+</html>

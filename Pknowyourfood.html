@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,7 +7,7 @@
 
 <style>
 :root {
-  --bg: url('image4/cloud.jpg') center / cover no-repeat;
+  --bg: url('image4/dark.jpg') center / cover no-repeat;
   --card-image: url('image4/menubox.svg');
   --button-bg: #ffffff;
   --text: #1e1e1e;
@@ -24,9 +24,9 @@
 
 body.dark {
   --bg: url('image4/dark.jpg') center / cover no-repeat;
-  --button-bg: #c5c3c3;
-  --text: #eaeaea;
-  --accent: #96610c;
+  --button-bg: #ffffff;
+  --text: #1e1e1e;
+  --accent: #c0392b;
 }
 
 * { box-sizing: border-box; font-family: system-ui, sans-serif; }
@@ -173,7 +173,7 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
   text-align: left;
   white-space: pre-line;
-  max-width: 95%;
+  max-width: none;
   overflow-x: hidden;    /* prevent horizontal scroll */
 }
 .slide.active {
@@ -207,26 +207,7 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   background-position: 0 0, 9px 9px;
 }
 .ppt-modal[style*="display: flex"] { display: flex !important; }
-.ppt-container {
-  width: 750px;
-  height: 500px;
-  background: none;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  position: relative;
-  transform: none;
-  opacity: 1;
-  animation: none;
-  color: #2d1a00;
-  min-height: unset;
-  margin: 0;
-  box-sizing: border-box;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  overflow: hidden;
-}
+
 
 .ppt-bg-svg {
   position: absolute;
@@ -338,20 +319,19 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #e0cfa3 #fffbe7;
+  scrollbar-gutter: stable both-edges;
 }
 
-/* Hide scrollbar by default, show on hover/focus (Webkit browsers) */
+/* Hide scrollbar visually by default, keep layout stable */
 .ppt-slides::-webkit-scrollbar {
   width: 8px;
-  background: #fffbe7;
+  background: transparent;
   border-radius: 8px;
   opacity: 0;
   transition: opacity 0.2s;
-  display: none;
 }
 .ppt-slides:hover::-webkit-scrollbar,
 .ppt-slides:focus-within::-webkit-scrollbar {
-  display: block;
   opacity: 1;
 }
 
@@ -366,7 +346,7 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
 
 /* For Firefox: hide by default, show on hover/focus */
 .ppt-slides {
-  scrollbar-width: none;
+  scrollbar-width: thin;
 }
 .ppt-slides:hover,
 .ppt-slides:focus-within {
@@ -419,8 +399,8 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
 }
 .ppt-modal[style*="display: flex"] { display: flex !important; }
 .ppt-container {
-  width: 750px;
-  height: 500px;
+  width: 850px;
+  height: 600px;
   background: none;
   border-radius: 0;
   box-shadow: none;
@@ -490,19 +470,15 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
 }
 
 .ppt-food-img {
-  width: 300px;
+  width: 250px;
   height: 200px;
-  max-width: 300px;
-  max-height: 200px;
-  min-width: 300px;
-  min-height: 200px;
   object-fit: contain;
   border: none;
   background: none;
   box-shadow: none;
   margin: 0;
   display: block;
-  margin-left: -120px;
+  margin-left: -180px;
 }
 
 .ppt-title-block {
@@ -516,21 +492,24 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
 }
 
 .ppt-title {
-  font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
-  font-size: 2.6rem;
-  margin: 0 0 2px 0; /* was 10px, now 2px for less space */
+  font-family: Georgia, "Times New Roman", serif;
+font-size: 2.5rem;
+font-weight: 700;
+letter-spacing: 0.5px;
+color: #5a2f0c;
+text-transform: uppercase;
   background: none;
   display: block;
   border-radius: 0 18px 8px 0;
   color: #222;
   letter-spacing: 1px;
   line-height: 1.1;
-  margin-left: -25px;
+transform: translateX(-40px);
 }
 
 .ppt-subtitle {
   font-size: 1.18rem;
-  margin: 0 0 0 2px;
+  transform: translateX(-65px);
   color: #444;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
   font-weight: normal;
@@ -551,20 +530,19 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #e0cfa3 #fffbe7;
+  scrollbar-gutter: stable both-edges;
 }
 
-/* Hide scrollbar by default, show on hover/focus (Webkit browsers) */
+/* Hide scrollbar visually by default, keep layout stable */
 .ppt-slides::-webkit-scrollbar {
   width: 8px;
-  background: #fffbe7;
+  background: transparent;
   border-radius: 8px;
   opacity: 0;
   transition: opacity 0.2s;
-  display: none;
 }
 .ppt-slides:hover::-webkit-scrollbar,
 .ppt-slides:focus-within::-webkit-scrollbar {
-  display: block;
   opacity: 1;
 }
 
@@ -577,9 +555,9 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   background: #c8b27a;
 }
 
-/* For Firefox: hide by default, show on hover/focus */
+/* For Firefox: keep layout stable */
 .ppt-slides {
-  scrollbar-width: none;
+  scrollbar-width: thin;
 }
 .ppt-slides:hover,
 .ppt-slides:focus-within {
@@ -592,13 +570,16 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   line-height: 1.7;
   color: #1a1200;
   background: none;
-  padding: 0 10px 0 0;
+  padding: 0 -100px 0 0;
   font-size: 1.13rem;
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
   text-align: left;
   white-space: pre-line;
-  max-width: 95%;
-  overflow-x: hidden;    /* prevent horizontal scroll */
+  width:100%;
+    max-width:none;   /* instead of 95% */
+      overflow-x: hidden;    /* prevent horizontal scroll */
+    overflow-y: auto;
+    scrollbar-gutter: stable;;
 }
 .slide.active {
   display: block; /* Show active slide */
@@ -612,7 +593,7 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   font-family: 'Comic Sans MS', 'Comic Sans', cursive, system-ui, sans-serif;
   color: #222;
   text-shadow: 0 1px 0 #fffbe7;
-  margin-top: 30px; /* was 30px, now 10px for less space */
+  margin-top: 10px; /* was 30px, now 10px for less space */
 }
 
 .ppt-controls {
@@ -780,9 +761,9 @@ body.dark .modal { background: #2a2a2a; color: var(--text); }
   outline: none;
 }
 body.dark #search {
-  background: #2a2a2a;
-  color: #eaeaea;
-  border-color: #f39c12;
+   border: 2px solid #e0cfa3;
+  background: #fffbe7;
+  color: #1e1e1e;
 }
 .filter-row {
   display: flex;
@@ -797,11 +778,9 @@ body.dark #search {
 </head>
 
 <body>
-<a href="index.html" class="index-logo-link" aria-label="Back to Index">
+<a href="home.html" class="index-logo-link" aria-label="Back to Index">
   <img src="image/logo2.svg" alt="Back to Index" class="main-logo">
 </a>
-
-<button class="dark-toggle" onclick="toggleDark()">Dark Mode</button>
 
 <header>
   <img class="logo" src="image/food.svg" alt="Pinoy Know Your Food">
@@ -879,11 +858,10 @@ const foods = [
     category: "Street Food",
     description: "A popular Filipino street food made of battered quail eggs.",
     history: "Kwek-Kwek originated as a creative way to serve quail eggs in the Philippines, becoming a staple in street food markets.",
-    cultural: "Kwek-Kwek is a symbol of Filipino street food culture, often enjoyed as a snack during gatherings and festivals.",
+    references: "asasdasd",
     recipe: "1. Boil quail eggs.\n2. Coat in orange batter.\n3. Deep fry until crispy.\n4. Serve with vinegar or sweet sauce.",
     image: "image4/kwek.png",
     modalImage: "image4/kwek.svg",
-    // Use only links for modalVideos
     modalVideos: [
       "https://www.youtube.com/watch?v=5PjVjNTLOhQ",
       "https://www.youtube.com/watch?v=xoLPVGgGCF0"
@@ -925,41 +903,27 @@ const foods = [
     ]
   },
   {
-    name: "Kutsinta",
+    name: "Chop Suey",
     origin: "",
     category: "Kakanin",
-    description: "",
-    history: "",
+    description: "Chop Suey is a vegetable stir-fry dish made with a combination of vegetables such as cabbage, carrots, cauliflower, snow peas, bell peppers, and young corn, along with meat or seafood such as chicken, pork, beef, or shrimp. The ingredients are cooked in a light, savory sauce seasoned with soy sauce, oyster sauce, garlic, and other spices. The dish is characterized by its colorful appearance, crisp-tender vegetables, tender meat, and mild umami flavor. In the Philippines, Chop Suey is typically served as a viand and eaten with steamed white rice.",
+    history: "The name Chop Suey is derived from the Cantonese phrase tsap seui, meaning 'miscellaneous leftovers' or 'odds and ends.' Although its exact origin remains uncertain, food historians generally trace the dish to Taishan, Guangdong, China, where similar stir-fries were prepared using leftover meats and vegetables. Chinese immigrants introduced the dish to the United States during the 19th century, where it became widely recognized as a staple of Chinese-American cuisine. While numerous legends attribute its invention to Chinese railroad workers, San Francisco restaurateurs, or the visit of Qing official Li Hongzhang, historians consider these stories unverified. During the American colonial period, Chop Suey was introduced to the Philippines through Chinese immigrants and cultural exchange. Filipino cooks adapted the dish by incorporating locally available vegetables, seasonings, and the practice of serving it with steamed rice, resulting in the Filipino-style Chop Suey that remains a popular home-cooked dish today.",
     cultural: "",
     recipe: "",
-    image: "",
-    modalImage: "image4/kutsinta.png",
+    image: "image4/chopsuey.png",
+    modalImage: "image4/chop.png",
     modalVideo: "",
     highlights: [
       { term: "", url: "" },
     ]
   },
-  {
-    name: "Buko Pie",
-    origin: "",
-    category: "Dessert",
-    description: "",
-    history: "",
-    cultural: "",
-    recipe: "",
-    image: "image4/bukopie.png",
-    modalImage: "image4/buko.png",
-    modalVideo: "",
-    highlights: [
-      { term: "", url: "" },
-    ]
-  },
+
   {
     name: "Espasol",
     origin: "",
     category: "Pasalubong",
-    description: "",
-    history: "",
+    description: "Espasol is a soft, chewy Filipino rice cake made from toasted glutinous rice flour cooked with coconut milk and grated young coconut, then rolled into cylinders and coated with toasted rice flour. It has a delicate, slightly smoky aroma from the toasted flour and is best known as a Laguna specialty, especially in the town of Nagcarlan, where it is a popular pasalubong.",
+    history: "Espasol originated in Laguna, where it developed from the Philippines' long tradition of kakanin made with rice and coconut. Its name is believed to come from the Spanish words 'espárrago' ('asparagus'), referring to its long shape, or 'espalmar' ('to flatten'), describing how the dough is shaped. Although rice cakes existed in the Philippines before Spanish colonization, espasol evolved by combining indigenous ingredients with colonial-era sugar-making techniques. By the early 20th century, it had become one of Laguna's best-known market delicacies and pasalubong.",
     cultural: "",
     recipe: "",
     image: "image4/espasol.png",
@@ -985,20 +949,301 @@ const foods = [
     ]
   },
    {
-    name: "",
-    origin: "",
+    name: "Puto Seko",
     category: ["", ""],
-    description: "",
-    history: "",
+    description: "Puto Seco, also known as puto seko or puto masa, is a traditional Filipino cookie made from glutinous rice flour or cornstarch, sugar, butter, eggs, and powdered milk. It is typically white, round, and thick, with a dry, crumbly texture that easily melts in the mouth. Mildly sweet with a rich, buttery flavor, Puto Seco is often enjoyed as a snack or paired with coffee, tea, or hot chocolate. Some varieties, particularly puto masa, are made in colorful, bite-sized pieces.",
+    history: "The name Puto Seco comes from the Filipino word puto (rice cake) and the Spanish word seco, meaning 'dry,' referring to its distinctive crumbly texture. Traditionally, it was made using galapong—glutinous rice soaked overnight, ground into a paste, mixed with sugar, and baked until dry. As baking methods evolved, recipes gradually replaced galapong with cornstarch, flour, and powdered milk, making the cookies easier to prepare and preserve. Although its exact origins are uncertain, the rice-based nature of Puto Seco reflects the influence of early Southeast Asian rice traditions, while its name and baking techniques also reveal the lasting impact of Spanish colonial culture on Filipino cuisine.",
     cultural: "",
     recipe: "",
-    image: "image4/.png",
-    modalImage: "image4/.png",
+    image: "image4/puto.png",
+    modalImage: "image4/seko.png",
     modalVideo: "",
     highlights: [
       { term: "", url: "" },
     ]
-  }
+  },
+   {
+    name: "Turon",
+    category: ["", ""],
+    description: "Turón, also known as lumpiang saging, is a popular Filipino snack made by wrapping slices of ripe saba (cardaba) bananas in a thin spring roll wrapper, coating them with brown sugar, and deep-frying them until golden and crisp. As the sugar caramelizes during frying, it forms a glossy, crunchy coating that complements the soft, sweet banana filling. Some variations include jackfruit (langka), sweet potato (kamote), mango, cheese, or coconut. Turón is commonly enjoyed as a merienda, dessert, or street food, often sold alongside banana cue, camote cue, and maruya.",
+    history: "Turón traces its origins to the Chinese spring roll, which was introduced to the Philippines through early Chinese traders before the Spanish colonial period. As Filipino cooks adapted the dish, they replaced the savory filling with local sweet ingredients such as saba bananas and brown sugar, creating one of the country's most popular sweet lumpia varieties. During the Spanish colonial era, the snack became more widely known and eventually acquired the name turón, derived from the Spanish term turrón de banana. Despite its name, Filipino Turón is unrelated to the Spanish almond nougat called turrón. Today, it remains a beloved Filipino snack and a staple of street food culture throughout the country.",
+    cultural: "",
+    recipe: "",
+    image: "image4/turon.png",
+    modalImage: "image4/turonron.png",
+    modalVideo: "",
+    highlights: [
+      { term: "turrón", url: "https://en.wikipedia.org/wiki/Turr%C3%B3n" },
+    ]
+  },
+   {
+    name: "Carmelado",
+    category: ["", ""],
+    description: "Carmelado is a traditional Filipino milk candy made from carabao's milk and sugar. Often described as Masbate's version of pastillas de leche, it has a firmer, denser texture and a rich, creamy sweetness. The candy is typically cut into small rectangular pieces and individually wrapped, making it a popular local delicacy and souvenir. Carmelado has been recognized as one of the One Town, One Product (OTOP) products of Masbate, with most producers located in the municipality of Milagros.",
+    history: "The origins of Carmelado can be traced to the 1950s in Barangay Bacolod, Milagros, Masbate, a community known for raising cows and carabaos. The candy became a source of livelihood for many local families, who produced and sold it from their homes. According to local accounts, one of its earliest makers was Consuelo 'Aling Choleng' Medina, who learned the recipe from her godmother, Diday. Originally, the candies were wrapped in brown paper before colorful Japanese paper wrappers became common. Over the decades, Carmelado grew into one of Masbate's best-known delicacies and remains an important part of the province's culinary heritage.",
+    cultural: "",
+    recipe: "",
+    image: "image4/carmelado.png",
+    modalImage: "image4/mela.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Taho",
+    category: ["", ""],
+    description: "Tahô is a popular Filipino street snack made from fresh silken tofu, arnibal (brown sugar syrup), and sago pearls. Served warm in cups, it has a soft, silky texture complemented by the chewy sago and the rich sweetness of the syrup. Tahô is commonly sold by magtatahô, street vendors who carry large aluminum buckets suspended from a shoulder pole and announce their arrival by calling out 'Tahô!' It is widely enjoyed as a comforting breakfast, snack, or afternoon treat and remains one of the Philippines' most recognizable street foods.",
+    history: "Tahô traces its origins to the Chinese dessert douhua (tofu pudding), which has existed since the Han dynasty over 2,000 years ago. The dish was introduced to the Philippines by Hoklo (Hokkien) Chinese immigrants through trade and migration, and its name comes from the Hokkien pronunciation of the Chinese word for tofu (tāu-hū). Over time, Filipinos adapted the dish by serving silken tofu with arnibal and sago pearls, creating the uniquely Filipino version known today as Tahô. While some accounts associate its spread with the Spanish colonial period, historians generally agree that its roots lie in earlier Chinese culinary traditions.",
+    cultural: "",
+    recipe: "",
+    image: "image4/taho.png",
+    modalImage: "image4/tahoho.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Brazo de Mercedes",
+    category: ["", ""],
+    description: "Brazo de Mercedes is a classic Filipino rolled dessert made with a light meringue instead of sponge cake. The meringue, prepared from egg whites, sugar, and cream of tartar, is baked and filled with a rich custard made from egg yolks, condensed milk, sugar, and vanilla, sometimes flavored with citrus zest. It is carefully rolled into a cylinder, chilled, and dusted with powdered sugar before serving. The dessert is known for its delicate, airy exterior and smooth, creamy filling.",
+    history: "Brazo de Mercedes dates back to the Spanish colonial period in the Philippines. It is believed to have been created as a practical way to use egg yolks left over after egg whites were used in making lime mortar and plaster for the construction of Spanish-era churches, bridges, and ancestral houses. While its exact origins remain uncertain, the dessert is thought to have been inspired by European meringue-based pastries and adapted into a uniquely Filipino delicacy. Its name comes from the Spanish phrase 'Brazo de Mercedes,' meaning 'Arm of Our Lady of Mercy' (Nuestra Señora de las Mercedes), rather than simply 'Mercedes' Arm.'",
+    cultural: "",
+    recipe: "",
+    image: "image4/brazo.png",
+    modalImage: "image4/mercedes.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Pande Regla",
+    category: ["", ""],
+    description: "Pan de Regla, also known as Kalihim, is a popular Filipino sweet bread filled with a bright red bread pudding made from stale bread, milk, eggs, sugar, butter, and vanilla. The filling has a soft, rich texture and is enclosed in a fluffy bread roll, making it a common and affordable merienda sold in neighborhood bakeries. While the classic version is known for its vibrant red color, some modern variations use ube or pineapple fillings.",
+    history: "Pan de Regla traces its roots to the Spanish influence on Philippine baking during the colonial period. The bread is believed to have originated as Kalihim, named after the Filipino word lihim ('secret'), because bakers cleverly recycled unsold day-old bread into a sweet pudding filling instead of letting it go to waste. When the bread became popular in Manila, it gained the nickname Pan de Regla ('menstrual bread') because of its bright red filling. Over time, it became famous for its many humorous and regional names, including Ligaya ('joy'), Bellas, Alembong, Pan de Burikat ('prostitute's bread') in Cebu, Pampam in Negros Occidental and Marikina, Lahi, Pan de Pula ('red bread'), Lipstick Bread, Floor Wax Bread, Kabukiran, Everlasting Bread, and even Pulang Kiki in parts of Batangas. These colorful nicknames reflect the playful humor and creativity of Filipino bakery culture.",
+    cultural: "",
+    recipe: "",
+    image: "image4/pande.png",
+    modalImage: "image4/regla.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "Buko Pie",
+    origin: "",
+    category: "Dessert",
+    description: "Buko Pie is a traditional Filipino baked pie filled with young coconut (buko), sweetened condensed milk, and a rich, custard-like filling enclosed in a flaky pastry crust. Unlike the American coconut cream pie, it contains no cream or meringue, relying instead on the natural sweetness and tender texture of fresh young coconut. Originating from Los Baños, Laguna, Buko Pie is a popular delicacy and pasalubong, with modern variations featuring flavors such as pandan, vanilla, almond, or even macapuno.",
+    history: "Buko Pie originated in Los Baños, Laguna, during the 1960s and is widely credited to the Pahud sisters, founders of Orient Bakery. After learning to bake apple pie while working and studying in the United States, Soledad (Nanette) Pahud adapted the recipe upon returning to the Philippines. Because apples were scarce, her sister suggested replacing them with the locally abundant young coconut (buko), resulting in the creation of what is now considered Laguna's signature dessert. The bakery, established in 1965, popularized the pie, inspiring many other bakeries and cementing Buko Pie as one of the Philippines' most iconic delicacies.",
+    cultural: "",
+    recipe: "",
+    image: "image4/bukopie.png",
+    modalImage: "image4/buko.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Pandesal",
+    category: ["", ""],
+    description: "Pandesal (or Pan de Sal) is the Philippines' most iconic bread roll, commonly enjoyed for breakfast or merienda. Despite its name, which means 'bread of salt' in Spanish, modern pandesal is slightly sweet with a soft, fluffy interior and a lightly crisp crust coated in fine breadcrumbs. It is often paired with coffee or hot chocolate and filled with spreads such as butter, cheese, peanut butter, coconut jam, or even savory fillings like corned beef and pancit. Today, it is also available in modern varieties, including malunggay, ube, and cheese-filled pandesal.",
+    history: "Pandesal evolved from pan de suelo ('floor bread'), a Spanish-Filipino version of the French baguette baked directly on the floor of a traditional pugón (wood-fired oven). Wheat-based bread was first introduced to the Philippines by Portuguese explorers in the 1500s and later expanded under Spanish rule, partly to produce hostia (communion bread) for Catholic worship. Because wheat was scarce and had to be imported, Filipino bakers eventually used more affordable flour, creating the softer bread now recognized as pandesal. Its popularity surged during the American colonial period in the early 1900s, when inexpensive American wheat, commercial yeast, baking pans, and modern baking techniques transformed pandesal into the country's everyday breakfast staple.",
+    cultural: "",
+    recipe: "",
+    image: "image4/pandesal.png",
+    modalImage: "image4/salsal.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Suman Latik",
+    category: ["", ""],
+    description: "Suman is a traditional Filipino rice cake made from glutinous rice cooked in coconut milk, tightly wrapped in palm or banana leaves, and steamed until tender. It has a soft, sticky texture with a subtle sweetness and the fragrant aroma of coconut and leaves. Suman is commonly enjoyed with sugar, ripe mangoes, or latik, while some varieties are pan-fried for a crisp exterior. Known by many regional names and variations, it is one of the Philippines' most enduring and beloved kakanin.",
+    history: "Suman dates back to pre-colonial Philippines, making it one of the country's oldest surviving traditional foods. Historians believe it originated as a simple rice-based meal prepared during harvests and offered to deities and ancestral spirits as part of pagan rituals for good harvests and good health. The earliest written description comes from Antonio Pigafetta, who accompanied Ferdinand Magellan in 1521 and described rice cakes 'wrapped in leaves' and made in 'somewhat longish pieces.' Later, Friar Domingo de los Santos recorded in his 1695 Vocabulario de la Lengua Tagala that kakanin were used as ritual offerings. Despite centuries of Spanish, American, and other foreign influences, the traditional method of cooking suman has remained largely unchanged.",
+    cultural: "",
+    recipe: "",
+    image: "image4/suman.png",
+    modalImage: "image4/latik.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "Kikiam",
+    category: ["", ""],
+    description: "Kikiam (also spelled Quekiam) is a Filipino adaptation of the Chinese Ngo Hiang, a savory sausage-like roll traditionally made from minced pork, shrimp, vegetables, and Chinese five-spice powder wrapped in bean curd skin and deep-fried until golden brown. It has a crispy exterior, a flavorful and aromatic filling, and is commonly served with sweet, spicy, or vinegar-based dipping sauces. In the Philippines, a more affordable street food version is also popular, made from fish paste and flour, and sold alongside fish balls and squid balls by street vendors.",
+    history: "Kikiam traces its origins to Ngo Hiang, a Hokkien dish from Fujian, southern China, whose name refers to the Chinese five-spice powder used in the filling. It was introduced to the Philippines by Hokkien Chinese immigrants, where it gradually evolved into distinct Filipino versions. The traditional recipe retained its pork, shrimp, and bean curd skin, while the street food version became a more economical fish-based snack. In Cebu, the authentic meat roll is known as Ngohiong and is uniquely wrapped in lumpia wrappers instead of bean curd skin.",
+    cultural: "",
+    recipe: "",
+    image: "image4/kikiam.png",
+    modalImage: "image4/kikiamy.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Pancit",
+    category: ["", ""],
+    description: "Pancit is the collective name for a wide variety of Filipino noodle dishes, with Pancit Canton being one of the most popular. It features thick egg noodles stir-fried with soy sauce, vegetables, and meat or seafood. Other well-known varieties include Pancit Bihon Guisado (thin rice noodles), Sotanghon Guisado (glass noodles), Pancit Luglog or Pancit Malabon (thick rice noodles with seafood sauce), Pancit Batil Patong (miki noodles with carabao beef and egg), Pancit Habhab (Lucban-style noodles eaten from a banana leaf), Pancit Lomi (thick egg noodles in a rich broth), and Pancit Langlang (flat miki noodles in savory soup). Other regional varieties include Pancit Puti, Pancit Istasyon, Pancit Henoy, and dishes named after their place of origin or cooking style. Most pancit dishes are served with calamansi, adding a bright citrus flavor, and are staples at birthdays, fiestas, weddings, and other celebrations.",
+    history: "Pancit was introduced to the Philippines by Chinese traders and migrants, and its name comes from the Hokkien phrase 'piân-ê-si̍t', meaning 'something conveniently cooked' or 'convenient food.' Filipinos gradually adapted the dish by incorporating local ingredients and later Spanish-introduced staples such as garlic and onions, giving rise to countless regional variations. Rooted in Chinese tradition, pancit became closely associated with longevity and good fortune, leading to the custom of serving uncut noodles during birthdays and special occasions to symbolize a long and prosperous life.",
+    cultural: "",
+    recipe: "",
+    image: "image4/pancit.png",
+    modalImage: "image4/pancity.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Ube Halaya",
+    category: ["", ""],
+    description: "Ube Halaya (or Halayang Ube) is a classic Filipino dessert made by boiling and mashing purple yam (ube) with milk, sugar, and butter until it becomes smooth, thick, and creamy. Its rich purple color and sweet, earthy flavor make it a favorite on its own and a popular base for desserts such as halo-halo, ube cakes, pastries, and ice cream. The name 'halaya' comes from the Spanish word 'jalea,' meaning 'jelly.'",
+    history: "The Philippines is considered one of the likely centers of ube domestication, with archaeological evidence from Ille Cave, Palawan showing that ube was already being used around 11,000 years ago. The crop was also recorded in the first Tagalog–Spanish dictionary published in 1613, highlighting its long history in Filipino food culture. Over time, ube evolved from an ancient staple crop into the iconic ingredient behind ube halaya, one of the country's most beloved traditional desserts.",
+    cultural: "",
+    recipe: "",
+    image: "image4/ube.png",
+    modalImage: "image4/halaya.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Sorbetes",
+    category: ["", ""],
+    description: "Sorbetes is the Philippines' traditional street-style ice cream, made with carabao's milk, coconut milk, or both, giving it a richer texture than most commercial ice creams. It comes in classic Filipino flavors such as ube, queso, mantecado, mango, jackfruit, avocado, buko, and pinipig. Sold by sorbeteros from brightly decorated pushcarts, it is commonly served in wafer cones, sugar cones, or tucked inside a soft pandesal bun. Although affectionately nicknamed 'dirty ice cream,' the name simply refers to its street-vendor origins rather than its cleanliness.",
+    history: "Sorbetes became popular after ice was first imported to the Philippines in 1847 by the American company Russell & Sturgis, making frozen desserts more accessible during the Spanish colonial period. It was considered a luxury and was even served at the banquet celebrating the inauguration of Emilio Aguinaldo as the first Philippine president in 1898. Early sorbetes were churned using a hand-cranked garapiñera, a traditional ice cream maker cooled with ice and salt. Originally made with cow's milk, Filipino makers later switched to carabao's milk and coconut milk, creating the rich flavor and texture that distinguish sorbetes today. It was sold by sorbeteros, first on foot and later from the colorful carts that became iconic symbols of Filipino street food.",
+    cultural: "",
+    recipe: "",
+    image: "image4/sorb.png",
+    modalImage: "image4/betes.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+   {
+    name: "Pastillas",
+    category: ["", ""],
+    description: "Pastillas de Leche are soft, creamy Filipino milk candies traditionally made from carabao's milk and sugar. Originating in San Miguel, Bulacan, they are enjoyed in several forms, including soft, hard, and toasted pastillas, as well as flavored varieties such as ube, mango, durian, and yema-filled pastillas. A distinctive feature of traditional pastillas is their colorful pabalat—intricately hand-cut wrappers made from papel de hapon (Japanese tissue paper).",
+    history: "Pastillas de Leche originated in San Miguel, Bulacan, where carabao farmers transformed fresh milk into a sweet confection. Food historians believe the candy was inspired by milk sweets introduced through the Manila–Acapulco Galleon Trade (1565–1815) and was later adapted to Filipino tastes in the late 19th century using local ingredients like carabao's milk. San Miguel remains closely associated with the delicacy and has celebrated the Pastillas Festival every May since 2006, highlighting both the candy and the traditional pabalat paper-cutting craft.",
+    cultural: "",
+    recipe: "",
+    image: "image4/pasti.png",
+    modalImage: "image4/llas.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "Leche Flan",
+    category: ["", ""],
+    description: "Leche Flan is a rich Filipino custard dessert made with egg yolks, evaporated milk, condensed milk, and caramelized sugar. Adapted from the European crème caramel, it is denser, creamier, and sweeter due to the use of condensed milk. It is commonly served on its own or as a topping for halo-halo.", 
+    history: "Leche Flan was introduced during the Spanish colonial period as an adaptation of the European crème caramel. According to tradition, it was created as a way to use leftover egg yolks after egg whites were used in constructing Spanish-era churches by mixing them with lime mortar. The name comes from the Spanish words leche ('milk') and flan. During the American colonial period, the introduction of canned evaporated and condensed milk gave leche flan its signature rich and creamy texture, making it one of the Philippines' most iconic desserts.",
+    cultural: "",
+    recipe: "",
+    image: "image4/leche.png",
+    modalImage: "image4/flan.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "Filipino Spaghetti",
+    category: ["", ""],
+    description: "Filipino Spaghetti is the Filipino adaptation of Italian spaghetti with Bolognese sauce. It is distinguished by its sweet tomato sauce, commonly flavored with banana ketchup, brown sugar, or condensed milk, and is typically topped with hotdogs, ground meat, and grated cheese. It is one of the Philippines' most popular comfort foods and is traditionally served during birthdays and other special occasions.", 
+    history: "Spaghetti was introduced to the Philippines during the American colonial period. Between the 1940s and 1960s, World War II caused a shortage of tomato products, leading Filipino food technologist Maria Orosa to invent banana ketchup as a substitute. Filipino spaghetti gradually evolved by combining this sweeter sauce with local tastes. Although its exact origin is undocumented, a popular anecdote claims that General Douglas MacArthur's Filipino staff prepared his favorite spaghetti using banana ketchup and hotdogs, helping shape the Filipino version enjoyed today.",
+    cultural: "",
+    recipe: "",
+    image: "image4/spag.png",
+    modalImage: "image4/hetti.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "Bibingka",
+    category: ["", ""],
+    description: "", 
+    history: "",
+    cultural: "",
+    recipe: "",
+    image: "image4/ngka.png",
+    modalImage: "image4/bibi.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "",
+    category: ["", ""],
+    description: "", 
+    history: "",
+    cultural: "",
+    recipe: "",
+    image: "image4/pasti.png",
+    modalImage: "image4/llas.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "",
+    category: ["", ""],
+    description: "", 
+    history: "",
+    cultural: "",
+    recipe: "",
+    image: "image4/pasti.png",
+    modalImage: "image4/llas.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "",
+    category: ["", ""],
+    description: "", 
+    history: "",
+    cultural: "",
+    recipe: "",
+    image: "image4/pasti.png",
+    modalImage: "image4/llas.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+  {
+    name: "",
+    category: ["", ""],
+    description: "", 
+    history: "",
+    cultural: "",
+    recipe: "",
+    image: "image4/pasti.png",
+    modalImage: "image4/llas.png",
+    modalVideo: "",
+    highlights: [
+      { term: "", url: "" },
+    ]
+  },
+
 ];
 
 let currentList = [...foods]; // Always keep a copy for shuffling
@@ -1069,8 +1314,8 @@ let pptSlides = [];
 const pptLabels = [
   "Description",
   "History",
-  "Cultural Significance",
-  "Recipe"
+    "Recipe",
+  "References",
   
 ];
 function highlightTerms(text, highlights) {
@@ -1103,8 +1348,9 @@ function openPptModal(food) {
   pptSlides = [
     food.description || "",
     food.history || "",
-    food.cultural || "",
-    food.recipe || ""
+    food.recipe || "",
+    food.references || "",
+
   ];
   const slideEls = document.querySelectorAll("#pptModal .slide");
   for (let i = 0; i < slideEls.length; ++i) {
@@ -1265,3 +1511,4 @@ function showPptTab(e, tab) {
 </script>
 </body>
 </html>
+
